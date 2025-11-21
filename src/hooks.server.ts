@@ -1,10 +1,11 @@
 import type { Handle, ServerInit } from "@sveltejs/kit"
 import { paraglideMiddleware } from "$lib/paraglide/server"
-import { createClient, SupabaseClient } from "@supabase/supabase-js"
+import { createClient} from "@supabase/supabase-js"
+import S from "@supabase/supabase-js"
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from "$env/static/public"
 
 const initSetValues: {
-	supabase: SupabaseClient
+	supabase: S.SupabaseClient
 } = {
 	supabase: undefined!
 }
