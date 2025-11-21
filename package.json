@@ -13,7 +13,7 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"test:e2e": "playwright test",
-		"test": "npm run test:e2e && npm run test:unit -- --run",
+		"test": "bun run test:e2e && bun run test:unit -- --run",
 		"test:unit": "vitest",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build"
