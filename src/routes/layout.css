@@ -3,3 +3,7 @@
 	themes: winter --default, dark --prefersdark;
 }
 @plugin "@tailwindcss/typography";
+
+@theme {
+	--font-bauhaus: "ITC Bauhaus Demi", Arial;
+}
