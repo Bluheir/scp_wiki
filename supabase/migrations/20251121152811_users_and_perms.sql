@@ -8,6 +8,22 @@ CREATE TABLE public.profile(
 );
 ALTER TABLE public.profile ENABLE ROW LEVEL SECURITY;
 
+CREATE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE PLPGSQL
+SECURITY DEFINER SET search_path = ''
+AS $$
+BEGIN
+	INSERT INTO public.profile (id, username)
+	VALUES (new.id, new.raw_user_meta_data ->> 'username');
+	RETURN new;
+END;
+$$;
+
+CREATE TRIGGER on_auth_user_created
+	AFTER INSERT ON auth.users
+	FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+
 CREATE TABLE public.urole(
 	id UUID PRIMARY KEY,
 
