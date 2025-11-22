@@ -11,7 +11,9 @@ declare global {
 		// interface PageState {}
 		// interface Platform {},
 		interface Locals {
-			supabase: SupabaseClient
+			supabase: SupabaseClient,
+			supabase_anon_key: string,
+			supabase_url: string
 		}
 	}
 }
