@@ -24,11 +24,17 @@ CREATE TRIGGER on_auth_user_created
 	AFTER INSERT ON auth.users
 	FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 
-CREATE TABLE public.urole(
+CREATE TABLE public.urole_or_utag(
 	id UUID PRIMARY KEY,
 
-	profile_id UUID,
-	FOREIGN KEY (profile_id) REFERENCES public.profile (id),
+	creator_profile_id UUID,
+	FOREIGN KEY (creator_profile_id) REFERENCES public.profile (id)
+);
+ALTER TABLE public.urole_or_utag ENABLE ROW LEVEL SECURITY;
+
+CREATE TABLE public.urole(
+	id UUID PRIMARY KEY,
+	FOREIGN KEY (id) REFERENCES public.urole_or_utag (id),
 
 	role_name VARCHAR(32) NOT NULL UNIQUE
 );
@@ -47,9 +53,7 @@ ALTER TABLE public.urole_profile ENABLE ROW LEVEL SECURITY;
 
 CREATE TABLE public.utag(
 	id UUID PRIMARY KEY,
-
-	profile_id UUID,
-	FOREIGN KEY (profile_id) REFERENCES public.profile (id),
+	FOREIGN KEY (id) REFERENCES public.urole_or_utag (id),
 
 	tag_name VARCHAR(32) NOT NULL UNIQUE
 );
