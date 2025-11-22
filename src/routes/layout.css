@@ -1,5 +1,5 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-	themes: winter --default, sunset --prefersdark;
+	themes: winter --default, dark --prefersdark;
 }
 @plugin "@tailwindcss/typography";
