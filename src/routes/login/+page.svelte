@@ -17,7 +17,7 @@
 </script>
 
 <div class="flex justify-center py-40 select-none">
-	<div class="px-8 py-4 hover:shadow-2xl transition rounded-box bg-base-200 flex border border-base-content/10 w-230 gap-6">
+	<div class="px-6 py-4 shadow-2xl transition rounded-box bg-base-200 flex border border-base-content/10 gap-6 font-mono">
 		<form method="POST" use:enhance class="card w-sm gap-y-1.5 py-4">
 			<h1 class="bold text-2xl font-bold">{m.login_welcomeBack()}</h1>
 			<Field {form} name="email">
@@ -49,12 +49,13 @@
 			<input class="btn btn-primary btn-sm" type="submit" value={m.login_signIn()} />
 		</form>
 		<div class="h-full w-[0.5px] bg-base-content/10"></div>
-		<div class="flex items-center gap-3">
-			<SCPEmblem class="text-base-content h-40"/>
-			<div class="grow">
-				<span class="text-4xl font-bauhaus">SCP Foundation</span>
-				<br/>
-				<span class="text-xl">Secure Contain Protect</span>
+		<div class="flex items-center rounded-box">
+			<div class="flex items-center gap-4">
+				<SCPEmblem class="text-base-content h-40 motion-safe:animate-spin-slow"/>
+				<div class="grow">
+					<h2 class="text-4xl font-bauhaus">SCP Foundation</h2>
+					<h3 class="text-xl">Secure Contain Protect</h3>
+				</div>
 			</div>
 		</div>
 	</div>

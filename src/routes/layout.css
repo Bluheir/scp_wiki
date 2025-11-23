@@ -6,4 +6,5 @@
 
 @theme {
 	--font-bauhaus: "ITC Bauhaus Demi", Arial;
+	--animate-spin-slow: spin 3s linear infinite;
 }
