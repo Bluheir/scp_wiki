@@ -6,5 +6,7 @@
 	"auth_emailDescription": "Email address for the account",
 	"auth_password": "Password",
 	"auth_passwordDescription": "Account password",
-	"login_signIn": "Sign in"
+	"login_signIn": "Sign in",
+	"auth_invalidEmail": "Invalid email address",
+	"auth_invalidPassword": "A password has between 1 and 255 characters"
 }
