@@ -1,7 +1,4 @@
 {
-	"files.associations": {
-		"*.css": "tailwind"
-	},
 	"sqltools.connections": [
 		{
 			"ssh": "Disabled",
