@@ -57,6 +57,7 @@
 		"vitest-browser-svelte": "^2.0.1"
 	},
 	"dependencies": {
+		"@supabase/ssr": "^0.7.0",
 		"@supabase/supabase-js": "^2.84.0",
 		"bits-ui": "^2.14.4",
 		"formsnap": "^2.0.1",
