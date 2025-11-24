@@ -1,4 +1,12 @@
 {
-	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "jaから、{name}、こんにちは！"
+	"$schema":"https://inlang.com/schema/inlang-message-format",
+	"hello_world":"jaから、{name}、こんにちは！",
+	"login_welcomeBack": "お帰りなさいませ、ドクター［黒塗り］",
+	"auth_email": "メールアドレス",
+	"auth_emailDescription": "アカウントのメールアドレス",
+	"auth_password": "パスワード",
+	"auth_passwordDescription": "アカウントのパスワード",
+	"login_signIn": "サインイン",
+	"auth_invalidEmail": "無効なメールアドレスです",
+	"auth_invalidPassword": "パスワードの長さは１〜２５５文字です"
 }
