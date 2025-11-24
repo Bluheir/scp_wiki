@@ -1,1 +1,12 @@
-{"$schema":"https://inlang.com/schema/inlang-message-format","hello_world":"Hello, {name} from en!"}
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"hello_world": "Hello, {name} from en!",
+	"login_welcomeBack": "Welcome back Doctor [REDACTED]",
+	"auth_email": "Email",
+	"auth_emailDescription": "Email address for the account",
+	"auth_password": "Password",
+	"auth_passwordDescription": "Account password",
+	"login_signIn": "Sign in",
+	"auth_invalidEmail": "Invalid email address",
+	"auth_invalidPassword": "A password has between 1 and 255 characters"
+}
