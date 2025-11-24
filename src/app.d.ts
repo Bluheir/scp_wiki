@@ -12,6 +12,7 @@ declare global {
 		// interface Platform {},
 		interface Locals {
 			supabase: SupabaseClient,
+			supabasePublic: SupabaseClient,
 			supabase_anon_key: string,
 			supabase_url: string
 		}
