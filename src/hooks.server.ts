@@ -18,8 +18,7 @@ export const handle: Handle = ({ event, resolve }) => {
 			cookiesToSet.forEach(({ name, value, options }) => event.cookies.set(name, value, { ...options, path: '/' }))
 	}
 	event.locals.supabase = createServerClient(initSetValues.supabase_url, PRIVATE_SUPABASE_KEY, { cookies })
-	event.locals.supabasePublic = createServerClient(initSetValues.supabase_url, initSetValues.supabase_anon_key, { cookies })
-
+	
 	return paraglideMiddleware(event.request, ({ request, locale }) => {
 		event.request = request
 
