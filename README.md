@@ -15,7 +15,7 @@ The project is split into two sections: one for the forums and one for the wiki.
 
 Features on the wiki include/will include:
 - [ ] Ability to request feedback directly from page drafts
-- [ ] Ability to publish page drafts straight from the draft page.
+- [ ] Ability to publish page drafts straight from the draft page
 - [ ] Ability to branch drafts off of other page drafts (kind of like Git)
 - [ ] Interactive page draft editor using TipTap
 - [ ] Custom CSS embeddings in pages, for custom or very specific themes
@@ -30,12 +30,15 @@ Features on the forums include/will include:
 - [ ] Ability to create "topics" and "posts" (think of topics like folders and posts like files)
 - [ ] Custom reactions to posts and replies (like Discord)
 - [ ] Ability to downvote/upvote posts
+- [ ] Ability to create multiple translations for topic descriptions and topic titles
+- [ ] Ability for moderators to pin posts in topics
 
 Features shared by the forum and wiki include/will include:
 - [ ] Robust and flexible permissions system, with roles
 - [ ] "Reactive" updates in the UI (e.g. a user changes their username, reflecting the change immediately in the UI)
 - [ ] Profile system, where users can set their profile picture, username, pronouns, and description
 - [ ] User rating system: the sum of their post ratings + their wiki page ratings
+- [ ] Localizations by default using Paraglide
 
 ## Setting up development environment
 To setup this project, you will need [bun](https://bun.sh), [docker](https://docker.com) and Git installed.
@@ -56,7 +59,7 @@ PRIVATE_SUPABASE_KEY=
 PRIVATE_DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres
 ```
 
-Run `bunx supabase status` and set the environment variable values to the corresponding row in the status output.
+Run `bunx supabase status` and set the environment variable values to the corresponding row in the status output:
 
  Environment Variable       | Supabase Status Row   
 ----------------------------|------------------------
