@@ -13,7 +13,7 @@
 	const form = superForm(data.form, {
 		validators: zod4Client(registerSchema)
 	})
-	const { form: formData, enhance } = form
+	const { form: formData, enhance, message } = form
 </script>
 
 <div class="flex justify-center py-40 select-none">
@@ -94,6 +94,9 @@
 				<Description class="text-xs">{m.register_confirmPasswordDescription()}</Description>
 				<FieldErrors class="text-xs text-error" />
 			</Field>
+			{#if $message}
+				<output class="text-success text-xs">{$message}</output>
+			{/if}
 			<input class="btn btn-sm btn-primary" type="submit" value={m.register_register()} />
 		</form>
 		<div class="h-full w-[0.5px] bg-base-content/10"></div>

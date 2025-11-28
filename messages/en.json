@@ -19,5 +19,7 @@
 	"register_title": "Join the SCP foundation",
 	"register_confirmPassword": "Confirm password",
 	"register_confirmPasswordDescription": "Confirm pasword",
-	"register_passwordsDontMatch": "The passwords do not match"
+	"register_passwordsDontMatch": "The passwords do not match",
+	"register_emailTaken": "Account email is already in use",
+	"register_success": "Success! A confirmation link was sent to your email address."
 }
