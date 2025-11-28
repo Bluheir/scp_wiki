@@ -1,5 +1,5 @@
 import { registerSchema } from "$lib/schema/auth.js"
-import { superValidate } from "sveltekit-superforms"
+import { message, superValidate } from "sveltekit-superforms"
 import { zod4 } from "sveltekit-superforms/adapters"
 import type { Actions } from "./$types"
 import { m } from "$lib/paraglide/messages.js"
@@ -39,5 +39,7 @@ export const actions: Actions = {
 		if (!form.valid) {
 			return fail(400, { form })
 		}
+
+		return message(form, m.register_success())
 	}
 }
