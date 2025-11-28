@@ -8,5 +8,8 @@
 	"auth_passwordDescription": "Account password",
 	"login_signIn": "Sign in",
 	"auth_invalidEmail": "Invalid email address",
-	"auth_invalidPassword": "A password has between 1 and 255 characters"
+	"auth_invalidPassword": "A password has between 1 and 255 characters",
+
+	"register_invalidUsername": "A username has between 1 and 32 characters",
+	"register_badPassword": "A password must contain a symbol, lowercase letter, uppercase letter and a number"
 }
