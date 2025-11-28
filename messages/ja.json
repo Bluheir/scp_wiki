@@ -8,5 +8,5 @@
 	"auth_passwordDescription": "アカウントのパスワード",
 	"login_signIn": "サインイン",
 	"auth_invalidEmail": "無効なメールアドレスです",
-	"auth_invalidPassword": "パスワードの長さは１〜２５５文字です"
+	"auth_invalidPassword": "パスワードの長さは{min}〜{max}文字です"
 }
