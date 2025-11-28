@@ -38,5 +38,14 @@ export const registerSchema = z.object({
 		}
 
 		return hasNumber && hasSymbol && hasUpper && hasLower
-	}, { error: m.register_badPassword })
+	}, { error: m.register_badPassword }),
+	confirmPassword: z.string()
+}).superRefine(({ password, confirmPassword }, ctx) => {
+	if(password !== confirmPassword) {
+		ctx.addIssue({
+			code: "custom",
+			path: ["confirmPassword"],
+			message: m.register_passwordsDontMatch()
+		})
+	}
 })

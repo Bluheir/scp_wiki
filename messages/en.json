@@ -15,5 +15,8 @@
 	"register_username": "Username",
 	"register_usernameDescription": "The username you want for the account",
 	"register_register": "Create account",
-	"register_title": "Join the SCP foundation"
+	"register_title": "Join the SCP foundation",
+	"register_confirmPassword": "Confirm password",
+	"register_confirmPasswordDescription": "Confirm pasword",
+	"register_passwordsDontMatch": "The passwords do not match"
 }

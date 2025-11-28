@@ -59,6 +59,19 @@
 				<Description class="text-xs">{m.auth_passwordDescription()}</Description>
 				<FieldErrors class="text-xs text-error"/>
 			</Field>
+			<Field {form} name="confirmPassword">
+				<Control>
+					{#snippet children({ props })}
+						<Label class="label text-xs">{m.register_confirmPassword()}</Label>
+						<label class="input input-sm w-full">
+							<Lock class="h-[1em] text-sm"/>
+							<input type="password" {...props} bind:value={$formData.confirmPassword} placeholder={m.register_confirmPassword()} />
+						</label>
+					{/snippet}
+				</Control>
+				<Description class="text-xs">{m.register_confirmPasswordDescription()}</Description>
+				<FieldErrors class="text-xs text-error"/>
+			</Field>
 			<input class="btn btn-primary btn-sm" type="submit" value={m.register_register()} />
 		</form>
 		<div class="h-full w-[0.5px] bg-base-content/10"></div>
