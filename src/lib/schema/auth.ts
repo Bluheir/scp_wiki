@@ -3,12 +3,14 @@ import { m } from "$lib/paraglide/messages"
 
 const common = {
 	email: z.email({ error: m.auth_invalidEmail }),
-	password: z.string().min(1, { error: m.auth_invalidPassword }).max(255, { error: m.auth_invalidPassword })
+	password: (min: number, max: number) => z.string().min(min, { error: m.auth_invalidPassword({ min, max }) }).max(max, { error: m.auth_invalidPassword({ min, max }) })
 }
 
 export const signInSchema = z.object({
 	email: common.email,
-	password: common.password
+	// In the future, the min password length may be changed to be lower or higher for registration,
+	// hence why the min value in signInSchema is different to the one in registerSchema
+	password: common.password(1, 255)
 })
 
 const alphabetLower = "abcdefghijklmnopqrstuvwxyz"
@@ -19,7 +21,7 @@ const symbols = "!@#$%^&*()_+`~-_+=[]\\{}|;':\",./<>?"
 export const registerSchema = z.object({
 	email: common.email,
 	username: z.string().min(1, { error: m.register_invalidUsername }).max(32, { error: m.register_invalidUsername }),
-	password: common.password.refine((value) => {
+	password: common.password(8, 255).refine((value) => {
 		let hasLower: boolean = false
 		let hasUpper: boolean = false
 		let hasNumber: boolean = false
