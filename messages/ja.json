@@ -9,6 +9,7 @@
 	"login_signIn": "サインイン",
 	"auth_invalidEmail": "無効なメールアドレスです",
 	"auth_invalidPassword": "パスワードの長さは{min}〜{max}文字です",
+	"auth_badPasswordCombination": "入力されたメールアドレスまたはパスワードが正しくありません",
 
 	"register_invalidUsername": "ユーザー名の長さは{min}〜{max}文字です",
 	"register_badPassword": "パスワードには記号・小文字・大文字・数字を含める必要があります",
@@ -18,5 +19,7 @@
 	"register_title": "SCP財団に参加する",
 	"register_confirmPassword": "パスワード確認",
 	"register_confirmPasswordDescription": "パスワードを再入力してください",
-	"register_passwordsDontMatch": "パスワードが一致しません"
+	"register_passwordsDontMatch": "パスワードが一致しません",
+	"register_emailTaken": "このメールアドレスは既に使用されています",
+	"register_success": "成功しました！確認用リンクをメールアドレスに送信しました。"
 }

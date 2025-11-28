@@ -9,6 +9,7 @@
 	"login_signIn": "Sign in",
 	"auth_invalidEmail": "Invalid email address",
 	"auth_invalidPassword": "A password has between {min} and {max} characters",
+	"auth_badPasswordCombination": "The provided email and password combination is invalid",
 
 	"register_invalidUsername": "A username has between 1 and 32 characters",
 	"register_badPassword": "A password must contain a symbol, lowercase letter, uppercase letter and a number",
@@ -18,5 +19,7 @@
 	"register_title": "Join the SCP foundation",
 	"register_confirmPassword": "Confirm password",
 	"register_confirmPasswordDescription": "Confirm pasword",
-	"register_passwordsDontMatch": "The passwords do not match"
+	"register_passwordsDontMatch": "The passwords do not match",
+	"register_emailTaken": "Account email is already in use",
+	"register_success": "Success! A confirmation link was sent to your email address."
 }
