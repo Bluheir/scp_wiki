@@ -11,7 +11,7 @@
 	"auth_invalidPassword": "パスワードの長さは{min}〜{max}文字です",
 	"auth_badPasswordCombination": "入力されたメールアドレスまたはパスワードが正しくありません",
 
-	"register_invalidUsername": "ユーザー名の長さは{min}〜{max}文字です",
+	"register_invalidUsername": "ユーザー名の長さは1〜32文字です",
 	"register_badPassword": "パスワードには記号・小文字・大文字・数字を含める必要があります",
 	"register_username": "ユーザー名",
 	"register_usernameDescription": "アカウントに使用するユーザー名です",
