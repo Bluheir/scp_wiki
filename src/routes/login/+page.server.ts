@@ -3,6 +3,7 @@ import { superValidate } from "sveltekit-superforms"
 import { zod4 } from "sveltekit-superforms/adapters"
 import { fail, redirect } from "@sveltejs/kit"
 import type { Actions } from "./$types.js"
+import { m } from "$lib/paraglide/messages.js"
 
 export const load = async ({ locals }) => {
 	const form = await superValidate(zod4(signInSchema))
@@ -21,7 +22,7 @@ export const actions: Actions = {
 			if (signIn.error) {
 				issues.push({
 					code: "custom",
-					message: "The provided email and password combination is invalid",
+					message: m.auth_badPasswordCombination(),
 					path: ["password"],
 					input: password
 				})
