@@ -11,5 +11,9 @@
 	"auth_invalidPassword": "A password has between 1 and 255 characters",
 
 	"register_invalidUsername": "A username has between 1 and 32 characters",
-	"register_badPassword": "A password must contain a symbol, lowercase letter, uppercase letter and a number"
+	"register_badPassword": "A password must contain a symbol, lowercase letter, uppercase letter and a number",
+	"register_username": "Username",
+	"register_usernameDescription": "The username you want for the account",
+	"register_register": "Create account",
+	"register_title": "Join the SCP foundation"
 }
