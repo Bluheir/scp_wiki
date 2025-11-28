@@ -1,0 +1,39 @@
+export type Topic = ImmediateParentTopic | ParentTopic
+
+export type ImmediateParentTopic = {
+    readonly id: string
+	title: string
+	description: string
+    readonly type: "immediateParent"
+	children: PostPreview[]
+}
+
+export type ParentTopic = {
+    readonly id: string
+	title: string
+	description: string
+    readonly type: "parent"
+    children: SubTopic[]
+}
+
+export type SubTopic = {
+	readonly id: string
+	readonly postAmount: number
+	readonly lastPoster: Author
+	title: string
+	description: string
+}
+
+export type PostPreview = {
+	readonly id: string
+	readonly author: Author
+	readonly lastReply: Author
+	readonly repliesAmount: number
+	title: string
+	preview: string
+}
+
+export type Author = {
+	readonly id: string
+	readonly username: string
+}
