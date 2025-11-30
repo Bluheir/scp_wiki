@@ -4,6 +4,10 @@
 }
 @plugin "@tailwindcss/typography";
 
+.docs-story {
+	background-color: var(--color-base-100);
+}
+
 @theme {
 	--font-bauhaus: "ITC Bauhaus Demi", Arial;
 	--animate-spin-slow: spin 3s linear infinite;
