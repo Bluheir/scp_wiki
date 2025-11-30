@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+	themes: winter --default;
+}
+@plugin "@tailwindcss/typography";
+
+@theme {
+	--font-bauhaus: "ITC Bauhaus Demi", Arial;
+	--animate-spin-slow: spin 3s linear infinite;
+}

@@ -2,7 +2,7 @@
 	import { Avatar, Separator } from "bits-ui"
 	import type { Post } from "./post"
 
-	const { post }: { post: Post } = $props()
+	const post: Post = $props()
 </script>
 
 <div class="rounded-box border border-base-content/10 p-4">
