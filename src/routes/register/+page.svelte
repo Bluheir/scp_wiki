@@ -95,7 +95,7 @@
 				<FieldErrors class="text-xs text-error" />
 			</Field>
 			{#if $message}
-				<output class="text-success text-xs">{$message}</output>
+				<output data-testid="register-success-message" class="text-success text-xs">{$message}</output>
 			{/if}
 			<input class="btn btn-sm btn-primary" type="submit" value={m.register_register()} />
 		</form>
