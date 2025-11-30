@@ -2,7 +2,6 @@
 	import { Avatar, Separator } from "bits-ui"
 	import type { Post } from "./post"
 	import { ChevronDown, ChevronUp } from "lucide-svelte"
-	import { getLocale } from "$lib/paraglide/runtime"
 
 	const post: Post = $props()
 	let myRating = $derived(post.myRating)
@@ -32,7 +31,7 @@
 					await setNewRating(1)
 				}
 			}}><ChevronUp /></button>
-			<div aria-label="{rating.toString()}" class="select-none">{rating}</div>
+			<div aria-label="{rating.toString()}" class="select-none">{rating.toLocaleString()}</div>
 			<button class="btn btn-square btn-xs {myRating === -1 ? "text-primary" : "btn-ghost"}" onclick={async () => {
 				if(myRating === -1) {
 					await setNewRating(0)
@@ -49,7 +48,7 @@
 		</Avatar.Root>
 		<div class="text-lg font-bold">{post.authorUsername}</div>
 	</div>
-	<div class="text-xs text-base-content/90 my-2">{post.created.toLocaleString(getLocale())}</div>
+	<div class="text-xs text-base-content/90 my-2">{post.created.toLocaleString()}</div>
 	<Separator.Root
 		class="my-4 h-px bg-base-content/10 [orientation='vertical']:h-full"
 		orientation="horizontal"
