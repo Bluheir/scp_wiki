@@ -11,6 +11,7 @@
 			authorProfileSrc: { control: "text" },
 			created: { control: "date" },
 			text: { control: "text" },
+			rating: { control: "number" },
 			id: { table: { disable: true } },
 			authorId: { table: { disable: true } }
 		}
@@ -23,8 +24,11 @@
 		id: "1",
 		text: "Hello, this is a post!",
 		authorId: "2",
-		authorProfileSrc: "https://placekitten.com/100/100",
+		myRating: 0,
+		rating: 2,
+		authorProfileSrc: "https://avatars.githubusercontent.com/u/44828102?s=48&v=4",
 		authorUsername: "TestUserThomas",
+		setMyRating: async (r) => r,
 		created: new Date()
 	}}
 />
