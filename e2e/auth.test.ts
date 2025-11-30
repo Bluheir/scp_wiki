@@ -1,7 +1,7 @@
 import { expect, test } from "./fixtures"
 
 test.describe("register", () => {
-	test("valid data successfully registers user", async ({ page, adminClient }) => {
+	test("valid data successfully registers user", async ({ page, supabaseAdmin }) => {
 		const email = `test${Date.now()}@example.com`
 		const password = "12345aA!"
 
@@ -16,14 +16,14 @@ test.describe("register", () => {
 		await page.locator("[type=submit]").click()
 
 		await expect(page.getByTestId("register-success-message")).toBeVisible()
-		const { data: { user } } = await adminClient.auth.signInWithPassword({ email, password })
-		await adminClient.auth.admin.deleteUser(user!.id)
+		const { data: { user } } = await supabaseAdmin.auth.signInWithPassword({ email, password })
+		await supabaseAdmin.auth.admin.deleteUser(user!.id)
 	})
 
-	test("existing email does not register user", async ({ page, adminClient }) => {
+	test("existing email does not register user", async ({ page, supabaseAdmin }) => {
 		const email = `test${Date.now()}@example.com`
 		const password = "12345aA!"
-		await adminClient.auth.signUp({ email, password })
+		await supabaseAdmin.auth.signUp({ email, password })
 
 		await page.goto("/register")
 		await page.getByLabel("Email").fill(email)
@@ -40,10 +40,10 @@ test.describe("register", () => {
 })
 
 test.describe("login", () => {
-	test("correct email and password logs in", async ({ page, adminClient }) => {
+	test("correct email and password logs in", async ({ page, supabaseAdmin }) => {
 		const email = `test${Date.now()}@example.com`
 		const password = "12345aA!"
-		await adminClient.auth.signUp({ email, password, options: { data: { username: "test" } } })
+		await supabaseAdmin.auth.signUp({ email, password, options: { data: { username: "test" } } })
 
 		await page.goto("/login")
 		await page.getByLabel("Email").fill(email)
@@ -52,8 +52,8 @@ test.describe("login", () => {
 		await page.locator("[type=submit]").click()
 
 		await expect(page).toHaveURL("/")
-		const { data: { user } } = await adminClient.auth.signInWithPassword({ email, password })
-		await adminClient.auth.admin.deleteUser(user!.id)
+		const { data: { user } } = await supabaseAdmin.auth.signInWithPassword({ email, password })
+		await supabaseAdmin.auth.admin.deleteUser(user!.id)
 	})
 
 	test("invalid email and password does not log in", async ({ page }) => {
