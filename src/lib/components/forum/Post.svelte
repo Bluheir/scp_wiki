@@ -105,12 +105,12 @@
 		</div>
 		<div class="flex gap-2">
 			{#if actionItems.replyAble}
-				<button class="btn gap-1 transition btn-xs" title={m.forum_post_reply()}
+				<button class="btn gap-1 transition btn-xs btn-secondary" title={m.forum_post_reply()}
 					><Reply class="w-[1.5em]" />{m.forum_post_reply()}</button
 				>
 			{/if}
 			{#if actionItems.editAble}
-				<button class="btn gap-1 transition btn-xs" title={m.forum_post_edit()}
+				<button class="btn gap-1 transition btn-xs btn-primary" title={m.forum_post_edit()}
 					><Pencil class="w-[1.4em]" />{m.forum_post_edit()}</button
 				>
 			{/if}
