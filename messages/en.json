@@ -21,5 +21,11 @@
 	"register_confirmPasswordDescription": "Confirm pasword",
 	"register_passwordsDontMatch": "The passwords do not match",
 	"register_emailTaken": "Account email is already in use",
-	"register_success": "Success! A confirmation link was sent to your email address."
+	"register_success": "Success! A confirmation link was sent to your email address.",
+
+	"forum_post_reply": "Reply",
+	"forum_post_edit": "Edit",
+	"forum_post_delete": "Delete",
+	"forum_post_upvote": "Upvote",
+	"forum_post_downvote": "Downvote"
 }

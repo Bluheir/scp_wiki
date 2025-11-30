@@ -2,6 +2,7 @@
 	import { Avatar, Separator } from "bits-ui"
 	import type { Post } from "./post"
 	import { ChevronDown, ChevronUp, Pencil, Reply, X } from "lucide-svelte"
+	import { m } from "$lib/paraglide/messages"
 
 	const { post, actionItems }: {
 		post: Post,
@@ -37,7 +38,7 @@
 				} else {
 					await setNewRating(1)
 				}
-			}}><ChevronUp /></button>
+			}} title={m.forum_post_upvote()}><ChevronUp /></button>
 			<div aria-label="{rating.toString()}" class="select-none">{rating.toLocaleString()}</div>
 			<button class="btn btn-square btn-xs {myRating === -1 ? "text-primary" : "btn-ghost"}" onclick={async () => {
 				if(myRating === -1) {
@@ -45,7 +46,7 @@
 				} else {
 					await setNewRating(-1)
 				}
-			}}><ChevronDown /></button>
+			}} title={m.forum_post_downvote()}><ChevronDown /></button>
 		</div>
 		<Avatar.Root class="avatar">
 			<div class="w-12 rounded-box">
@@ -66,13 +67,13 @@
 		</div>
 		<div class="flex gap-2">
 			{#if actionItems.replyAble}
-				<button class="btn btn-xs gap-1 transition"><Reply class="w-[1.5em]" />Reply</button>
+				<button class="btn btn-xs gap-1 transition" title={m.forum_post_reply()}><Reply class="w-[1.5em]" />{m.forum_post_reply()}</button>
 			{/if}
 			{#if actionItems.editAble}
-				<button class="btn btn-xs gap-1 transition"><Pencil class="w-[1.4em]" />Edit</button>
+				<button class="btn btn-xs gap-1 transition" title={m.forum_post_edit()}><Pencil class="w-[1.4em]" />{m.forum_post_edit()}</button>
 			{/if}
 			{#if actionItems.deleteAble}
-				<button class="btn btn-xs btn-error gap-1 transition"><X class="w-[1.5em]" />Delete</button>
+				<button class="btn btn-xs btn-error gap-1 transition" title={m.forum_post_delete()}><X class="w-[1.5em]" />{m.forum_post_delete()}</button>
 			{/if}
 		</div>
 	</div>
