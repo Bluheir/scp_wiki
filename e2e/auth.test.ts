@@ -1,4 +1,10 @@
+import type { SupabaseClient } from "@supabase/supabase-js"
 import { expect, test } from "./fixtures"
+
+async function deleteViaEmailPassword(supabaseAdmin: SupabaseClient, email: string, password: string) {
+	const { data: { user } } = await supabaseAdmin.auth.signInWithPassword({ email, password })
+	await supabaseAdmin.auth.admin.deleteUser(user!.id)
+}
 
 test.describe("register", () => {
 	test("valid data successfully registers user", async ({ page, supabaseAdmin }) => {
@@ -16,8 +22,7 @@ test.describe("register", () => {
 		await page.locator("[type=submit]").click()
 
 		await expect(page.getByTestId("register-success-message")).toBeVisible()
-		const { data: { user } } = await supabaseAdmin.auth.signInWithPassword({ email, password })
-		await supabaseAdmin.auth.admin.deleteUser(user!.id)
+		await deleteViaEmailPassword(supabaseAdmin, email, password)
 	})
 
 	test("existing email does not register user", async ({ page, supabaseAdmin }) => {
@@ -36,6 +41,7 @@ test.describe("register", () => {
 		await page.locator("[type=submit]").click()
 
 		await expect(page.getByTestId("register-success-message")).toBeHidden()
+		await deleteViaEmailPassword(supabaseAdmin, email, password)
 	})
 })
 
@@ -52,8 +58,7 @@ test.describe("login", () => {
 		await page.locator("[type=submit]").click()
 
 		await expect(page).toHaveURL("/")
-		const { data: { user } } = await supabaseAdmin.auth.signInWithPassword({ email, password })
-		await supabaseAdmin.auth.admin.deleteUser(user!.id)
+		await deleteViaEmailPassword(supabaseAdmin, email, password)
 	})
 
 	test("invalid email and password does not log in", async ({ page }) => {
