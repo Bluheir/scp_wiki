@@ -9,5 +9,5 @@ export type Post = {
 	readonly created: Date
 	readonly rating: number
 	readonly myRating: MyRating
-	setMyRating: (newRating: MyRating) => Promise<MyRating>
+	setMyRating: (newRating: MyRating) => Promise<void>
 }

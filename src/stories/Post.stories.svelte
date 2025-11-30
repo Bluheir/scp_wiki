@@ -1,6 +1,6 @@
 <script module>
 	import { defineMeta } from "@storybook/addon-svelte-csf"
-	import Post from "$lib/components/forum/Post.svelte"
+	import Post from "./Post.svelte"
 
 	const { Story } = defineMeta({
 		title: "Forum/Post",
@@ -25,10 +25,9 @@
 		text: "Hello, this is a post!",
 		authorId: "2",
 		myRating: 0,
-		rating: 2,
+		rating: 1,
 		authorProfileSrc: "https://avatars.githubusercontent.com/u/44828102?s=48&v=4",
 		authorUsername: "TestUserThomas",
-		setMyRating: async (r) => r,
 		created: new Date()
 	}}
 />

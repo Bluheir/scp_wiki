@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Avatar, Separator } from "bits-ui"
-	import type { MyRating, Post } from "./post"
+	import type { Post } from "./post"
 	import { ChevronDown, ChevronUp } from "lucide-svelte"
 
 	const post: Post = $props()
@@ -11,9 +11,9 @@
 		rating += newRating - myRating
 		myRating = newRating
 
-		const trueMyRating = await post.setMyRating(newRating)
-		rating += trueMyRating - newRating
-		myRating = trueMyRating
+		await post.setMyRating(newRating)
+		rating = post.rating
+		myRating = post.myRating
 	}
 </script>
 
