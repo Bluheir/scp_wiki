@@ -2,6 +2,7 @@
 	import { Avatar, Separator } from "bits-ui"
 	import type { Post } from "./post"
 	import { ChevronDown, ChevronUp } from "lucide-svelte"
+	import { getLocale } from "$lib/paraglide/runtime"
 
 	const post: Post = $props()
 	let myRating = $derived(post.myRating)
@@ -15,6 +16,10 @@
 		rating = post.rating
 		myRating = post.myRating
 	}
+
+	$effect(() => {
+		console.log(post.created)
+	})
 </script>
 
 <div class="rounded-box border border-base-content/10 p-4 transition hover:shadow-lg">
@@ -44,6 +49,7 @@
 		</Avatar.Root>
 		<div class="text-lg font-bold">{post.authorUsername}</div>
 	</div>
+	<div class="text-xs text-base-content/90 my-2">{post.created.toLocaleString(getLocale())}</div>
 	<Separator.Root
 		class="my-4 h-px bg-base-content/10 [orientation='vertical']:h-full"
 		orientation="horizontal"

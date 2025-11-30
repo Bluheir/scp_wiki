@@ -17,7 +17,7 @@
 		authorId: string
 		authorProfileSrc?: string
 		authorUsername: string
-		created: Date
+		created: number
 		rating: number
 		myRating: MyRating
 	} = $props()
@@ -29,7 +29,7 @@
 	{authorId}
 	{authorProfileSrc}
 	{authorUsername}
-	{created}
+	created={new Date(created)}
 	{rating}
 	{myRating}
 	setMyRating={async (newRating) => {
