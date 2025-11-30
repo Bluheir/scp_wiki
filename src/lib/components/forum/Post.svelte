@@ -1,9 +1,16 @@
 <script lang="ts">
 	import { Avatar, Separator } from "bits-ui"
 	import type { Post } from "./post"
-	import { ChevronDown, ChevronUp } from "lucide-svelte"
+	import { ChevronDown, ChevronUp, Pencil, Reply, X } from "lucide-svelte"
 
-	const post: Post = $props()
+	const { post, actionItems }: {
+		post: Post,
+		actionItems: {
+			replyAble: boolean,
+			editAble: boolean,
+			deleteAble: boolean
+		}
+	} = $props()
 	let myRating = $derived(post.myRating)
 	let rating = $derived(post.rating ?? 0)
 
@@ -54,6 +61,19 @@
 		orientation="horizontal"
 	/>
 	<div>
-		{post.text}
+		<div class="my-4">
+			{post.text}
+		</div>
+		<div class="flex gap-2">
+			{#if actionItems.replyAble}
+				<button class="btn btn-xs gap-1 transition"><Reply class="w-[1.5em]" />Reply</button>
+			{/if}
+			{#if actionItems.editAble}
+				<button class="btn btn-xs gap-1 transition"><Pencil class="w-[1.4em]" />Edit</button>
+			{/if}
+			{#if actionItems.deleteAble}
+				<button class="btn btn-xs btn-error gap-1 transition"><X class="w-[1.5em]" />Delete</button>
+			{/if}
+		</div>
 	</div>
 </div>

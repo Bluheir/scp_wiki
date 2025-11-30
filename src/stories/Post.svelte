@@ -9,6 +9,9 @@
 		authorProfileSrc,
 		authorUsername,
 		created,
+		replyAble = true,
+		deleteAble = true,
+		editAble = true,
 		rating = $bindable(),
 		myRating = $bindable()
 	}: {
@@ -18,22 +21,31 @@
 		authorProfileSrc?: string
 		authorUsername: string
 		created: number
+		replyAble?: boolean,
+		deleteAble?: boolean,
+		editAble?: boolean,
 		rating: number
 		myRating: MyRating
 	} = $props()
 </script>
-
 <Post
-	{id}
-	{text}
-	{authorId}
-	{authorProfileSrc}
-	{authorUsername}
-	created={new Date(created)}
-	{rating}
-	{myRating}
-	setMyRating={async (newRating) => {
-		rating += newRating - myRating
-		myRating = newRating
+	post={{
+		id,
+		text,
+		authorId,
+		authorProfileSrc,
+		authorUsername,
+		created: new Date(created),
+		rating,
+		myRating,
+		setMyRating: async (newRating) => {
+			rating += newRating - myRating
+			myRating = newRating
+		}
+	}}
+	actionItems={{
+		replyAble,
+		deleteAble,
+		editAble
 	}}
 />
