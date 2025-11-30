@@ -129,7 +129,7 @@
 			&:after,
 			&:before {
 				transition:
-					all 0.3s cubic-bezier(1, 0, 0, 1),
+					all 0.7s cubic-bezier(1, 0, 0, 1),
 					width 0.2s ease-out 0.2s,
 					opacity 0.2s ease-out 0.2s;
 			}
