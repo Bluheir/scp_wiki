@@ -1,7 +1,7 @@
 import { expect, test } from "./fixtures"
 
 test.describe("register", () => {
-	test("valid data successfully registers user", async ({ page }) => {
+	test("valid data successfully registers user", async ({ page, adminClient }) => {
 		const email = `test${Date.now()}@example.com`
 		const password = "12345aA!"
 
@@ -16,6 +16,8 @@ test.describe("register", () => {
 		await page.locator("[type=submit]").click()
 
 		await expect(page.getByTestId("register-success-message")).toBeVisible()
+		const { data: { user } } = await adminClient.auth.signInWithPassword({ email, password })
+		await adminClient.auth.admin.deleteUser(user!.id)
 	})
 
 	test("existing email does not register user", async ({ page, adminClient }) => {
@@ -50,6 +52,8 @@ test.describe("login", () => {
 		await page.locator("[type=submit]").click()
 
 		await expect(page).toHaveURL("/")
+		const { data: { user } } = await adminClient.auth.signInWithPassword({ email, password })
+		await adminClient.auth.admin.deleteUser(user!.id)
 	})
 
 	test("invalid email and password does not log in", async ({ page }) => {
