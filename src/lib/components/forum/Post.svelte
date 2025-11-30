@@ -24,9 +24,22 @@
 		myRating = post.myRating
 	}
 
-	$effect(() => {
-		console.log(post.created)
-	})
+	function segmentNumber(n: number): string[] {
+		const s = String(n);
+		const out: string[] = [];
+
+		let i = s.length;
+		while (i > 3) {
+			const end = i;
+			const start = i - 3;
+			out.unshift(s.slice(start, end));
+			out.unshift(",");
+			i -= 3;
+		}
+
+		out.unshift(s.slice(0, i));
+		return out;
+	}
 </script>
 
 <div class="rounded-box border border-base-content/10 p-4 transition hover:shadow-lg">
@@ -39,7 +52,15 @@
 					await setNewRating(1)
 				}
 			}} title={m.forum_post_upvote()}><ChevronUp /></button>
-			<div aria-label="{rating.toString()}" class="select-none">{rating.toLocaleString()}</div>
+			<div>
+				{#each segmentNumber(rating) as segment, index}
+					{#if segment === ","}
+						{segment}
+					{:else}
+						<span class="countdown"><span style="--value:{segment};{index === 0 ? "" : "--digits:3;"}">{segment}</span></span>
+					{/if}
+				{/each}
+			</div>
 			<button class="btn btn-square btn-xs {myRating === -1 ? "text-primary" : "btn-ghost"}" onclick={async () => {
 				if(myRating === -1) {
 					await setNewRating(0)
@@ -78,3 +99,13 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.countdown {
+		& > * {
+			&:after, &:before {
+				transition: all 0.3s cubic-bezier(1, 0, 0, 1), width 0.2s ease-out 0.2s, opacity 0.2s ease-out 0.2s;
+			}
+		}
+	}
+</style>
