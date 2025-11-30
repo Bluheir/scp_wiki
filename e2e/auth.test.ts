@@ -28,7 +28,7 @@ test.describe("register", () => {
 	test("existing email does not register user", async ({ page, supabaseAdmin }) => {
 		const email = `test${Date.now()}@example.com`
 		const password = "12345aA!"
-		await supabaseAdmin.auth.signUp({ email, password })
+		await supabaseAdmin.auth.signUp({ email, password, options: { data: { username: "test" } } })
 
 		await page.goto("/register")
 		await page.getByLabel("Email").fill(email)
