@@ -45,7 +45,7 @@
 	}
 </script>
 
-<div class="rounded-box border border-base-content/10 p-4 transition hover:shadow-lg">
+<div class="rounded-box border border-base-content/10 p-4 transition hover:shadow-xl">
 	<div class="flex items-center gap-4">
 		<div class="flex flex-col items-center">
 			<button
