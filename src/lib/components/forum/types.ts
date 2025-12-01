@@ -18,6 +18,7 @@ export type ParentTopic = {
 
 export type SubTopic = {
 	readonly id: string
+	readonly threadAmount: number
 	readonly postAmount: number
 	readonly lastPoster: Author
 	title: string
@@ -35,5 +36,6 @@ export type PostPreview = {
 
 export type Author = {
 	readonly id: string
+	readonly profileSrc: string
 	readonly username: string
 }
