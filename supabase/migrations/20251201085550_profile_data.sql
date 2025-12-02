@@ -13,6 +13,9 @@ ADD COLUMN avatar_url TEXT,
 ALTER TABLE public.urole
 ADD is_hidden BOOLEAN NOT NULL DEFAULT FALSE;
 
+ALTER TABLE public.utag
+ADD is_hidden BOOLEAN NOT NULL DEFAULT FALSE;
+
 CREATE TABLE public.urole_permission(
 	id UUID NOT NULL,
 	FOREIGN KEY (id) REFERENCES public.urole (id) ON DELETE CASCADE,
@@ -67,17 +70,29 @@ SELECT EXISTS (
 	);
 $$ LANGUAGE SQL SECURITY DEFINER;
 
-CREATE POLICY "anon or auth can view roles if not hidden or have permission" ON public.urole FOR
-SELECT TO authenticated,
-	anon USING (
-		is_hidden = false
-		OR role_name IN ('everyone', 'user')
-		OR has_permission(
-			(
-				SELECT auth.uid()
-			),
-			'view_hidden_roles'
-		)
-	);
+CREATE POLICY "anon or auth can view roles"
+ON public.urole
+FOR SELECT TO authenticated, anon
+USING (true);
+
+CREATE POLICY "anon or auth can view role assignments"
+ON public.urole_profile
+FOR SELECT TO authenticated, anon
+USING (true);
+
+CREATE POLICY "anon or auth can view tags"
+ON public.utag
+FOR SELECT TO authenticated, anon
+USING (true);
+
+CREATE POLICY "anon or auth can view tag assignments"
+ON public.utag_urole
+FOR SELECT TO authenticated, anon
+USING (true);
+
+CREATE POLICY "anon or auth can view permission assignments"
+ON public.urole_permission
+FOR SELECT TO authenticated, anon
+USING (true);
 
 COMMIT;
