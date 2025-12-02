@@ -10,8 +10,44 @@ ADD COLUMN avatar_url TEXT,
 		char_length(username) BETWEEN 1 AND 32
 	);
 
+CREATE TABLE public.urole_custom(
+	id UUID PRIMARY KEY,
+	FOREIGN KEY (id) REFERENCES public.urole (id) ON DELETE CASCADE,
+
+	-- profile who created this role, if any
+	profile_id UUID,
+	FOREIGN KEY (profile_id) REFERENCES public.profile (id) ON DELETE CASCADE,
+
+	role_name VARCHAR(32) NOT NULL UNIQUE,
+
+	is_hidden BOOLEAN NOT NULL DEFAULT FALSE
+);
+ALTER TABLE public.urole_custom ENABLE ROW LEVEL SECURITY;
+
+INSERT INTO public.urole_custom (id, profile_id, role_name)
+SELECT
+	id,
+	NULL AS profile_id,
+	role_name
+FROM
+	public.urole;
+
 ALTER TABLE public.urole
-ADD is_hidden BOOLEAN NOT NULL DEFAULT FALSE;
+	DROP COLUMN role_name;
+
+ALTER TABLE public.urole_profile
+	DROP CONSTRAINT urole_profile_urole_id_fkey,
+	ADD CONSTRAINT urole_profile_urole_id_fkey FOREIGN KEY (urole_id) REFERENCES urole_custom (id);
+
+-- this table represents an exclusive role assigned to each user when they sign up
+CREATE TABLE public.user_urole(
+	id UUID PRIMARY KEY,
+	FOREIGN KEY (id) REFERENCES public.urole (id) ON DELETE CASCADE,
+
+	profile_id UUID NOT NULL UNIQUE,
+	FOREIGN KEY (profile_id) REFERENCES public.profile (id) ON DELETE CASCADE
+);
+ALTER TABLE public.user_urole ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE public.utag
 ADD is_hidden BOOLEAN NOT NULL DEFAULT FALSE;
@@ -43,17 +79,33 @@ REVOKE
 UPDATE (forum_rating, wiki_rating) ON TABLE public.profile
 FROM authenticated;
 
-CREATE FUNCTION roles_for_uid(uid UUID) RETURNS TABLE (role_id UUID, role_name TEXT) LANGUAGE SQL SECURITY DEFINER
+CREATE FUNCTION roles_for_uid(uid UUID)
+RETURNS TABLE (role_id UUID, role_name TEXT, is_hidden BOOLEAN)
+LANGUAGE SQL SECURITY DEFINER
 SET row_security = OFF AS $$
-SELECT public.urole.id AS role_id,
-	public.urole.role_name
+SELECT
+	public.urole_custom.id AS role_id,
+	public.urole_custom.role_name,
+	public.urole_custom.is_hidden
 FROM public.urole_profile
-	JOIN public.urole on public.urole_profile.urole_id = public.urole.id
+	JOIN public.urole_custom on public.urole_profile.urole_id = public.urole_custom.id
 WHERE public.urole_profile.profile_id = uid
 UNION
-SELECT id AS role_id,
-	role_name
-FROM public.urole
+SELECT
+	id AS role_id,
+	NULL AS role_name,
+	false AS is_hidden
+FROM
+	public.user_urole
+WHERE
+	public.user_urole.profile_id = uid
+UNION
+SELECT
+	id AS role_id,
+	role_name,
+	is_hidden
+FROM
+	public.urole_custom
 WHERE role_name = 'everyone'
 	OR (
 		role_name = 'user'
@@ -72,6 +124,16 @@ $$ LANGUAGE SQL SECURITY DEFINER;
 
 CREATE POLICY "anon or auth can view roles"
 ON public.urole
+FOR SELECT TO authenticated, anon
+USING (true);
+
+CREATE POLICY "anon or auth can view custom roles"
+ON public.urole_custom
+FOR SELECT TO authenticated, anon
+USING (true);
+
+CREATE POLICY "anon or auth can view user roles"
+ON public.user_urole
 FOR SELECT TO authenticated, anon
 USING (true);
 
