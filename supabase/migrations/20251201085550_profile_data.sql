@@ -95,4 +95,7 @@ ON public.urole_permission
 FOR SELECT TO authenticated, anon
 USING (true);
 
+ALTER PUBLICATION supabase_realtime
+ADD TABLE public.profile;
+
 COMMIT;
