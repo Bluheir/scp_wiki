@@ -60,25 +60,6 @@ CREATE TABLE public.urole_permission(
 );
 ALTER TABLE public.urole_permission ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "anon can access profiles" ON public.profile FOR
-SELECT TO anon, authenticated
-USING (true);
-
-CREATE POLICY "users can update their own profile" ON public.profile FOR
-update TO authenticated USING (
-		id = (
-			SELECT auth.uid()
-		)
-	) WITH CHECK (
-		id = (
-			SELECT auth.uid()
-		)
-	);
-
-REVOKE
-UPDATE (forum_rating, wiki_rating) ON TABLE public.profile
-FROM authenticated;
-
 CREATE FUNCTION roles_for_uid(uid UUID)
 RETURNS TABLE (role_id UUID, role_name TEXT, is_hidden BOOLEAN)
 LANGUAGE SQL SECURITY DEFINER
@@ -121,6 +102,25 @@ SELECT EXISTS (
 		WHERE public.urole_permission.permission_name = permission_name
 	);
 $$ LANGUAGE SQL SECURITY DEFINER;
+
+CREATE POLICY "anon or auth can access profiles" ON public.profile FOR
+SELECT TO anon, authenticated
+USING (true);
+
+CREATE POLICY "users can update their own profile" ON public.profile FOR
+UPDATE TO authenticated USING (
+	id = (
+		SELECT auth.uid()
+	)
+) WITH CHECK (
+	id = (
+		SELECT auth.uid()
+	)
+);
+
+REVOKE
+UPDATE (forum_rating, wiki_rating) ON TABLE public.profile
+FROM authenticated;
 
 CREATE POLICY "anon or auth can view roles"
 ON public.urole
