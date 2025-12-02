@@ -22,6 +22,7 @@ export type SubTopic = {
 	readonly postAmount: number
 	readonly lastPoster: Author
 	title: string
+	url: string
 	description: string
 }
 
