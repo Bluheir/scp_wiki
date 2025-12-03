@@ -11,7 +11,15 @@ create table public.permission_action(
 );
 alter table public.permission_action enable row level security;
 
-create index permission_action_victim_id_idx on public.permission_action ((action_data#>>'{victim, id}'));
+create or replace function try_uuid(text) returns uuid as $$
+begin
+    return $1::uuid;
+exception when others then
+    return null;
+end;
+$$ language plpgsql immutable;
+
+create index permission_action_victim_id_idx on public.permission_action (try_uuid(action_data#>>'{victim, id}'));
 create index permission_action_role_id_idx on public.permission_action (role_id);
 
 create or replace view public.single_action
@@ -20,7 +28,7 @@ as select pa.*
 from (
 		select role_id,
 			action_type,
-			action_data#>>'{victim,id}' as victim_id,
+			try_uuid(action_data#>>'{victim,id}') as victim_id,
 			action_data#>>'{victim,type}' as victim_type
 		from public.permission_action
 	) pa
