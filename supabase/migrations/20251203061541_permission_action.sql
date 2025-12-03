@@ -34,7 +34,9 @@ from (
 	) pa
 	left join public.utag utag1 on pa.victim_id = utag1.id
 	left join public.urole urole1 on pa.victim_id = urole1.id
-where (
+where
+	pa.victim_type = 'self'
+	or (
 		pa.victim_type = 'tag'
 		and utag1.id is not null
 	)
