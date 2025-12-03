@@ -52,4 +52,13 @@ from (
 	) role on true
 	join public.urole_permission perm on perm.id = role.role_id
 group by profile.id, perm.permission_name;
+
+create policy "anon or auth can view permission actions"
+on public.permission_action
+for select to authenticated, anon
+using (true);
+
+alter publication supabase_realtime
+add table public.permission_action;
+
 commit;
