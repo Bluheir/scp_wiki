@@ -5,7 +5,7 @@ drop table public.urole_or_utag;
 
 create table public.permission_action(
 	role_id uuid not null,
-	foreign key (role_id) references public.urole (id),
+	foreign key (role_id) references public.urole (id) on delete cascade,
 	action_type varchar(32) not null,
 	action_data JSONB not null
 );
