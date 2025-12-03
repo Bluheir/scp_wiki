@@ -4,8 +4,8 @@ alter table utag drop constraint utag_id_fkey;
 drop table public.urole_or_utag;
 
 create table public.permission_action(
-	id uuid primary key,
-	foreign key (id) references public.urole (id),
+	role_id uuid not null,
+	foreign key (role_id) references public.urole (id),
 	action_type varchar(32) not null,
 	action_data JSONB not null
 );
@@ -14,7 +14,7 @@ alter table public.permission_action enable row level security;
 create or replace view public.single_action as
 select pa.*
 from (
-		select id,
+		select role_id,
 			action_type,
 			action_data#>>'{victim,id}' as victim_id,
 			action_data#>>'{victim,type}' as victim_type
