@@ -11,6 +11,9 @@ create table public.permission_action(
 );
 alter table public.permission_action enable row level security;
 
+create index permission_action_victim_id_idx on public.permission_action ((action_data#>>'{victim, id}'));
+create index permission_action_role_id_idx on public.permission_action (role_id);
+
 create or replace view public.single_action as
 select pa.*
 from (
