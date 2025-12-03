@@ -14,8 +14,9 @@ alter table public.permission_action enable row level security;
 create index permission_action_victim_id_idx on public.permission_action ((action_data#>>'{victim, id}'));
 create index permission_action_role_id_idx on public.permission_action (role_id);
 
-create or replace view public.single_action as
-select pa.*
+create or replace view public.single_action
+with(security_invoker = true)
+as select pa.*
 from (
 		select role_id,
 			action_type,
@@ -35,8 +36,9 @@ where (
 	);
 
 -- a view returning all the simple permissions for a user
-create or replace view public.user_simple_permission as
-select profile.id,
+create or replace view public.user_simple_permission
+with(security_invoker = true)
+as select profile.id,
 	perm.permission_name
 from (
 		select id
