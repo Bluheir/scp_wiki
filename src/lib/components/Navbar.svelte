@@ -176,9 +176,9 @@
 			</NavigationMenu.Root>
 		</div>
 		<a href="/" class="navbar-center flex items-center gap-4 select-none">
-			<SCPEmblem class="h-24" />
+			<SCPEmblem class="h-20" />
 			<div>
-				<div class="font-bauhaus text-4xl">SCP Foundation</div>
+				<div class="font-bauhaus text-3xl">SCP Foundation</div>
 				<div class="font-mono">Secure, Contain, Protect</div>
 			</div>
 		</a>
