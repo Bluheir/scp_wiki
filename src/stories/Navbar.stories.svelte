@@ -14,8 +14,6 @@
 	})
 </script>
 
-<Story name="Signed out Navbar" args={{}} />
-
 <Story
 	name="Signed in Navbar"
 	args={{
@@ -24,3 +22,5 @@
 		username: "HumanBeing123"
 	}}
 />
+<Story name="Signed out Navbar" args={{}} />
+
