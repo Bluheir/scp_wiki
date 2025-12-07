@@ -101,12 +101,12 @@
 							<div class="w-150 p-4">
 								<div class="text-xl font-bold p-4 select-none">Community</div>
 								<ul
-									class="m-0 grid list-none gap-x-2.5 grid-cols-2 sm:grid-rows-3 bg-base-200"
+									class="m-0 grid list-none gap-x-2.5 gap-y-2.5 grid-cols-2 grid-rows-2 bg-base-200 justify-items-stretch"
 								>
 									{#each forumLinks as link}
-										<li>
+										<li class="contents">
 											<NavigationMenu.Link
-												class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10"
+												class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10 hover:border-primary"
 												href={link.href}
 											>
 												<div class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</div>
@@ -130,10 +130,10 @@
 							<div class="w-150 p-4">
 								<div class="text-xl font-bold p-4 select-none">Wiki</div>
 								<ul
-									class="m-0 grid gap-x-2.5 gap-y-5 grid-cols-2 grid-rows-3 bg-base-200"
+									class="m-0 grid gap-2.5 grid-cols-2 grid-rows-3 bg-base-200"
 								>
-									<li class="row-span-3 border border-base-content/10 rounded-box">
-										<div class="p-4 hover:bg-base-300 rounded-box transition">
+									<li class="contents">
+										<div class="row-span-3 border border-base-content/10 rounded-box hover:border-primary transition p-4 hover:bg-base-300">
 											<div class="font-medium leading-none select-none">SCP by series</div>
 											<ol class="text-base-content/50 text-sm list-disc ms-4">
 												{#each [1,2,3,4,5,6,7,8,9,10] as serie}
@@ -143,9 +143,9 @@
 										</div>
 									</li>
 									{#each wikiLinks as link}
-										<li>
+										<li class="contents">
 											<NavigationMenu.Link
-												class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10"
+												class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10 hover:border-primary"
 												href={link.href}
 											>
 												<div class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</div>
@@ -165,9 +165,9 @@
 						>
 					</NavigationMenu.Item>
 				</NavigationMenu.List>
-				<div class="absolute top-full left-0 flex w-full justify-center perspective-[2000px]">
+				<div class="absolute top-full left-0 flex w-150 justify-center perspective-[2000px]">
 					<NavigationMenu.Viewport
-						class="text-popover-foreground bg-base-200 data-[state=closed]:animate-scale-out data-[state=open]:animate-scale-in relative mt-2.5 h-(--bits-navigation-menu-viewport-height) w-full origin-[top_center] overflow-hidden rounded-md border border-base-content/10 shadow-2xl shadow-primary transition-[width,height] duration-200 sm:w-(--bits-navigation-menu-viewport-width) "
+						class="text-popover-foreground bg-base-200 data-[state=closed]:animate-scale-out data-[state=open]:animate-scale-in relative mt-2.5 h-(--bits-navigation-menu-viewport-height) origin-[top_center] overflow-hidden rounded-md border border-base-content/10 shadow-2xl shadow-primary transition-[width,height] duration-200 w-150"
 					/>
 				</div>
 			</NavigationMenu.Root>
