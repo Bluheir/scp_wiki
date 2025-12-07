@@ -83,7 +83,7 @@
 </script>
 
 <div class="rounded-b-box p-2">
-	<div
+	<nav
 		class="navbar sticky top-0 rounded-box border-b border-base-content/10 bg-base-200 px-4 shadow-lg shadow-primary transition"
 	>
 		<div class="navbar-start">
@@ -183,5 +183,5 @@
 			<a href="/login" class="btn btn-outline btn-sm btn-primary">Login</a>
 			<a href="/register" class="btn btn-outline btn-sm btn-secondary">Register</a>
 		</div>
-	</div>
+	</nav>
 </div>
