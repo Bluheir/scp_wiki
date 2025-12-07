@@ -1,13 +1,13 @@
 <script lang="ts">
 	import SCPEmblem from "$lib/icons/SCPEmblem.svelte"
-	import { NavigationMenu } from "bits-ui"
+	import { Avatar, NavigationMenu } from "bits-ui"
 	import { ChevronDown, Earth, Newspaper, Search } from "lucide-svelte"
 
 	const { user }: {
 		user?: {
 			id: string
 			username: string
-			avatarUrl: string
+			avatarUrl?: string
 		}
 	} = $props()
 
@@ -180,8 +180,25 @@
 			</div>
 		</a>
 		<div class="navbar-end flex h-full! items-start gap-2">
-			<a href="/login" class="btn btn-outline btn-sm btn-primary">Login</a>
-			<a href="/register" class="btn btn-outline btn-sm btn-secondary">Register</a>
+			{#if !user}
+				<a href="/login" class="btn btn-outline btn-sm btn-primary">Login</a>
+				<a href="/register" class="btn btn-outline btn-sm btn-secondary">Register</a>
+			{:else}
+				<a href="/profile/{user.id}" class="flex items-center gap-2">
+					<Avatar.Root class="avatar">
+						<div class="w-8 rounded-full">
+							<Avatar.Image src={user.avatarUrl} />
+							<Avatar.Fallback
+								class="flex h-full items-center justify-center rounded-box border border-base-content/10 bg-base-200 select-none"
+								>{user.username[0]}</Avatar.Fallback
+							>
+						</div>
+					</Avatar.Root>
+					<div class="text-xs">
+						{user.username}
+					</div>
+				</a>
+			{/if}
 		</div>
 	</nav>
 </div>
