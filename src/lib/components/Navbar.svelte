@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SCPEmblem from "$lib/icons/SCPEmblem.svelte"
+	import { m } from "$lib/paraglide/messages"
 	import { Avatar, NavigationMenu } from "bits-ui"
 	import { ChevronDown, Earth, Newspaper, Search } from "lucide-svelte"
 
@@ -17,6 +18,8 @@
 		description: string
 	}
 
+	// TODO: in the future, allow forumLinks and wikiLinks to be passed in from the backend so that
+	// multiple translations can be passed in and administrators can change the wiki links in the navbar
 	const forumLinks: Link[] = [
 		{
 			href: "/forum",
@@ -91,7 +94,7 @@
 				<NavigationMenu.List class="navbar gap-1">
 					<NavigationMenu.Item value="community">
 						<NavigationMenu.Trigger class="btn cursor-default btn-ghost btn-sm"
-							><Newspaper class="w-[1em]" />Community<ChevronDown
+							><Newspaper class="w-[1em]" />{m.navbar_community()}<ChevronDown
 								class="w-[1em]"
 							/></NavigationMenu.Trigger
 						>
@@ -99,7 +102,7 @@
 							class="data-[motion=from-end]:animate-enter-from-right data-[motion=from-start]:animate-enter-from-left data-[motion=to-end]:animate-exit-to-right data-[motion=to-start]:animate-exit-to-left absolute top-0 left-0 w-full sm:w-auto"
 						>
 							<div class="w-150 p-4">
-								<div class="text-xl font-bold p-4 select-none">Community</div>
+								<div class="text-xl font-bold p-4 select-none">{m.navbar_community()}</div>
 								<ul
 									class="m-0 grid list-none gap-x-2.5 gap-y-2.5 grid-cols-2 grid-rows-2 bg-base-200 justify-items-stretch"
 								>
@@ -123,21 +126,21 @@
 					<NavigationMenu.Item value="wiki">
 						<NavigationMenu.Trigger class="btn cursor-default btn-ghost btn-sm">
 							<Earth class="w-[1em]" />
-							Wiki
+							{m.navbar_wiki()}
 							<ChevronDown class="w-[1em]" />
 						</NavigationMenu.Trigger>
 						<NavigationMenu.Content class="data-[motion=from-end]:animate-enter-from-right data-[motion=from-start]:animate-enter-from-left data-[motion=to-end]:animate-exit-to-right data-[motion=to-start]:animate-exit-to-left absolute top-0 left-0 w-full sm:w-auto">
 							<div class="w-150 p-4">
-								<div class="text-xl font-bold p-4 select-none">Wiki</div>
+								<div class="text-xl font-bold p-4 select-none">{m.navbar_wiki()}</div>
 								<ul
 									class="m-0 grid gap-2.5 grid-cols-2 grid-rows-3 bg-base-200"
 								>
 									<li class="contents">
 										<div class="row-span-3 border border-base-content/10 rounded-box hover:border-primary transition p-4 hover:bg-base-300">
-											<div class="font-medium leading-none select-none">SCP by series</div>
+											<div class="font-medium leading-none select-none">{m.navbar_scpBySeries()}</div>
 											<ol class="text-base-content/50 text-sm list-disc ms-4">
 												{#each [1,2,3,4,5,6,7,8,9,10] as serie}
-													<li class="my-1"><a href="/series/{serie}">Series {toRomanNumeral(serie)}</a></li>
+													<li class="my-1"><a href="/series/{serie}">{m.navbar_seriesN({ series: toRomanNumeral(serie) })}</a></li>
 												{/each}
 											</ol>
 										</div>
@@ -161,7 +164,7 @@
 					</NavigationMenu.Item>
 					<NavigationMenu.Item value="search">
 						<NavigationMenu.Link class="btn cursor-default btn-ghost btn-sm" href="/search"
-							><Search class="w-[1em]" />Search</NavigationMenu.Link
+							><Search class="w-[1em]" />{m.navbar_search()}</NavigationMenu.Link
 						>
 					</NavigationMenu.Item>
 				</NavigationMenu.List>
@@ -181,8 +184,8 @@
 		</a>
 		<div class="navbar-end flex h-full! items-start gap-2">
 			{#if !user}
-				<a href="/login" class="btn btn-outline btn-sm btn-primary">Login</a>
-				<a href="/register" class="btn btn-outline btn-sm btn-secondary">Register</a>
+				<a href="/login" class="btn btn-outline btn-sm btn-primary">{m.login_signIn()}</a>
+				<a href="/register" class="btn btn-outline btn-sm btn-secondary">{m.register_register()}</a>
 			{:else}
 				<a href="/profile/{user.id}" class="flex items-center gap-2">
 					<Avatar.Root class="avatar">

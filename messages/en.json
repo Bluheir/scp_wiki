@@ -27,5 +27,11 @@
 	"forum_post_edit": "Edit",
 	"forum_post_delete": "Delete",
 	"forum_post_upvote": "Upvote",
-	"forum_post_downvote": "Downvote"
+	"forum_post_downvote": "Downvote",
+
+	"navbar_community": "Community",
+	"navbar_wiki": "Wiki",
+	"navbar_search": "Search",
+	"navbar_scpBySeries": "SCP by series",
+	"navbar_seriesN": "Series {series}"
 }
