@@ -4,6 +4,7 @@ alter table utag drop constraint utag_id_fkey;
 drop table public.urole_or_utag;
 
 create table public.permission_action(
+	id uuid primary key,
 	role_id uuid not null,
 	foreign key (role_id) references public.urole (id) on delete cascade,
 	action_type varchar(32) not null,
