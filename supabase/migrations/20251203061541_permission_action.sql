@@ -1,0 +1,75 @@
+begin;
+alter table urole drop constraint urole_id_fkey;
+alter table utag drop constraint utag_id_fkey;
+drop table public.urole_or_utag;
+
+create table public.permission_action(
+	id uuid primary key,
+	role_id uuid not null,
+	foreign key (role_id) references public.urole (id) on delete cascade,
+	action_type varchar(32) not null,
+	action_data JSONB not null
+);
+alter table public.permission_action enable row level security;
+
+create or replace function try_uuid(text) returns uuid as $$
+begin
+    return $1::uuid;
+exception when others then
+    return null;
+end;
+$$ language plpgsql immutable;
+
+create index permission_action_victim_id_idx on public.permission_action (try_uuid(action_data#>>'{victim, id}'));
+create index permission_action_role_id_idx on public.permission_action (role_id);
+
+create or replace view public.single_action
+with(security_invoker = true)
+as select pa.*
+from (
+		select role_id,
+			action_type,
+			try_uuid(action_data#>>'{victim,id}') as victim_id,
+			action_data#>>'{victim,type}' as victim_type
+		from public.permission_action
+	) pa
+	left join public.utag utag1 on pa.victim_id = utag1.id
+	left join public.urole urole1 on pa.victim_id = urole1.id
+where
+	pa.victim_type = 'self'
+	or (
+		pa.victim_type = 'tag'
+		and utag1.id is not null
+	)
+	or (
+		pa.victim_type = 'role'
+		and urole1.id is not null
+	);
+
+-- a view returning all the simple permissions for a user
+create or replace view public.user_simple_permission
+with(security_invoker = true)
+as select profile.id,
+	perm.permission_name
+from (
+		select id
+		from public.profile
+		union all
+		select null
+	) profile
+	join lateral (
+		select *
+		from public.roles_for_uid(profile.id)
+	) role on true
+	join public.urole_permission perm on perm.id = role.role_id
+group by profile.id, perm.permission_name;
+
+create policy "anon or auth can view permission actions"
+on public.permission_action
+for select to authenticated, anon
+using (true);
+
+alter publication supabase_realtime
+add table public.permission_action;
+
+commit;
