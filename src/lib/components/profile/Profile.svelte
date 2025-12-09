@@ -75,7 +75,7 @@
 	</table>
 	<div>
 		<h3>{m.profile_biography()}</h3>
-		<p class="rounded-box">
+		<p>
 			{profile.biography}
 		</p>
 	</div>
