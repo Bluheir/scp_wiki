@@ -6,7 +6,7 @@
 	let { profile, readonly = true }: { profile: Profile; readonly?: boolean } = $props()
 </script>
 
-<div class="prose max-w-[unset] prose-h2:my-0 prose-img:my-0 prose-h3:mt-4">
+<div class="prose max-w-[unset] prose-h2:my-0 prose-h3:mt-4 prose-img:my-0">
 	<div class="flex items-center gap-4">
 		<Avatar.Root class="avatar">
 			<div class="w-15 rounded-box">
@@ -22,11 +22,9 @@
 				<Tooltip.Trigger class="select-all">
 					<h2>{profile.username}</h2>
 				</Tooltip.Trigger>
-				<Tooltip.Content
-					sideOffset={8}
-				>
+				<Tooltip.Content sideOffset={8}>
 					<div
-						class="rounded-box border-base-content/10 bg-base-200 shadow-popover z-0 flex items-center justify-center border p-2 text-sm font-medium outline-hidden"
+						class="shadow-popover z-0 flex items-center justify-center rounded-box border border-base-content/10 bg-base-200 p-2 text-sm font-medium outline-hidden"
 					>
 						{m.profile_username()}
 					</div>
@@ -36,11 +34,9 @@
 				<Tooltip.Trigger class="select-all">
 					{profile.pronouns}
 				</Tooltip.Trigger>
-				<Tooltip.Content
-					sideOffset={8}
-				>
+				<Tooltip.Content sideOffset={8}>
 					<div
-						class="rounded-box border-base-content/10 bg-base-200 shadow-popover z-0 flex items-center justify-center border p-2 text-sm font-medium outline-hidden"
+						class="shadow-popover z-0 flex items-center justify-center rounded-box border border-base-content/10 bg-base-200 p-2 text-sm font-medium outline-hidden"
 					>
 						Pronouns
 					</div>
@@ -48,13 +44,11 @@
 			</Tooltip.Root>
 			<Tooltip.Root delayDuration={200}>
 				<Tooltip.Trigger class="select-all">
-					<div class="bg-base-200 rounded-box px-2">{profile.createdAt.toLocaleDateString()}</div>
+					<div class="rounded-box bg-base-200 px-2">{profile.createdAt.toLocaleDateString()}</div>
 				</Tooltip.Trigger>
-				<Tooltip.Content
-					sideOffset={8}
-				>
+				<Tooltip.Content sideOffset={8}>
 					<div
-						class="rounded-box border-base-content/10 bg-base-200 shadow-popover z-0 flex items-center justify-center border p-2 text-sm font-medium outline-hidden"
+						class="shadow-popover z-0 flex items-center justify-center rounded-box border border-base-content/10 bg-base-200 p-2 text-sm font-medium outline-hidden"
 					>
 						{m.profile_joined()}
 					</div>

@@ -12,7 +12,9 @@
 	} = $props()
 </script>
 
-<ProfileC profile={{
-	...profile,
-	createdAt: new Date(profile.createdAt)
-}} />
+<ProfileC
+	profile={{
+		...profile,
+		createdAt: new Date(profile.createdAt)
+	}}
+/>
