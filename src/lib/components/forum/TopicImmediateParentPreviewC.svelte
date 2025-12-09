@@ -12,10 +12,10 @@
     </div>
     <!-- Header Row - Reduced padding and consistent vertical alignment -->
     <div class="flex bg-base-content/10 gap-2">
-        <div class="flex-1 py-3 px-5 font-bold flex items-center">Category Name</div>
-        <div class="flex-1 py-3 px-5 font-bold text-center flex items-center justify-center">Threads</div>
+        <div class="flex-1 py-3 px-5 font-bold flex items-center">Thread name</div>
+        <div class="flex-1 py-3 px-5 font-bold text-center flex items-center justify-center">Started</div>
         <div class="flex-1 py-3 px-5 font-bold text-center flex items-center justify-center">Posts</div>
-        <div class="flex-1 py-3 px-5 font-bold text-center flex items-center justify-center">Last</div>
+        <div class="flex-1 py-3 px-5 font-bold text-center flex items-center justify-center">Recent post</div>
     </div>
     
     <!-- Content Rows -->

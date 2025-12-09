@@ -5,6 +5,7 @@ export type ImmediateParentTopic = {
 	title: string
 	description: string
     readonly type: "immediateParent"
+	url: string
 	children: PostPreview[]
 }
 
@@ -33,6 +34,7 @@ export type PostPreview = {
 	readonly repliesAmount: number
 	title: string
 	preview: string
+	timestamp: number
 }
 
 export type Author = {
