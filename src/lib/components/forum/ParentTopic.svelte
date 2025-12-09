@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Avatar } from "bits-ui"
 	import type { ParentTopic } from "./types"
+	import { m } from "$lib/paraglide/messages"
+
 	const { topic }: { topic: ParentTopic } = $props()
 	const children = $derived(topic.children)
 </script>
@@ -11,10 +13,10 @@
 		<p>{topic.description}</p>
 	</div>
 	<div class="grid grid-cols-4 gap-1 rounded-box shadow-xl">
-		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">Topic</div>
-		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">Thread Amount</div>
-		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">Post Amount</div>
-		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">Last Poster</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">{m.topic_parent_topic()}</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">{m.topic_parent_threadAmount()}</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">{m.topic_parent_postAmount()}</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">{m.topic_parent_lastPoster()}</div>
 		{#each children as childTopic}
 			<div
 				class="flex flex-1 flex-col justify-center rounded-md bg-base-200 px-5 py-3"

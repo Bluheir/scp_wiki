@@ -8,5 +8,10 @@
 	"auth_passwordDescription": "Account password",
 	"login_signIn": "Sign in",
 	"auth_invalidEmail": "Invalid email address",
-	"auth_invalidPassword": "A password has between 1 and 255 characters"
+	"auth_invalidPassword": "A password has between 1 and 255 characters",
+
+	"topic_parent_topic": "Topic",
+	"topic_parent_threadAmount": "Thread Amount",
+	"topic_parent_postAmount": "Post Amount",
+	"topic_parent_lastPoster": "Last Poster"
 }
