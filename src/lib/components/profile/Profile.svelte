@@ -5,7 +5,7 @@
 	let { profile, readonly = true }: { profile: Profile; readonly?: boolean } = $props()
 </script>
 
-<div class="prose max-w-[unset] prose-h2:my-0 prose-h3:mt-4">
+<div class="prose max-w-[unset] prose-h2:my-0 prose-img:my-0 prose-h3:mt-4">
 	<div class="flex items-center gap-4">
 		<Avatar.Root class="avatar">
 			<div class="w-15 rounded-box">
