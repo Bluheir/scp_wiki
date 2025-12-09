@@ -5,57 +5,50 @@
 	const children = $derived(topic.children)
 </script>
 
-<div>
-	<div class="border border-base-content/10 bg-primary p-4">
-		<h2 class="text-xl font-bold">{topic.title}</h2>
+<div class="p-4 border border-base-content/10 rounded-box text-xs">
+	<div class="mb-4">
+		<h2 class="text-base font-bold">{topic.title}</h2>
 		<p>{topic.description}</p>
 	</div>
-	<!-- Header Row - Reduced padding and consistent vertical alignment -->
-	<div class="flex gap-2 bg-base-content/10">
-		<div class="flex flex-1 items-center px-5 py-3 font-bold">Category Name</div>
-		<div class="flex flex-1 items-center justify-center px-5 py-3 text-center font-bold">
-			Threads
-		</div>
-		<div class="flex flex-1 items-center justify-center px-5 py-3 text-center font-bold">Posts</div>
-		<div class="flex flex-1 items-center justify-center px-5 py-3 text-center font-bold">Last</div>
-	</div>
-
-	<!-- Content Rows -->
-	{#each children as childTopic}
-		<div class="flex gap-2 bg-base-content/15 p-1">
+	<div class="grid grid-cols-4 gap-1 rounded-box shadow-xl">
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">Topic</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">Thread Amount</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">Post Amount</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">Last Poster</div>
+		{#each children as childTopic}
 			<div
-				class="flex flex-1 flex-col justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3"
+				class="flex flex-1 flex-col justify-center rounded-md bg-base-200 px-5 py-3"
 			>
-				<a href="/topic/{childTopic.id}" class="font-bold hover:underline">{childTopic.title}</a>
+				<a href="/topic/{childTopic.id}" class="font-bold">{childTopic.title}</a>
 				<div class="mt-1 text-sm">{childTopic.description}</div>
 			</div>
 			<div
-				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3 text-center"
+				class="flex flex-1 items-center justify-center rounded-md bg-base-200 text-center"
 			>
 				{childTopic.threadAmount}
 			</div>
 			<div
-				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3 text-center"
+				class="flex flex-1 items-center justify-center rounded-md bg-base-200 text-center"
 			>
 				{childTopic.postAmount}
 			</div>
 			<div
-				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3"
+				class="flex flex-1 items-center justify-center rounded-md bg-base-200 px-4"
 			>
-				<div class="flex items-center gap-1">
-					<div>by</div>
+				<a href="/profile/{childTopic.lastPoster.id}" class="flex items-center justify-center gap-2 w-full">
 					<Avatar.Root class="avatar">
-						<div class="w-5 rounded-box">
+						<div class="w-6 rounded-box">
 							<Avatar.Image src={childTopic.lastPoster.profileSrc} />
 							<Avatar.Fallback
 								class="flex h-full items-center justify-center rounded-box border border-base-content/10 bg-base-200 select-none"
-								>{childTopic.lastPoster.username}</Avatar.Fallback
+								>{childTopic.lastPoster.username[0]}</Avatar.Fallback
 							>
 						</div>
 					</Avatar.Root>
-					<div>{childTopic.lastPoster.username}</div>
-				</div>
+					<div class="overflow-hidden text-ellipsis whitespace-nowrap">{childTopic.lastPoster.username}</div>
+				</a>
 			</div>
-		</div>
-	{/each}
+			
+		{/each}
+	</div>
 </div>
