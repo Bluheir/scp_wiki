@@ -1,20 +1,20 @@
 export type Topic = ImmediateParentTopic | ParentTopic
 
 export type ImmediateParentTopic = {
-    readonly id: string
+	readonly id: string
 	title: string
 	description: string
-    readonly type: "immediateParent"
+	readonly type: "immediateParent"
 	url: string
 	children: PostPreview[]
 }
 
 export type ParentTopic = {
-    readonly id: string
+	readonly id: string
 	title: string
 	description: string
-    readonly type: "parent"
-    children: ChildTopic[]
+	readonly type: "parent"
+	children: ChildTopic[]
 }
 
 export type ChildTopic = {
