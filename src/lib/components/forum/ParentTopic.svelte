@@ -21,23 +21,23 @@
 	</div>
 
 	<!-- Content Rows -->
-	{#each children as post}
+	{#each children as childTopic}
 		<div class="flex gap-2 bg-base-content/15 p-1">
 			<div
 				class="flex flex-1 flex-col justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3"
 			>
-				<a href={post.url} class="font-bold hover:underline">{post.title}</a>
-				<div class="mt-1 text-sm">{post.description}</div>
+				<a href="/topic/{childTopic.id}" class="font-bold hover:underline">{childTopic.title}</a>
+				<div class="mt-1 text-sm">{childTopic.description}</div>
 			</div>
 			<div
 				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3 text-center"
 			>
-				{post.threadAmount}
+				{childTopic.threadAmount}
 			</div>
 			<div
 				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3 text-center"
 			>
-				{post.postAmount}
+				{childTopic.postAmount}
 			</div>
 			<div
 				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3"
@@ -46,14 +46,14 @@
 					<div>by</div>
 					<Avatar.Root class="avatar">
 						<div class="w-5 rounded-box">
-							<Avatar.Image src={post.lastPoster.profileSrc} />
+							<Avatar.Image src={childTopic.lastPoster.profileSrc} />
 							<Avatar.Fallback
 								class="flex h-full items-center justify-center rounded-box border border-base-content/10 bg-base-200 select-none"
-								>{post.lastPoster.username}</Avatar.Fallback
+								>{childTopic.lastPoster.username}</Avatar.Fallback
 							>
 						</div>
 					</Avatar.Root>
-					<div>{post.lastPoster.username}</div>
+					<div>{childTopic.lastPoster.username}</div>
 				</div>
 			</div>
 		</div>
