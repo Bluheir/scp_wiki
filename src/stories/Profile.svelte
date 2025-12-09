@@ -2,7 +2,7 @@
 	import type { Profile } from "$lib/components/profile/profile"
 	import ProfileC from "$lib/components/profile/Profile.svelte"
 
-	const profile: {
+	const props: {
 		id: Profile["id"]
 		username: Profile["username"]
 		avatarUrl: Profile["avatarUrl"]
@@ -11,12 +11,14 @@
 		forumRating: Profile["forumRating"]
 		wikiRating: Profile["wikiRating"]
 		createdAt: number
+		readonly: boolean
 	} = $props()
 </script>
 
 <ProfileC
 	profile={{
-		...profile,
-		createdAt: new Date(profile.createdAt)
+		...props,
+		createdAt: new Date(props.createdAt)
 	}}
+	readonly={props.readonly}
 />
