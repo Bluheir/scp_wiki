@@ -4,4 +4,5 @@ export type Profile = {
 	readonly biography: string
 	readonly pronouns: string
 	readonly avatarUrl?: string
+	readonly createdAt: Date
 }

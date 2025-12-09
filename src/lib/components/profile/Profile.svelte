@@ -45,6 +45,20 @@
 					</div>
 				</Tooltip.Content>
 			</Tooltip.Root>
+			<Tooltip.Root delayDuration={200}>
+				<Tooltip.Trigger class="select-all">
+					<div class="bg-base-200 rounded-box px-2">{profile.createdAt.toLocaleDateString()}</div>
+				</Tooltip.Trigger>
+				<Tooltip.Content
+					sideOffset={8}
+				>
+					<div
+						class="rounded-box border-base-content/10 bg-base-200 shadow-popover z-0 flex items-center justify-center border p-2 text-sm font-medium outline-hidden"
+					>
+						Joined
+					</div>
+				</Tooltip.Content>
+			</Tooltip.Root>
 		</Tooltip.Provider>
 	</div>
 	<div class="mx-2">
