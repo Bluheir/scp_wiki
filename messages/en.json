@@ -33,5 +33,10 @@
 	"navbar_wiki": "Wiki",
 	"navbar_search": "Search",
 	"navbar_scpBySeries": "SCP by series",
-	"navbar_seriesN": "Series {series}"
+	"navbar_seriesN": "Series {series}",
+
+	"profile_pronouns": "Pronouns",
+	"profile_username": "Username",
+	"profile_biography": "Biography",
+	"profile_joined": "Joined"
 }

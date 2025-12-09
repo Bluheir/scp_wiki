@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Avatar, Tooltip } from "bits-ui"
 	import type { Profile } from "./profile"
+	import { m } from "$lib/paraglide/messages"
 
 	let { profile, readonly = true }: { profile: Profile; readonly?: boolean } = $props()
 </script>
@@ -27,7 +28,7 @@
 					<div
 						class="rounded-box border-base-content/10 bg-base-200 shadow-popover z-0 flex items-center justify-center border p-2 text-sm font-medium outline-hidden"
 					>
-						Username
+						{m.profile_username()}
 					</div>
 				</Tooltip.Content>
 			</Tooltip.Root>
@@ -55,14 +56,14 @@
 					<div
 						class="rounded-box border-base-content/10 bg-base-200 shadow-popover z-0 flex items-center justify-center border p-2 text-sm font-medium outline-hidden"
 					>
-						Joined
+						{m.profile_joined()}
 					</div>
 				</Tooltip.Content>
 			</Tooltip.Root>
 		</Tooltip.Provider>
 	</div>
 	<div class="mx-2">
-		<h3>Biography</h3>
+		<h3>{m.profile_biography()}</h3>
 		<p class="rounded-box">
 			{profile.biography}
 		</p>
