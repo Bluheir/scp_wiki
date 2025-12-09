@@ -7,7 +7,7 @@
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
 </script>
 
-<div class="prose max-w-[unset] prose-h2:my-0 prose-h3:mt-4 prose-table:my-4 prose-img:my-0">
+<div class="prose max-w-[unset] prose-h2:my-0 prose-h3:mt-4 prose-table:my-4 prose-table:text-base-content prose-table:text-base prose-img:my-0">
 	<div class="flex items-center gap-4">
 		<Avatar.Root class="avatar">
 			<div class="w-15 rounded-box">
@@ -57,7 +57,7 @@
 			</Tooltip.Root>
 		</Tooltip.Provider>
 	</div>
-	<table class="text-base-content">
+	<table>
 		<thead>
 			<tr>
 				<th>{m.profile_forumRating()}</th>
