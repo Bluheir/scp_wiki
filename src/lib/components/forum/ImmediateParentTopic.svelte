@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Avatar } from "bits-ui"
-	import type { ParentTopic, SubTopic } from "./types"
+	import type { ParentTopic } from "./types"
 	const { topic }: { topic: ParentTopic } = $props()
-	const children: SubTopic[] = $derived(topic.children)
+	const children = $derived(topic.children)
 </script>
 
 <div>

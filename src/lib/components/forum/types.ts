@@ -14,10 +14,10 @@ export type ParentTopic = {
 	title: string
 	description: string
     readonly type: "parent"
-    children: SubTopic[]
+    children: ChildTopic[]
 }
 
-export type SubTopic = {
+export type ChildTopic = {
 	readonly id: string
 	readonly threadAmount: number
 	readonly postAmount: number
