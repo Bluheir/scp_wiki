@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Avatar } from "bits-ui"
-	import type { ParentTopic } from "./types"
-	const { topic }: { topic: ParentTopic } = $props()
+	import type { ImmediateParentTopic } from "./types"
+	const { topic }: { topic: ImmediateParentTopic } = $props()
 	const children = $derived(topic.children)
 </script>
 
@@ -28,18 +28,13 @@
 			<div
 				class="flex flex-1 flex-col justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3"
 			>
-				<a href={post.url} class="font-bold hover:underline">{post.title}</a>
-				<div class="mt-1 text-sm">{post.description}</div>
+				<a href="/posts/{post.id}" class="font-bold hover:underline">{post.title}</a>
+				<div class="mt-1 text-sm">{post.preview}</div>
 			</div>
 			<div
 				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3 text-center"
 			>
-				{post.threadAmount}
-			</div>
-			<div
-				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3 text-center"
-			>
-				{post.postAmount}
+				{post.repliesAmount}
 			</div>
 			<div
 				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3"
@@ -48,14 +43,14 @@
 					<div>by</div>
 					<Avatar.Root class="avatar">
 						<div class="w-5 rounded-box">
-							<Avatar.Image src={post.lastPoster.profileSrc} />
+							<Avatar.Image src={post.lastReply.profileSrc} />
 							<Avatar.Fallback
 								class="flex h-full items-center justify-center rounded-box border border-base-content/10 bg-base-200 select-none"
-								>{post.lastPoster.username}</Avatar.Fallback
+								>{post.lastReply.username}</Avatar.Fallback
 							>
 						</div>
 					</Avatar.Root>
-					<div>{post.lastPoster.username}</div>
+					<div>{post.lastReply.username}</div>
 				</div>
 			</div>
 		</div>
