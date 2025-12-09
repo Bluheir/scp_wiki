@@ -4,9 +4,10 @@
 	import { m } from "$lib/paraglide/messages"
 
 	let { profile, readonly = true }: { profile: Profile; readonly?: boolean } = $props()
+	const totalRating = $derived(profile.wikiRating + profile.forumRating)
 </script>
 
-<div class="prose max-w-[unset] prose-h2:my-0 prose-h3:mt-4 prose-img:my-0">
+<div class="prose max-w-[unset] prose-h2:my-0 prose-h3:mt-4 prose-table:my-4 prose-img:my-0">
 	<div class="flex items-center gap-4">
 		<Avatar.Root class="avatar">
 			<div class="w-15 rounded-box">
@@ -56,7 +57,23 @@
 			</Tooltip.Root>
 		</Tooltip.Provider>
 	</div>
-	<div class="mx-2">
+	<table class="text-base-content">
+		<thead>
+			<tr>
+				<th>{m.profile_forumRating()}</th>
+				<th>{m.profile_wikiRating()}</th>
+				<th>{m.profile_totalRating()}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>{profile.forumRating}</td>
+				<td>{profile.wikiRating}</td>
+				<td>{totalRating}</td>
+			</tr>
+		</tbody>
+	</table>
+	<div>
 		<h3>{m.profile_biography()}</h3>
 		<p class="rounded-box">
 			{profile.biography}

@@ -5,4 +5,6 @@ export type Profile = {
 	readonly pronouns: string
 	readonly avatarUrl?: string
 	readonly createdAt: Date
+	readonly forumRating: number
+	readonly wikiRating: number
 }

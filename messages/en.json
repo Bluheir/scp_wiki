@@ -38,5 +38,8 @@
 	"profile_pronouns": "Pronouns",
 	"profile_username": "Username",
 	"profile_biography": "Biography",
-	"profile_joined": "Joined"
+	"profile_joined": "Joined",
+	"profile_forumRating": "Forum Rating",
+	"profile_wikiRating": "Wiki Rating",
+	"profile_totalRating": "Total Rating"
 }

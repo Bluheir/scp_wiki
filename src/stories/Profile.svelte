@@ -8,6 +8,8 @@
 		avatarUrl: Profile["avatarUrl"]
 		biography: Profile["biography"]
 		pronouns: Profile["pronouns"]
+		forumRating: Profile["forumRating"]
+		wikiRating: Profile["wikiRating"]
 		createdAt: number
 	} = $props()
 </script>
