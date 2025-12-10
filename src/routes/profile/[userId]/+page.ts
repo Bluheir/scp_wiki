@@ -7,7 +7,7 @@ export const load: PageLoad = async ({ parent, params }) => {
 
 	const { data } = await supabase
 		.from("profile")
-		.select("id,username,avatar_url,pronouns,biography,forum_rating,wiki_rating")
+		.select("id,username,avatar_url,pronouns,biography,forum_rating,wiki_rating,created_at")
 		.eq("id", params.userId)
 		.single()
 
@@ -23,7 +23,7 @@ export const load: PageLoad = async ({ parent, params }) => {
 		biography: data.biography,
 		forumRating: data.forum_rating,
 		wikiRating: data.wiki_rating,
-		createdAt: new Date()
+		createdAt: new Date(Date.parse(data.created_at))
 	}
 
 	return { supabase, profile }
