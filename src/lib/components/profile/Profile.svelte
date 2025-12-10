@@ -38,7 +38,7 @@
 					<div
 						class="shadow-popover z-0 flex items-center justify-center rounded-box border border-base-content/10 bg-base-200 p-2 text-sm font-medium outline-hidden"
 					>
-						Pronouns
+						{m.profile_pronouns()}
 					</div>
 				</Tooltip.Content>
 			</Tooltip.Root>
