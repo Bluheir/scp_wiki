@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { Avatar, Tooltip } from "bits-ui"
+	import { Tooltip } from "bits-ui"
 	import type { Profile } from "./profile"
 	import { m } from "$lib/paraglide/messages"
+	import UserAvatar from "../UserAvatar.svelte"
 
 	let { profile, readonly = true }: { profile: Profile; readonly?: boolean } = $props()
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
@@ -11,15 +12,11 @@
 	class="prose max-w-[unset] prose-h2:my-0 prose-h3:mt-4 prose-table:my-4 prose-table:text-base prose-table:text-base-content prose-img:my-0"
 >
 	<div class="flex items-center gap-4">
-		<Avatar.Root class="avatar">
-			<div class="w-15 rounded-box">
-				<Avatar.Image src={profile.avatarUrl} />
-				<Avatar.Fallback
-					class="flex h-full items-center justify-center rounded-[inherit] border border-base-content/10 bg-base-200 select-none"
-					>{profile.username[0]}</Avatar.Fallback
-				>
-			</div>
-		</Avatar.Root>
+		<UserAvatar
+			user={profile}
+			size="lg"
+			style="box"
+		/>
 		<Tooltip.Provider>
 			<Tooltip.Root delayDuration={200}>
 				<Tooltip.Trigger class="select-all">

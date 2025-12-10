@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { Avatar, Separator } from "bits-ui"
+	import { Separator } from "bits-ui"
 	import type { Post } from "./post"
 	import { ChevronDown, ChevronUp, Pencil, Reply, X } from "lucide-svelte"
 	import { m } from "$lib/paraglide/messages"
+	import UserAvatar from "../UserAvatar.svelte"
 
 	const {
 		post,
@@ -83,15 +84,15 @@
 				title={m.forum_post_downvote()}><ChevronDown /></button
 			>
 		</div>
-		<Avatar.Root class="avatar">
-			<div class="w-12 rounded-box">
-				<Avatar.Image src={post.authorProfileSrc} />
-				<Avatar.Fallback
-					class="flex h-full items-center justify-center rounded-box border border-base-content/10 bg-base-200 select-none"
-					>{post.authorUsername[0]}</Avatar.Fallback
-				>
-			</div>
-		</Avatar.Root>
+		<UserAvatar
+			user={{
+				id: post.authorId,
+				username: post.authorUsername,
+				avatarUrl: post.authorProfileSrc
+			}}
+			size="base"
+			style="box"
+		/>
 		<div class="text-lg font-bold">{post.authorUsername}</div>
 	</div>
 	<div class="my-2 text-xs text-base-content/90">{post.created.toLocaleString()}</div>

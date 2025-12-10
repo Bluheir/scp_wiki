@@ -1,8 +1,9 @@
 <script lang="ts">
 	import SCPEmblem from "$lib/icons/SCPEmblem.svelte"
 	import { m } from "$lib/paraglide/messages"
-	import { Avatar, NavigationMenu } from "bits-ui"
+	import { NavigationMenu } from "bits-ui"
 	import { ChevronDown, Earth, Newspaper, Search } from "lucide-svelte"
+	import UserAvatar from "./UserAvatar.svelte"
 
 	const { user }: {
 		user?: {
@@ -188,15 +189,11 @@
 				<a href="/register" class="btn btn-outline btn-sm btn-secondary">{m.register_register()}</a>
 			{:else}
 				<a href="/profile/{user.id}" class="flex items-center gap-2">
-					<Avatar.Root class="avatar">
-						<div class="w-8 rounded-full">
-							<Avatar.Image src={user.avatarUrl} />
-							<Avatar.Fallback
-								class="flex h-full items-center justify-center rounded-box border border-base-content/10 bg-base-200 select-none"
-								>{user.username[0]}</Avatar.Fallback
-							>
-						</div>
-					</Avatar.Root>
+					<UserAvatar
+						user={user}
+						size="sm"
+						style="circle"
+					/>
 					<div class="text-xs">
 						{user.username}
 					</div>
