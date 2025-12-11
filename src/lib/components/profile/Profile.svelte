@@ -108,7 +108,7 @@
 					}}
 				>
 					<Pencil class="w-[1em]" />
-					Edit profile
+					{m.profile_editProfile()}
 				</button>
 			</div>
 		{/if}

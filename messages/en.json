@@ -43,5 +43,8 @@
 	"profile_wikiRating": "Wiki Rating",
 	"profile_totalRating": "Total Rating",
 	"profile_maxPronounsLen": "Pronouns can only be up to {max} characters",
-	"profile_maxBiographyLen": "Biography can only be up to {max} characters"
+	"profile_maxBiographyLen": "Biography can only be up to {max} characters",
+	"profile_editProfile": "Edit profile",
+	"profile_saveChanges": "Save changes",
+	"profile_discardChanges": "Discard changes"
 }

@@ -107,10 +107,10 @@
 		</Form.Field>
 	</section>
 	<div class="flex gap-2">
-		<button type="submit" class="btn btn-sm btn-primary"><Save class="w-[1em]" />Save</button>
+		<button type="submit" class="btn btn-sm btn-primary"><Save class="w-[1em]" />{m.profile_saveChanges()}</button>
 		<button class="btn btn-sm btn-error" onclick={onDiscard}>
 			<Pencil class="w-[1em]" />
-			Discard changes
+			{m.profile_discardChanges()}
 		</button>
 	</div>
 </form>
