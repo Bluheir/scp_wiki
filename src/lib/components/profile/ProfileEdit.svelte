@@ -23,6 +23,7 @@
 	} = $props()
 
 	const form = superForm(formValidated, {
+		SPA: true,
 		validators: zod4Client(profileSchema)
 	})
 
