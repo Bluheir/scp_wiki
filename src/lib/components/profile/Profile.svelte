@@ -10,10 +10,12 @@
 
 	let {
 		profile,
-		readonly = false
+		readonly = true,
+		onSubmit
 	}: {
 		profile: Profile
 		readonly?: boolean
+		onSubmit?: (data: ProfileEdit) => Promise<void> | void
 	} = $props()
 	let editMode: SuperValidated<ProfileEdit, any, ProfileEdit> | undefined = $state()
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
@@ -113,7 +115,11 @@
 	{:else}
 		<ProfileEditC
 			onDiscard={() => (editMode = undefined)}
-			onSubmit={(data) => console.log(data)}
+			onSubmit={async (data) => {
+				if(onSubmit) {
+					await onSubmit(data)
+				}
+			}}
 			formValidated={editMode}
 			{profile}
 			{ratingTable}
