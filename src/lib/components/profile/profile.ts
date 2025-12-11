@@ -8,3 +8,9 @@ export type Profile = {
 	readonly forumRating: number
 	readonly wikiRating: number
 }
+
+export type ProfileEdit = {
+	username: string
+	pronouns: string	
+	biography: string
+}
