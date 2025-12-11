@@ -8,12 +8,18 @@
 	import { Pencil } from "lucide-svelte"
 	import { zod4 } from "sveltekit-superforms/adapters"
 
-	let { profile, readonly = false }: { profile: Profile; readonly?: boolean } = $props()
+	let {
+		profile,
+		readonly = false
+	}: {
+		profile: Profile
+		readonly?: boolean
+	} = $props()
 	let editMode: SuperValidated<ProfileEdit, any, ProfileEdit> | undefined = $state()
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
 </script>
 
-{#snippet ratingTableS()}
+{#snippet ratingTable()}
 	<table>
 		<thead>
 			<tr>
@@ -77,7 +83,7 @@
 				</Tooltip.Root>
 			</Tooltip.Provider>
 		</div>
-		{@render ratingTableS()}
+		{@render ratingTable()}
 		<div>
 			<h3>{m.profile_biography()}</h3>
 			<p>
@@ -110,10 +116,7 @@
 			onSubmit={(data) => console.log(data)}
 			formValidated={editMode}
 			{profile}
-		>
-			{#snippet ratingTable()}
-				{@render ratingTableS()}
-			{/snippet}
-		</ProfileEditC>
+			{ratingTable}
+		/>
 	{/if}
 </div>
