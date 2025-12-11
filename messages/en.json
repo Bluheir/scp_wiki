@@ -41,5 +41,7 @@
 	"profile_joined": "Joined",
 	"profile_forumRating": "Forum Rating",
 	"profile_wikiRating": "Wiki Rating",
-	"profile_totalRating": "Total Rating"
+	"profile_totalRating": "Total Rating",
+	"profile_maxPronounsLen": "Pronouns can only be up to {max} characters",
+	"profile_maxBiographyLen": "Biography can only be up to {max} characters"
 }

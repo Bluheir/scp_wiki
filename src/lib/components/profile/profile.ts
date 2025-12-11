@@ -1,5 +1,6 @@
 import * as z from "zod"
 import { username } from "$lib/schema/auth"
+import { m } from "$lib/paraglide/messages"
 
 export type Profile = {
 	readonly id: string
@@ -14,8 +15,8 @@ export type Profile = {
 
 export const profileSchema = z.object({
 	username,
-	pronouns: z.string().max(32),
-	biography: z.string().max(1024)
+	pronouns: z.string().max(32, { error: () => m.profile_maxPronounsLen({ max: 32 }) }),
+	biography: z.string().max(1024, { error: () => m.profile_maxBiographyLen({ max: 1024 }) })
 })
 
 export type ProfileEdit = z.infer<typeof profileSchema>
