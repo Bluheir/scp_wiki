@@ -6,7 +6,7 @@
 	import { m } from "$lib/paraglide/messages"
 	import type { Snippet } from "svelte"
 	import { Pencil, Save } from "lucide-svelte"
-	import { zodClient } from "sveltekit-superforms/adapters"
+	import { zod4Client } from "sveltekit-superforms/adapters"
 
 	let {
 		profile,
@@ -23,7 +23,7 @@
 	} = $props()
 
 	const form = superForm(formValidated, {
-		validators: zodClient(profileSchema)
+		validators: zod4Client(profileSchema)
 	})
 
 	const { form: formData, enhance } = $derived(form)

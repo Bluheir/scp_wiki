@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Tooltip } from "bits-ui"
-	import { type Profile, profileSchema } from "./profile"
+	import { type Profile, type ProfileEdit, profileSchema } from "./profile"
 	import { m } from "$lib/paraglide/messages"
 	import UserAvatar from "../UserAvatar.svelte"
 	import { superValidate, type SuperValidated } from "sveltekit-superforms"
-	import ProfileEdit from "./ProfileEdit.svelte"
+	import ProfileEditC from "./ProfileEdit.svelte"
 	import { Pencil } from "lucide-svelte"
 	import { zod4 } from "sveltekit-superforms/adapters"
 
@@ -105,7 +105,7 @@
 			</div>
 		{/if}
 	{:else}
-		<ProfileEdit
+		<ProfileEditC
 			onDiscard={() => (editMode = undefined)}
 			onSubmit={(data) => console.log(data)}
 			formValidated={editMode}
@@ -114,6 +114,6 @@
 			{#snippet ratingTable()}
 				{@render ratingTableS()}
 			{/snippet}
-		</ProfileEdit>
+		</ProfileEditC>
 	{/if}
 </div>
