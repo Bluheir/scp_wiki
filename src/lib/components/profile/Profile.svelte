@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { Tooltip } from "bits-ui"
-	import type { Profile } from "./profile"
+	import { type Profile, profileSchema } from "./profile"
 	import { m } from "$lib/paraglide/messages"
 	import UserAvatar from "../UserAvatar.svelte"
 	import { superValidate, type SuperValidated } from "sveltekit-superforms"
 	import ProfileEdit from "./ProfileEdit.svelte"
 	import { Pencil } from "lucide-svelte"
 	import { zod4 } from "sveltekit-superforms/adapters"
-	import { profileSchema } from "$lib/schema/profile"
 
 	let { profile, readonly = false }: { profile: Profile; readonly?: boolean } = $props()
 	let editMode:

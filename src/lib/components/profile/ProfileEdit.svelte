@@ -1,13 +1,12 @@
 <script lang="ts">
 	import UserAvatar from "$lib/components/UserAvatar.svelte"
 	import { superForm, type SuperValidated } from "sveltekit-superforms"
-	import type { Profile, ProfileEdit } from "./profile"
+	import { type Profile, type ProfileEdit, profileSchema } from "./profile"
 	import * as Form from "formsnap"
 	import { m } from "$lib/paraglide/messages"
 	import type { Snippet } from "svelte"
 	import { Pencil, Save } from "lucide-svelte"
 	import { zodClient } from "sveltekit-superforms/adapters"
-	import { profileSchema } from "$lib/schema/profile"
 
 	let {
 		profile,
