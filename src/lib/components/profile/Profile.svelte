@@ -9,21 +9,7 @@
 	import { zod4 } from "sveltekit-superforms/adapters"
 
 	let { profile, readonly = false }: { profile: Profile; readonly?: boolean } = $props()
-	let editMode:
-		| SuperValidated<
-			{
-				username: string
-				pronouns: string
-				biography: string
-			},
-			any,
-			{
-				username: string
-				pronouns: string
-				biography: string
-			}
-		>
-		| undefined = $state()
+	let editMode: SuperValidated<ProfileEdit, any, ProfileEdit> | undefined = $state()
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
 </script>
 
@@ -99,27 +85,24 @@
 			</p>
 		</div>
 		{#if !readonly}
-		<div class="my-6 flex gap-2">
-			<button
-				class="btn btn-outline btn-sm"
-				onclick={async () => {
-					const formValidated = await superValidate(
-						zod4(profileSchema),
-						{
+			<div class="my-6 flex gap-2">
+				<button
+					class="btn btn-outline btn-sm"
+					onclick={async () => {
+						const formValidated = await superValidate(zod4(profileSchema), {
 							defaults: {
 								username: profile.username,
 								biography: profile.biography,
 								pronouns: profile.pronouns
 							}
-						}
-					)
-					editMode = formValidated
-				}}
-			>
-				<Pencil class="w-[1em]" />
-				Edit profile
-			</button>
-		</div>
+						})
+						editMode = formValidated
+					}}
+				>
+					<Pencil class="w-[1em]" />
+					Edit profile
+				</button>
+			</div>
 		{/if}
 	{:else}
 		<ProfileEdit
