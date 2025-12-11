@@ -26,13 +26,16 @@
 		validators: zod4Client(profileSchema)
 	})
 
-	const { form: formData, enhance } = $derived(form)
+	const { form: formData, enhance, errors } = $derived(form)
+	const valid = $derived(!$errors.biography && !$errors.username && !$errors.pronouns)
 </script>
 
 <form
 	onsubmit={async (e) => {
 		e.preventDefault()
-		await onSubmit($formData)
+		if(valid) {
+			await onSubmit($formData)
+		}
 	}}
 	use:enhance
 >
