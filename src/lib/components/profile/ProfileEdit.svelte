@@ -1,6 +1,6 @@
 <script lang="ts">
 	import UserAvatar from "$lib/components/UserAvatar.svelte"
-	import { superForm, type SuperValidated } from "sveltekit-superforms"
+	import { superForm, type SuperValidated } from "sveltekit-superforms/client"
 	import { type Profile, type ProfileEdit, profileSchema } from "./profile"
 	import * as Form from "formsnap"
 	import { m } from "$lib/paraglide/messages"

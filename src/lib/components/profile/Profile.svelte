@@ -3,7 +3,7 @@
 	import { type Profile, type ProfileEdit, profileSchema } from "./profile"
 	import { m } from "$lib/paraglide/messages"
 	import UserAvatar from "../UserAvatar.svelte"
-	import { superValidate, type SuperValidated } from "sveltekit-superforms"
+	import { superValidate, type SuperValidated } from "sveltekit-superforms/client"
 	import ProfileEditC from "./ProfileEdit.svelte"
 	import { Pencil } from "lucide-svelte"
 	import { zod4 } from "sveltekit-superforms/adapters"
