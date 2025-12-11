@@ -37,6 +37,7 @@
 		"@types/node": "^24",
 		"@vitest/browser-playwright": "^4.0.5",
 		"daisyui": "^5.5.5",
+		"dotenv": "^17.2.3",
 		"eslint": "^9.38.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-storybook": "^10.0.8",
@@ -49,19 +50,21 @@
 		"storybook": "^10.0.8",
 		"svelte": "^5.41.0",
 		"svelte-check": "^4.3.3",
+		"sveltekit-superforms": "^2.28.1",
 		"tailwindcss": "^4.1.14",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.46.1",
+		"uuid": "^13.0.0",
 		"vite": "^7.1.10",
 		"vitest": "^4.0.5",
-		"vitest-browser-svelte": "^2.0.1"
+		"vitest-browser-svelte": "^2.0.1",
+		"zod": "^4.1.13"
 	},
 	"dependencies": {
+		"@supabase/ssr": "^0.7.0",
 		"@supabase/supabase-js": "^2.84.0",
 		"bits-ui": "^2.14.4",
 		"formsnap": "^2.0.1",
-		"lucide-svelte": "^0.554.0",
-		"sveltekit-superforms": "^2.28.1",
-		"zod": "^4.1.12"
+		"lucide-svelte": "^0.554.0"
 	}
 }

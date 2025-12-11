@@ -1,0 +1,139 @@
+<script lang="ts">
+	import { Separator } from "bits-ui"
+	import type { Post } from "./post"
+	import { ChevronDown, ChevronUp, Pencil, Reply, X } from "lucide-svelte"
+	import { m } from "$lib/paraglide/messages"
+	import UserAvatar from "../UserAvatar.svelte"
+
+	const {
+		post,
+		actionItems
+	}: {
+		post: Post
+		actionItems: {
+			replyAble: boolean
+			editAble: boolean
+			deleteAble: boolean
+		}
+	} = $props()
+	let myRating = $derived(post.myRating)
+	let rating = $derived(post.rating ?? 0)
+
+	async function setNewRating(newRating: -1 | 0 | 1) {
+		rating += newRating - myRating
+		myRating = newRating
+
+		await post.setMyRating(newRating)
+		rating = post.rating
+		myRating = post.myRating
+	}
+
+	function segmentNumber(n: number): string[] {
+		const s = String(n)
+		const out: string[] = []
+
+		let i = s.length
+		while (i > 3) {
+			const end = i
+			const start = i - 3
+			out.unshift(s.slice(start, end))
+			out.unshift(",")
+			i -= 3
+		}
+
+		out.unshift(s.slice(0, i))
+		return out
+	}
+</script>
+
+<div class="rounded-box border border-base-content/10 p-4 transition hover:shadow-xl">
+	<div class="flex items-center gap-4">
+		<div class="flex flex-col items-center">
+			<button
+				class="btn btn-square btn-xs {myRating === 1 ? 'text-primary' : 'btn-ghost'}"
+				onclick={async () => {
+					if (myRating === 1) {
+						await setNewRating(0)
+					} else {
+						await setNewRating(1)
+					}
+				}}
+				title={m.forum_post_upvote()}><ChevronUp /></button
+			>
+			<div>
+				{#each segmentNumber(rating) as segment, index}
+					{#if segment === ","}
+						{segment}
+					{:else}
+						<span class="countdown"
+							><span style="--value:{segment};{index === 0 ? '' : '--digits:3;'}">{segment}</span
+							></span
+						>
+					{/if}
+				{/each}
+			</div>
+			<button
+				class="btn btn-square btn-xs {myRating === -1 ? 'text-primary' : 'btn-ghost'}"
+				onclick={async () => {
+					if (myRating === -1) {
+						await setNewRating(0)
+					} else {
+						await setNewRating(-1)
+					}
+				}}
+				title={m.forum_post_downvote()}><ChevronDown /></button
+			>
+		</div>
+		<UserAvatar
+			user={{
+				id: post.authorId,
+				username: post.authorUsername,
+				avatarUrl: post.authorProfileSrc
+			}}
+			size="base"
+			style="box"
+		/>
+		<div class="text-lg font-bold">{post.authorUsername}</div>
+	</div>
+	<div class="my-2 text-xs text-base-content/90">{post.created.toLocaleString()}</div>
+	<Separator.Root
+		class="my-4 h-px bg-base-content/10 [orientation='vertical']:h-full"
+		orientation="horizontal"
+	/>
+	<div>
+		<div class="my-4">
+			{post.text}
+		</div>
+		<div class="flex gap-2">
+			{#if actionItems.replyAble}
+				<button class="btn gap-1 transition btn-xs btn-secondary" title={m.forum_post_reply()}
+					><Reply class="w-[1.5em]" />{m.forum_post_reply()}</button
+				>
+			{/if}
+			{#if actionItems.editAble}
+				<button class="btn gap-1 transition btn-xs btn-primary" title={m.forum_post_edit()}
+					><Pencil class="w-[1.4em]" />{m.forum_post_edit()}</button
+				>
+			{/if}
+			{#if actionItems.deleteAble}
+				<button class="btn gap-1 transition btn-xs btn-error" title={m.forum_post_delete()}
+					><X class="w-[1.5em]" />{m.forum_post_delete()}</button
+				>
+			{/if}
+		</div>
+	</div>
+</div>
+
+<style>
+	.countdown {
+		& > * {
+			&:after,
+			&:before {
+				transition:
+					all 0.7s cubic-bezier(1, 0, 0, 1),
+					width 0.2s ease-out 0.2s,
+					opacity 0.2s ease-out 0.2s;
+			}
+		}
+	}
+</style>

@@ -8,10 +8,38 @@
 	"auth_passwordDescription": "Account password",
 	"login_signIn": "Sign in",
 	"auth_invalidEmail": "Invalid email address",
-	"auth_invalidPassword": "A password has between 1 and 255 characters",
+	"auth_invalidPassword": "A password has between {min} and {max} characters",
+	"auth_badPasswordCombination": "The provided email and password combination is invalid",
 
-	"topic_parent_topic": "Topic",
-	"topic_parent_threadAmount": "Thread Amount",
-	"topic_parent_postAmount": "Post Amount",
-	"topic_parent_lastPoster": "Last Poster"
+	"register_invalidUsername": "A username has between 1 and 32 characters",
+	"register_badPassword": "A password must contain a symbol, lowercase letter, uppercase letter and a number",
+	"register_username": "Username",
+	"register_usernameDescription": "The username you want for the account",
+	"register_register": "Create account",
+	"register_title": "Join the SCP foundation",
+	"register_confirmPassword": "Confirm password",
+	"register_confirmPasswordDescription": "Confirm pasword",
+	"register_passwordsDontMatch": "The passwords do not match",
+	"register_emailTaken": "Account email is already in use",
+	"register_success": "Success! A confirmation link was sent to your email address.",
+
+	"forum_post_reply": "Reply",
+	"forum_post_edit": "Edit",
+	"forum_post_delete": "Delete",
+	"forum_post_upvote": "Upvote",
+	"forum_post_downvote": "Downvote",
+
+	"navbar_community": "Community",
+	"navbar_wiki": "Wiki",
+	"navbar_search": "Search",
+	"navbar_scpBySeries": "SCP by series",
+	"navbar_seriesN": "Series {series}",
+
+	"profile_pronouns": "Pronouns",
+	"profile_username": "Username",
+	"profile_biography": "Biography",
+	"profile_joined": "Joined",
+	"profile_forumRating": "Forum Rating",
+	"profile_wikiRating": "Wiki Rating",
+	"profile_totalRating": "Total Rating"
 }
