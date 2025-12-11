@@ -22,13 +22,15 @@ const alphabetUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const numbers = "0123456789"
 const symbols = "!@#$%^&*()_+`~-_+=[]\\{}|;':\",./<>?"
 
+export const username = z
+	.string()
+	.min(1, { error: m.register_invalidUsername })
+	.max(32, { error: m.register_invalidUsername })
+
 export const registerSchema = z
 	.object({
 		email: common.email,
-		username: z
-			.string()
-			.min(1, { error: m.register_invalidUsername })
-			.max(32, { error: m.register_invalidUsername }),
+		username,
 		password: common.password(8, 255).refine(
 			(value) => {
 				let hasLower: boolean = false
