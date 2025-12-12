@@ -37,17 +37,17 @@
 			<div
 				class="flex flex-1 items-center justify-center rounded-md bg-base-200 px-4"
 			>
-				<a href="/profile/{childTopic.lastPoster.id}" class="flex items-center justify-center gap-2 w-full">
+				<a href="/profile/{childTopic.lastAuthor.id}" class="flex items-center justify-center gap-2 w-full">
 					<Avatar.Root class="avatar">
 						<div class="w-6 rounded-box">
-							<Avatar.Image src={childTopic.lastPoster.profileSrc} />
+							<Avatar.Image src={childTopic.lastAuthor.profileSrc} />
 							<Avatar.Fallback
 								class="flex h-full items-center justify-center rounded-box border border-base-content/10 bg-base-200 select-none"
-								>{childTopic.lastPoster.username[0]}</Avatar.Fallback
+								>{childTopic.lastAuthor.username[0]}</Avatar.Fallback
 							>
 						</div>
 					</Avatar.Root>
-					<div class="overflow-hidden text-ellipsis whitespace-nowrap">{childTopic.lastPoster.username}</div>
+					<div class="overflow-hidden text-ellipsis whitespace-nowrap">{childTopic.lastAuthor.username}</div>
 				</a>
 			</div>
 			

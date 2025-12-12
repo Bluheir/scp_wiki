@@ -22,18 +22,18 @@ export type ChildTopic = {
 	readonly description: string
 	readonly threadAmount: number
 	readonly postAmount: number
-	readonly lastPoster: Author
-	readonly timestamp: number
+	readonly lastAuthor: Author
 }
 
 export type PostPreview = {
 	readonly id: string
-	readonly author: Author
-	readonly lastReply: Author
-	readonly repliesAmount: number
 	readonly title: string
-	readonly preview: string
-	readonly timestamp: number
+	readonly description: string
+	readonly startedAuthor: Author
+	readonly startedDate: number
+	readonly postAmount: number
+	readonly lastAuthor: Author
+	readonly lastDate: number
 }
 
 export type Author = {
