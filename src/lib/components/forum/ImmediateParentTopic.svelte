@@ -1,58 +1,67 @@
 <script lang="ts">
-	import { Avatar } from "bits-ui"
 	import type { ImmediateParentTopic } from "./types"
+	import { m } from "$lib/paraglide/messages"
+	import UserAvatar from "../UserAvatar.svelte"
+
 	const { topic }: { topic: ImmediateParentTopic } = $props()
 	const children = $derived(topic.children)
 </script>
 
-<div>
-	<div class="border border-base-content/10 bg-primary p-4">
-		<h2 class="text-xl font-bold">{topic.title}</h2>
+<div class="p-4 border border-base-content/10 rounded-box text-xs">
+	<div class="mb-4">
+		<h2 class="text-base font-bold">{topic.title}</h2>
 		<p>{topic.description}</p>
 	</div>
-	<!-- Header Row - Reduced padding and consistent vertical alignment -->
-	<div class="flex gap-2 bg-base-content/10">
-		<div class="flex flex-1 items-center px-5 py-3 font-bold">Thread name</div>
-		<div class="flex flex-1 items-center justify-center px-5 py-3 text-center font-bold">
-			Started
-		</div>
-		<div class="flex flex-1 items-center justify-center px-5 py-3 text-center font-bold">Posts</div>
-		<div class="flex flex-1 items-center justify-center px-5 py-3 text-center font-bold">
-			Recent post
-		</div>
-	</div>
+	<div class="grid grid-cols-4 gap-1 rounded-box shadow-xl">
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">{m.topic_immediateParent_topic()}</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">{m.topic_immediateParent_threadAmount()}</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">{m.topic_immediateParent_postAmount()}</div>
+		<div class="flex p-2 justify-center border border-base-content/10 bg-base-300 rounded-box font-bold">{m.topic_immediateParent_lastPoster()}</div>
+		{#each children as postPreview}
+			<div
+				class="flex flex-1 flex-col justify-center rounded-md bg-base-200 px-5 py-3"
+			>
+				<a href="/topic/{postPreview.id}" class="font-bold">{postPreview.title}</a>
+				<div class="py-1 text-sm">{postPreview.description}</div>
+			</div>
 
-	<!-- Content Rows -->
-	{#each children as post}
-		<div class="flex gap-2 bg-base-content/15 p-1">
-			<div
-				class="flex flex-1 flex-col justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3"
-			>
-				<a href="/posts/{post.id}" class="font-bold hover:underline">{post.title}</a>
-				<div class="mt-1 text-sm">{post.preview}</div>
+			<div class="flex gap-2 items-center justify-center rounded-md bg-base-200">
+				<UserAvatar
+					user={{
+						id: postPreview.startedAuthor.id,
+						username: postPreview.startedAuthor.username,
+						avatarUrl: postPreview.startedAuthor.profileSrc
+					
+					}}
+					size="sm"
+					isLink
+				/>
+				<a href="/profile/{postPreview.startedAuthor.id}">{postPreview.startedAuthor.username}</a>
+				<span>{postPreview.startedDate.toLocaleString()}</span>
 			</div>
-			<div
-				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3 text-center"
-			>
-				{post.repliesAmount}
-			</div>
-			<div
-				class="flex flex-1 items-center justify-center rounded-md border border-base-content/10 bg-base-content/9 px-5 py-3"
-			>
-				<div class="flex items-center gap-1">
-					<div>by</div>
-					<Avatar.Root class="avatar">
-						<div class="w-5 rounded-box">
-							<Avatar.Image src={post.lastReply.profileSrc} />
-							<Avatar.Fallback
-								class="flex h-full items-center justify-center rounded-box border border-base-content/10 bg-base-200 select-none"
-								>{post.lastReply.username}</Avatar.Fallback
-							>
-						</div>
-					</Avatar.Root>
-					<div>{post.lastReply.username}</div>
+			
+			<span class="flex items-center justify-center rounded-md bg-base-200 text-center">
+				{postPreview.postAmount}
+			</span>
+			
+			<div class="flex flex-col gap-1 items-center justify-center bg-base-200">
+				<div class="flex gap-1 items-center justify-center">
+					<UserAvatar
+						user={{
+							id: postPreview.lastAuthor.id,
+							username: postPreview.lastAuthor.username,
+							avatarUrl: postPreview.lastAuthor.profileSrc
+						}}
+						size="sm"
+						isLink
+					/>
+					<a href="/profile/{postPreview.lastAuthor.id}">{postPreview.lastAuthor.username}</a>					
 				</div>
+				<span>{postPreview.lastDate.toLocaleString()}</span>
+				<a class="underline p-1" href="/post/{postPreview.id}">Jump!</a>
 			</div>
-		</div>
-	{/each}
+
+			
+		{/each}
+	</div>
 </div>
