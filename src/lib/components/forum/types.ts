@@ -23,6 +23,7 @@ export type ChildTopic = {
 	readonly threadAmount: number
 	readonly postAmount: number
 	readonly lastAuthor: Author
+	readonly lastDate: Date
 }
 
 export type PostPreview = {
@@ -30,10 +31,10 @@ export type PostPreview = {
 	readonly title: string
 	readonly description: string
 	readonly startedAuthor: Author
-	readonly startedDate: number
+	readonly startedDate: Date
 	readonly postAmount: number
 	readonly lastAuthor: Author
-	readonly lastDate: number
+	readonly lastDate: Date
 }
 
 export type Author = {
