@@ -1,42 +1,18 @@
 begin;
 
-create or replace function public.uuidv7()
+create or replace function public.uuidv7(timestamptz default clock_timestamp())
 returns uuid
-language plpgsql
+language sql volatile parallel safe
 security definer set search_path = ''
 as $$
-declare
-	unix_ts_ms bigint;
-	rand_bytes bytea;
-	b bytea;
-begin
-	unix_ts_ms := floor(
-		extract(
-			epoch
-			from clock_timestamp()
-		) * 1000
-	);
-
-	rand_bytes := gen_random_bytes(12);
-	b := repeat(E'\\000', 16)::bytea;
-
-	for i in 0..5 loop
-		b := set_byte(b, i, (unix_ts_ms >> ((5 - i) * 8)) & 255);
-	end loop;
-
-	b := set_byte(
-		b,
-		6,
-		(7 << 4) | ((get_byte(rand_bytes, 0) & 0x0F))
-	);
-
-	b := set_byte(b, 7, (0x80 | (get_byte(rand_bytes, 1) & 0x3F)));
-
-	for i in 2..9 loop
-		b := set_byte(b, 6 + i, get_byte(rand_bytes, i));
-	end loop;
-	return encode(b, 'hex')::uuid;
-end;
+	select encode(
+		set_bit(
+			set_bit(
+				overlay(uuid_send(gen_random_uuid()) placing
+		substring(int8send((extract(epoch from $1)*1000)::bigint) from 3)
+		from 1 for 6),
+	52, 1),
+			53, 1), 'hex')::uuid;
 $$;
 
 alter table public.urole_custom
