@@ -31,7 +31,7 @@ create table public.default_permission_action(
 );
 alter table public.default_permission_action enable row level security;
 
-create or replace function public.handle_new_uer()
+create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
 security definer set search_path = ''
@@ -90,5 +90,9 @@ begin
 	return new;
 end;
 $$;
+
+create or replace trigger on_auth_user_created
+	after insert on auth.users
+	for each row execute procedure public.handle_new_user();
 
 commit;
