@@ -16,16 +16,19 @@ export const load: PageLoad = async ({ parent, params }) => {
 	}
 
 	const { data: userData } = await supabase.auth.getUser();
-	const userId = userData.user ? userData.user.id : null
+	let readonly = true
+	if(userData.user) {
+		const { data: permissionData } = await supabase
+			.from("user_victim_single_action")
+			.select("profile_id")
+			.eq("profile_id", userData.user.id)
+			.eq("victim_profile_id", params.userId)
+			.eq("action_type", "edit_profile")
+			.limit(1)
+			.single()
 
-	const { data: permissionData } = await supabase
-		.from("user_victim_single_action")
-		.select("profile_id")
-		.eq("profile_id", userId)
-		.eq("victim_profile_id", params.userId)
-		.eq("action_type", "edit_profile")
-		.limit(1)
-		.single()
+		readonly = permissionData === null
+	}
 
 	const profile: Profile = {
 		id: data.id,
@@ -38,5 +41,5 @@ export const load: PageLoad = async ({ parent, params }) => {
 		createdAt: new Date(data.created_at)
 	}
 
-	return { supabase, profile, readonly: permissionData === null }
+	return { supabase, profile, readonly }
 }
