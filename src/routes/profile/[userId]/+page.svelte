@@ -7,6 +7,7 @@
 
 	const { data }: PageProps = $props()
 	let { profile, supabase, readonly } = $derived(data)
+	const profileEdit = $derived({ username: profile.username, biography: profile.biography, pronouns: profile.pronouns })
 	let channel: RealtimeChannel | undefined
 
 	onMount(() => {
@@ -44,7 +45,6 @@
 <div class="mx-20 my-10 rounded-box border border-base-content/10 p-8 shadow-xl">
 	<Profile {profile} {readonly} onSubmit={async data => {
 		if(!readonly) {
-			console.log("data", data)
 			const result = await supabase
 				.from("profile")
 				.update({
@@ -57,9 +57,9 @@
 			
 			if(!result.error) {
 				return data
-			} else {
-				return { username: profile.username, biography: profile.biography, pronouns: profile.pronouns }
 			}
 		}
+
+		return profileEdit
 	}} />
 </div>
