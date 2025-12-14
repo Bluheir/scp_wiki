@@ -54,7 +54,12 @@
 				})
 				.eq("id", profile.id)
 				.select("*")
-			console.log(result)
+			
+			if(!result.error) {
+				return data
+			} else {
+				return { username: profile.username, biography: profile.biography, pronouns: profile.pronouns }
+			}
 		}
 	}} />
 </div>
