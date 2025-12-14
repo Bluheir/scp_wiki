@@ -5,7 +5,7 @@ export type ImmediateParentTopic = {
 	readonly title: string
 	readonly description: string
 	readonly type: "immediateParent"
-	children: PostPreview[]
+	readonly children: PostPreview[]
 }
 
 export type ParentTopic = {
@@ -13,7 +13,7 @@ export type ParentTopic = {
 	readonly title: string
 	readonly description: string
 	readonly type: "parent"
-	children: ChildTopic[]
+	readonly children: ChildTopic[]
 }
 
 export type ChildTopic = {

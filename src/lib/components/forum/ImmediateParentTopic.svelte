@@ -58,10 +58,8 @@
 					<a href="/profile/{postPreview.lastAuthor.id}">{postPreview.lastAuthor.username}</a>					
 				</div>
 				<span>{postPreview.lastDate.toLocaleString()}</span>
-				<a class="underline p-1" href="/post/{postPreview.id}">Jump!</a>
+				<a class="underline p-1" href="/post/{postPreview.id}">m.topic_immediateParent_jump</a>
 			</div>
-
-			
 		{/each}
 	</div>
 </div>

@@ -55,5 +55,6 @@
 	"topic_immediateParent_topic": "Thread name",
 	"topic_immediateParent_threadAmount": "Started",
 	"topic_immediateParent_postAmount": "Posts",
-	"topic_immediateParent_lastPoster": "Recent post"
+	"topic_immediateParent_lastPoster": "Recent post",
+	"topic_immediateParent_jump": "Jump!"
 }
