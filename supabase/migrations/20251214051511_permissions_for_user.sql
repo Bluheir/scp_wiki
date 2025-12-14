@@ -66,7 +66,10 @@ as select distinct on (profiles_for_urole.profile_id, single_action.id)
 	single_action.id
 from
 	public.profiles_for_urole
-	join public.single_action on single_action.role_id = profiles_for_urole.role_id;
+	join public.single_action on single_action.role_id = profiles_for_urole.role_id
+where
+	single_action.action_type <> 'self' or profiles_for_urole.profile_id is not null
+;
 
 -- all the actions that a user can do to another user victim
 create or replace view public.user_victim_single_action
