@@ -59,7 +59,7 @@
 					<a href="/profile/{childTopic.lastAuthor.id}">{childTopic.lastAuthor.username}</a>
 				</div>
 				<span>{childTopic.lastDate.toLocaleString()}</span>
-				<a class="p-1 underline" href="/post/{childTopic.id}">Jump!</a>
+				<a class="p-1 underline" href="/post/{childTopic.id}">{m.topic_immediateParent_jump()}</a>
 			</div>
 		{/each}
 	</div>
