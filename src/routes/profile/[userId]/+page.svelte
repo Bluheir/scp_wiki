@@ -6,7 +6,7 @@
 	import type { RealtimeChannel } from "@supabase/supabase-js"
 
 	const { data }: PageProps = $props()
-	let { profile, supabase } = $derived(data)
+	let { profile, supabase, readonly } = $derived(data)
 	let channel: RealtimeChannel | undefined
 
 	onMount(() => {
@@ -42,5 +42,19 @@
 <Navbar />
 
 <div class="mx-20 my-10 rounded-box border border-base-content/10 p-8 shadow-xl">
-	<Profile {profile} />
+	<Profile {profile} {readonly} onSubmit={async data => {
+		if(!readonly) {
+			console.log("data", data)
+			const result = await supabase
+				.from("profile")
+				.update({
+					biography: data.biography,
+					username: data.username,
+					pronouns: data.pronouns
+				})
+				.eq("id", profile.id)
+				.select("*")
+			console.log(result)
+		}
+	}} />
 </div>
