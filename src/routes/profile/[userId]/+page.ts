@@ -19,7 +19,7 @@ export const load: PageLoad = async ({ parent, params }) => {
 	const userId = userData.user ? userData.user.id : null
 
 	const { data: permissionData } = await supabase
-		.from("user_single_action")
+		.from("user_victim_single_action")
 		.select("profile_id")
 		.eq("profile_id", userId)
 		.eq("victim_profile_id", params.userId)
