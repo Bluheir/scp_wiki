@@ -1,6 +1,7 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 
 import type { SupabaseClient } from "@supabase/supabase-js"
+import type { Database } from "./database"
 
 // for information about these interfaces
 declare global {
@@ -11,9 +12,9 @@ declare global {
 		// interface PageState {}
 		// interface Platform {},
 		interface Locals {
-			supabase: SupabaseClient,
-			supabaseUser: SupabaseClient,
-			supabase_anon_key: string,
+			supabase: SupabaseClient<Database>
+			supabaseUser: SupabaseClient<Database>
+			supabase_anon_key: string
 			supabase_url: string
 		}
 	}

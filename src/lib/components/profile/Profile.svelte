@@ -15,8 +15,9 @@
 	}: {
 		profile: Profile
 		readonly?: boolean
-		onSubmit?: (data: ProfileEdit) => Promise<void> | void
+		onSubmit?: (data: ProfileEdit) => Promise<ProfileEdit> | ProfileEdit
 	} = $props()
+	let { pronouns, biography, username } = $derived(profile)
 	let editMode: SuperValidated<ProfileEdit, any, ProfileEdit> | undefined = $state()
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
 </script>
@@ -49,7 +50,7 @@
 			<Tooltip.Provider>
 				<Tooltip.Root delayDuration={200}>
 					<Tooltip.Trigger class="select-all">
-						<h2>{profile.username}</h2>
+						<h2>{username}</h2>
 					</Tooltip.Trigger>
 					<Tooltip.Content sideOffset={8}>
 						<div
@@ -61,7 +62,7 @@
 				</Tooltip.Root>
 				<Tooltip.Root delayDuration={200}>
 					<Tooltip.Trigger class="select-all">
-						{profile.pronouns}
+						{pronouns}
 					</Tooltip.Trigger>
 					<Tooltip.Content sideOffset={8}>
 						<div
@@ -89,7 +90,7 @@
 		<div>
 			<h3>{m.profile_biography()}</h3>
 			<p>
-				{profile.biography}
+				{biography}
 			</p>
 		</div>
 		{#if !readonly}
@@ -99,9 +100,9 @@
 					onclick={async () => {
 						const formValidated = await superValidate(zod4(profileSchema), {
 							defaults: {
-								username: profile.username,
-								biography: profile.biography,
-								pronouns: profile.pronouns
+								username: username,
+								biography: biography,
+								pronouns: pronouns
 							}
 						})
 						editMode = formValidated
@@ -117,7 +118,14 @@
 			onDiscard={() => (editMode = undefined)}
 			onSubmit={async (data) => {
 				if(onSubmit) {
-					await onSubmit(data)
+					editMode = undefined
+					username = data.username
+					biography = data.biography
+					pronouns = data.pronouns
+					const result = await onSubmit(data)
+					username = result.username
+					biography = result.biography
+					pronouns = result.pronouns
 				}
 			}}
 			formValidated={editMode}

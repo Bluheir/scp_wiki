@@ -15,6 +15,21 @@ export const load: PageLoad = async ({ parent, params }) => {
 		error(404)
 	}
 
+	const { data: userData } = await supabase.auth.getUser();
+	let readonly = true
+	if(userData.user) {
+		const { data: permissionData } = await supabase
+			.from("user_victim_single_action")
+			.select("profile_id")
+			.eq("profile_id", userData.user.id)
+			.eq("victim_profile_id", params.userId)
+			.eq("action_type", "edit_profile")
+			.limit(1)
+			.single()
+
+		readonly = permissionData === null
+	}
+
 	const profile: Profile = {
 		id: data.id,
 		username: data.username,
@@ -23,8 +38,8 @@ export const load: PageLoad = async ({ parent, params }) => {
 		biography: data.biography,
 		forumRating: data.forum_rating,
 		wikiRating: data.wiki_rating,
-		createdAt: new Date(Date.parse(data.created_at))
+		createdAt: new Date(data.created_at)
 	}
 
-	return { supabase, profile }
+	return { supabase, profile, readonly }
 }
