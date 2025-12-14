@@ -20,7 +20,7 @@ export const load: PageLoad = async ({ parent, params }) => {
 
 	const { data: permissionData } = await supabase
 		.from("user_single_action")
-		.select("granting_role_id")
+		.select("profile_id")
 		.eq("profile_id", userId)
 		.eq("victim_profile_id", params.userId)
 		.eq("action_type", "edit_profile")

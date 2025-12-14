@@ -66,12 +66,6 @@ as select distinct on (profiles_for_urole.profile_id, victim_profile_id, single_
 			else for_role.profile_id
 		end
 	) as victim_profile_id,
-	-- the name of the role, if any, that is granting this permission action
-	profiles_for_urole.role_name as granting_role_name,
-	-- the id of the role that is granting this permission action
-	profiles_for_urole.role_id as granting_role_id,
-	single_action.victim_id,
-	single_action.victim_type,
 	single_action.action_type,
 	single_action.action_data,
 	single_action.id as id
