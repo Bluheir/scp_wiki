@@ -1,20 +1,15 @@
 <script lang="ts">
 	import { m } from "$lib/paraglide/messages"
 	import Cropper from "svelte-easy-crop"
-
-	type ImageData = {
-		image: string
-		crop: { x: number, y: number }
-		zoom: number
-	}
+	import type { AvatarImageData } from "./profile"
 
 	const { onsubmit }: {
-		onsubmit?: (image: ImageData) => Promise<void> | void
+		onsubmit?: (image: AvatarImageData) => Promise<void> | void
 	} = $props()
 
 	const minZoom = 1
 	const maxZoom = 3
-	let image: ImageData | undefined = $state()
+	let image: AvatarImageData | undefined = $state()
 
 	function handleFile(event: Event) {
 		const input = event.target as HTMLInputElement
