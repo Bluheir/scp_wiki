@@ -1,25 +1,29 @@
 <script lang="ts">
 	import { Tooltip } from "bits-ui"
-	import { type Profile, type ProfileEdit, profileSchema } from "./profile"
+	import { type AvatarImageData, type Profile, type ProfileEdit, profileSchema } from "./profile"
 	import { m } from "$lib/paraglide/messages"
 	import UserAvatar from "../UserAvatar.svelte"
 	import { superValidate, type SuperValidated } from "sveltekit-superforms/client"
 	import ProfileEditC from "./ProfileEdit.svelte"
-	import { Pencil } from "lucide-svelte"
+	import { Pencil, X } from "lucide-svelte"
 	import { zod4 } from "sveltekit-superforms/adapters"
+	import AvatarSelect from "./AvatarSelect.svelte"
 
 	let {
 		profile,
 		readonly = true,
-		onSubmit
+		onSubmit,
+		onAvatarSubmit
 	}: {
 		profile: Profile
 		readonly?: boolean
 		onSubmit?: (data: ProfileEdit) => Promise<ProfileEdit> | ProfileEdit
+		onAvatarSubmit?: (image: AvatarImageData) => Promise<void> | void
 	} = $props()
-	let { pronouns, biography, username } = $derived(profile)
+	let { avatarUrl, pronouns, biography, username } = $derived(profile)
 	let editMode: SuperValidated<ProfileEdit, any, ProfileEdit> | undefined = $state()
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
+	let modalElement: HTMLDialogElement | undefined = $state()
 </script>
 
 {#snippet ratingTable()}
@@ -41,12 +45,37 @@
 	</table>
 {/snippet}
 
+{#snippet avatarEditable()}
+	<button class="cursor-pointer" onclick={(e) => { e.preventDefault(); modalElement?.showModal() }}>
+		<UserAvatar user={{
+			id: profile.id,
+			username: username,
+			avatarUrl
+		}} size="lg" style="box" />
+	</button>
+	<dialog bind:this={modalElement} class="modal not-prose">
+		<div class="modal-box">
+			<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick={() => modalElement?.close()}><X class="w-[1em]"/></button>
+			<AvatarSelect onsubmit={async (image) => {
+				if(onAvatarSubmit) {
+					await onAvatarSubmit(image)
+					avatarUrl = profile.avatarUrl
+				}
+			}}/>
+		</div>
+	</dialog>
+{/snippet}
+
 <div
 	class="prose max-w-[unset] prose-h2:my-0 prose-h3:mt-4 prose-table:my-4 prose-table:text-base prose-table:text-base-content prose-img:my-0"
 >
 	{#if !editMode}
 		<div class="flex items-center gap-4">
-			<UserAvatar user={profile} size="lg" style="box" />
+			{#if readonly}
+				<UserAvatar user={profile} size="lg" style="box" />
+			{:else}
+				{@render avatarEditable()}
+			{/if}
 			<Tooltip.Provider>
 				<Tooltip.Root delayDuration={200}>
 					<Tooltip.Trigger class="select-all">
@@ -64,7 +93,7 @@
 					<Tooltip.Trigger class="select-all">
 						{pronouns}
 					</Tooltip.Trigger>
-					<Tooltip.Content sideOffset={8}>
+					<Tooltip.Content sideOffset={8} class="">
 						<div
 							class="shadow-popover z-0 flex items-center justify-center rounded-box border border-base-content/10 bg-base-200 p-2 text-sm font-medium outline-hidden"
 						>
@@ -129,8 +158,8 @@
 				}
 			}}
 			formValidated={editMode}
-			{profile}
 			{ratingTable}
+			{avatarEditable}
 		/>
 	{/if}
 </div>

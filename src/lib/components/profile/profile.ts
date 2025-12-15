@@ -13,6 +13,12 @@ export type Profile = {
 	readonly wikiRating: number
 }
 
+export type AvatarImageData = {
+	image: string
+	crop: { x: number, y: number }
+	zoom: number
+}
+
 export const profileSchema = z.object({
 	username,
 	pronouns: z.string().max(32, { error: () => m.profile_maxPronounsLen({ max: 32 }) }),

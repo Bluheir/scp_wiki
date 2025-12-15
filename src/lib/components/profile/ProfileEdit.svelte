@@ -1,7 +1,6 @@
 <script lang="ts">
-	import UserAvatar from "$lib/components/UserAvatar.svelte"
 	import { superForm, type SuperValidated } from "sveltekit-superforms/client"
-	import { type Profile, type ProfileEdit, profileSchema } from "./profile"
+	import { type ProfileEdit, profileSchema } from "./profile"
 	import * as Form from "formsnap"
 	import { m } from "$lib/paraglide/messages"
 	import type { Snippet } from "svelte"
@@ -9,16 +8,16 @@
 	import { zod4Client } from "sveltekit-superforms/adapters"
 
 	let {
-		profile,
 		formValidated,
 		onDiscard,
 		onSubmit,
-		ratingTable
+		ratingTable,
+		avatarEditable
 	}: {
-		profile: Profile
 		onDiscard: () => Promise<void> | void
 		onSubmit: (data: ProfileEdit) => Promise<void> | void
 		ratingTable: Snippet<[]>
+		avatarEditable: Snippet<[]>
 		formValidated: SuperValidated<ProfileEdit, any, ProfileEdit>
 	} = $props()
 
@@ -42,15 +41,7 @@
 >
 	<div class="flex gap-4">
 		<div>
-			<UserAvatar
-				user={{
-					id: profile.id,
-					username: $formData.username,
-					avatarUrl: profile.avatarUrl
-				}}
-				size="lg"
-				style="box"
-			/>
+			{@render avatarEditable()}
 		</div>
 		<div class="flex gap-4">
 			<div class="w-80">
