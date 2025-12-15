@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Tooltip } from "bits-ui"
-	import { type Profile, type ProfileEdit, profileSchema } from "./profile"
+	import { type AvatarImageData, type Profile, type ProfileEdit, profileSchema } from "./profile"
 	import { m } from "$lib/paraglide/messages"
 	import UserAvatar from "../UserAvatar.svelte"
 	import { superValidate, type SuperValidated } from "sveltekit-superforms/client"
@@ -12,13 +12,15 @@
 	let {
 		profile,
 		readonly = true,
-		onSubmit
+		onSubmit,
+		onAvatarSubmit
 	}: {
 		profile: Profile
 		readonly?: boolean
 		onSubmit?: (data: ProfileEdit) => Promise<ProfileEdit> | ProfileEdit
+		onAvatarSubmit?: (image: AvatarImageData) => Promise<void> | void
 	} = $props()
-	let { pronouns, biography, username } = $derived(profile)
+	let { avatarUrl, pronouns, biography, username } = $derived(profile)
 	let editMode: SuperValidated<ProfileEdit, any, ProfileEdit> | undefined = $state()
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
 	let modalElement: HTMLDialogElement | undefined = $state()
@@ -45,12 +47,21 @@
 
 {#snippet avatarEditable()}
 	<button class="cursor-pointer" onclick={(e) => { e.preventDefault(); modalElement?.showModal() }}>
-		<UserAvatar user={profile} size="lg" style="box" />
+		<UserAvatar user={{
+			id: profile.id,
+			username: username,
+			avatarUrl
+		}} size="lg" style="box" />
 	</button>
 	<dialog bind:this={modalElement} class="modal not-prose">
 		<div class="modal-box">
 			<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick={() => modalElement?.close()}><X class="w-[1em]"/></button>
-			<AvatarSelect />
+			<AvatarSelect onsubmit={async (image) => {
+				if(onAvatarSubmit) {
+					await onAvatarSubmit(image)
+					avatarUrl = profile.avatarUrl
+				}
+			}}/>
 		</div>
 	</dialog>
 {/snippet}
