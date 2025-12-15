@@ -2,6 +2,7 @@
 	import { m } from "$lib/paraglide/messages"
 	import Cropper from "svelte-easy-crop"
 	import type { AvatarImageData } from "./profile"
+	import { Image } from "lucide-svelte"
 
 	const { onsubmit }: {
 		onsubmit?: (image: AvatarImageData) => Promise<void> | void
@@ -62,6 +63,14 @@
 					cropShape="round"
 				/>
 			</div>
+		</div>
+		<div class="my-6 flex justify-center text-xl gap-3 items-center">
+			<Image class="w-4"/>
+			<input class="range" type="range" min={0} max={100} bind:value={
+				() => (image!.zoom - minZoom) / (maxZoom - minZoom) * 100,
+				(v) => image!.zoom = v / 100 * (maxZoom - minZoom) + minZoom
+			}/>
+			<Image class="w-8 h-8"/>
 		</div>
 		<div class="flex gap-2">
 			<input class="btn btn-sm btn-primary flex-1" type="submit" value={m.profile_avatar_submit()}/>
