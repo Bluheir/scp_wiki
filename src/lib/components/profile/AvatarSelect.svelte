@@ -55,6 +55,7 @@
 					{maxZoom}
 					bind:zoom={image.zoom}
 					bind:crop={image.crop}
+					cropSize={{ width: 256, height: 256 }}
 					aspect={1}
 					showGrid={false}
 					restrictPosition
