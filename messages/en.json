@@ -48,6 +48,13 @@
 	"profile_saveChanges": "Save changes",
 	"profile_discardChanges": "Discard changes",
 
+	"profile_avatar_title": "Avatar Image",
+	"profile_avatar_description": "Upload a profile picture",
+	"profile_avatar_sizeHint": "Max size 1 MiB",
+	"profile_avatar_selectionHint": "Select the area of the image you want to display as your avatar",
+	"profile_avatar_submit": "Set as avatar",
+	"profile_avatar_back": "Select a different image",
+
 	"topic_parent_topic": "Topic",
 	"topic_parent_threadAmount": "Thread Amount",
 	"topic_parent_postAmount": "Post Amount",
