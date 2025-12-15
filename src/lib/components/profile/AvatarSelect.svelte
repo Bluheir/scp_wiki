@@ -4,13 +4,16 @@
 	import type { AvatarImageData } from "./profile"
 	import { Image } from "lucide-svelte"
 
-	const { onsubmit }: {
+	let {
+		image = $bindable(),
+		onsubmit
+	}: {
+		image?: AvatarImageData
 		onsubmit?: (image: AvatarImageData) => Promise<void> | void
 	} = $props()
 
 	const minZoom = 1
 	const maxZoom = 3
-	let image: AvatarImageData | undefined = $state()
 
 	function handleFile(event: Event) {
 		const input = event.target as HTMLInputElement
