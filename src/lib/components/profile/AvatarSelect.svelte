@@ -19,18 +19,6 @@
 	const maxZoom = 3
 	const formDataWritable = $derived(form.form)
 
-	$effect(() => {
-		if(!image) {
-			$formDataWritable.imageData = undefined
-		} else {
-			$formDataWritable.imageData = {
-				crop: image.crop,
-				image: image.image,
-				zoom: image.zoom
-			}
-		}
-	})
-
 	function handleFile(event: Event) {
 		const input = event.target as HTMLInputElement
 		const file = input.files?.[0]
@@ -87,12 +75,20 @@
 			<Image class="w-8 h-8"/>
 		</div>
 		<div class="flex gap-2">
-			<button class="btn btn-sm btn-primary flex-1" type="submit" onclick={async () => { if(onsubmit) { await onsubmit() } }}>
+			<button class="btn btn-sm btn-primary flex-1" type="submit" onclick={async () => {
+				$formDataWritable.imageData = {
+					crop: image!.crop,
+					image: image!.image,
+					zoom: image!.zoom
+				}
+				if(onsubmit) { await onsubmit() }
+			}}>
 				{m.profile_avatar_submit()}
 			</button>
 			<button class="btn btn-sm btn-error flex-1" onclick={() => {
 				URL.revokeObjectURL(image!.fileUrl)
 				image = undefined
+				$formDataWritable.imageData = undefined
 			}}>{m.profile_avatar_back()}</button>
 		</div>
 	{/if}
