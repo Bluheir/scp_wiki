@@ -2,7 +2,7 @@
 	import UserAvatar from "$lib/components/UserAvatar.svelte"
 	import AvatarSelect from "./AvatarSelect.svelte"
 	import { superForm, type SuperValidated } from "sveltekit-superforms/client"
-	import { type Profile, type ProfileEdit, profileSchema } from "./profile"
+	import { type AvatarImageData, type Profile, type ProfileEdit, profileSchema } from "./profile"
 	import * as Form from "formsnap"
 	import { m } from "$lib/paraglide/messages"
 	import type { Snippet } from "svelte"
@@ -22,11 +22,28 @@
 	} = $props()
 
 	const form = superForm(formValidated, {
+		dataType: "json",
 		validators: zod4Client(profileSchema)
 	})
 
 	const { form: formData, enhance } = form
 	let modalElement: HTMLDialogElement | undefined = $state()
+	let image: AvatarImageData | undefined = $state()
+	const profileAvatar = $derived.by(() => {
+		if(image) {
+			return {
+				id: profile.id,
+				avatarUrl: image.fileUrl,
+				username: profile.username
+			}
+		} else {
+			return {
+				id: profile.id,
+				username: $formData.username,
+				avatarUrl: profile.avatarUrl
+			}
+		}
+	})
 </script>
 
 <form
@@ -36,16 +53,12 @@
 	<div class="flex gap-4">
 		<div>
 			<button class="cursor-pointer" onclick={(e) => { e.preventDefault(); modalElement?.showModal() }}>
-				<UserAvatar user={{
-					id: profile.id,
-					username: $formData.username,
-					avatarUrl: profile.avatarUrl
-				}} size="lg" style="box" />
+				<UserAvatar user={profileAvatar} size="lg" style="box" />
 			</button>
 			<dialog bind:this={modalElement} class="modal not-prose">
 				<div class="modal-box">
 					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick={() => modalElement?.close()}><X class="w-[1em]"/></button>
-					<AvatarSelect onsubmit={() => modalElement?.close()} {form}/>
+					<AvatarSelect bind:image onsubmit={() => modalElement?.close()} {form}/>
 				</div>
 			</dialog>
 		</div>

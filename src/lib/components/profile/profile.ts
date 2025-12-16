@@ -13,10 +13,8 @@ export type Profile = {
 	readonly wikiRating: number
 }
 
-export type AvatarImageData = {
-	image: string
-	crop: { x: number, y: number }
-	zoom: number
+export type AvatarImageData = z.infer<typeof imageData> & {
+	fileUrl: string
 }
 
 export const imageData = z.object({

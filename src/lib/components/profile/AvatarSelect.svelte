@@ -1,22 +1,24 @@
 <script lang="ts">
 	import { m } from "$lib/paraglide/messages"
 	import Cropper from "svelte-easy-crop"
-	import type { ProfileEdit } from "./profile"
+	import type { AvatarImageData, ProfileEdit } from "./profile"
 	import { Image } from "lucide-svelte"
 	import type { SuperForm } from "sveltekit-superforms"
 
 	let {
 		form,
+		image = $bindable(),
 		onsubmit
 	}: {
 		form: SuperForm<ProfileEdit>
+		image: AvatarImageData | undefined
 		onsubmit?: () => Promise<void> | void
 	} = $props()
 
 	const minZoom = 1
 	const maxZoom = 3
 	const formDataWritable = $derived(form.form)
-	let image: { image: File, crop: { x: number, y: number }, zoom: number, fileUrl: string } | undefined = $state()
+
 	$effect(() => {
 		if(!image) {
 			$formDataWritable.imageData = undefined
