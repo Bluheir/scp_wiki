@@ -1,29 +1,24 @@
 <script lang="ts">
 	import { Tooltip } from "bits-ui"
-	import { type AvatarImageData, type Profile, type ProfileEdit, profileSchema } from "./profile"
+	import { type Profile, type ProfileEdit } from "./profile"
 	import { m } from "$lib/paraglide/messages"
 	import UserAvatar from "../UserAvatar.svelte"
-	import { superValidate, type SuperValidated } from "sveltekit-superforms/client"
+	import { type SuperValidated } from "sveltekit-superforms/client"
 	import ProfileEditC from "./ProfileEdit.svelte"
-	import { Pencil, X } from "lucide-svelte"
-	import { zod4 } from "sveltekit-superforms/adapters"
-	import AvatarSelect from "./AvatarSelect.svelte"
+	import { Pencil } from "lucide-svelte"
 
 	let {
 		profile,
 		readonly = true,
-		onSubmit,
-		onAvatarSubmit
+		formValidated
 	}: {
 		profile: Profile
 		readonly?: boolean
-		onSubmit?: (data: ProfileEdit) => Promise<ProfileEdit> | ProfileEdit
-		onAvatarSubmit?: (image: AvatarImageData) => Promise<void> | void
+		formValidated: SuperValidated<ProfileEdit, any, ProfileEdit>
 	} = $props()
-	let { avatarUrl, pronouns, biography, username } = $derived(profile)
-	let editMode: SuperValidated<ProfileEdit, any, ProfileEdit> | undefined = $state()
+	let { pronouns, biography, username } = $derived(profile)
+	let editMode: boolean = $state(false)
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
-	let modalElement: HTMLDialogElement | undefined = $state()
 </script>
 
 {#snippet ratingTable()}
@@ -45,37 +40,12 @@
 	</table>
 {/snippet}
 
-{#snippet avatarEditable()}
-	<button class="cursor-pointer" onclick={(e) => { e.preventDefault(); modalElement?.showModal() }}>
-		<UserAvatar user={{
-			id: profile.id,
-			username: username,
-			avatarUrl
-		}} size="lg" style="box" />
-	</button>
-	<dialog bind:this={modalElement} class="modal not-prose">
-		<div class="modal-box">
-			<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick={() => modalElement?.close()}><X class="w-[1em]"/></button>
-			<AvatarSelect onsubmit={async (image) => {
-				if(onAvatarSubmit) {
-					await onAvatarSubmit(image)
-					avatarUrl = profile.avatarUrl
-				}
-			}}/>
-		</div>
-	</dialog>
-{/snippet}
-
 <div
 	class="prose max-w-[unset] prose-h2:my-0 prose-h3:mt-4 prose-table:my-4 prose-table:text-base prose-table:text-base-content prose-img:my-0"
 >
 	{#if !editMode}
 		<div class="flex items-center gap-4">
-			{#if readonly}
-				<UserAvatar user={profile} size="lg" style="box" />
-			{:else}
-				{@render avatarEditable()}
-			{/if}
+			<UserAvatar user={profile} size="lg" style="box" />
 			<Tooltip.Provider>
 				<Tooltip.Root delayDuration={200}>
 					<Tooltip.Trigger class="select-all">
@@ -126,16 +96,7 @@
 			<div class="my-6 flex gap-2">
 				<button
 					class="btn btn-outline btn-sm"
-					onclick={async () => {
-						const formValidated = await superValidate(zod4(profileSchema), {
-							defaults: {
-								username: username,
-								biography: biography,
-								pronouns: pronouns
-							}
-						})
-						editMode = formValidated
-					}}
+					onclick={() => { editMode = true; }}
 				>
 					<Pencil class="w-[1em]" />
 					{m.profile_editProfile()}
@@ -144,22 +105,10 @@
 		{/if}
 	{:else}
 		<ProfileEditC
-			onDiscard={() => (editMode = undefined)}
-			onSubmit={async (data) => {
-				if(onSubmit) {
-					editMode = undefined
-					username = data.username
-					biography = data.biography
-					pronouns = data.pronouns
-					const result = await onSubmit(data)
-					username = result.username
-					biography = result.biography
-					pronouns = result.pronouns
-				}
-			}}
-			formValidated={editMode}
+			{profile}
+			onDiscard={() => { editMode = false; }}
+			{formValidated}
 			{ratingTable}
-			{avatarEditable}
 		/>
 	{/if}
 </div>

@@ -19,10 +19,20 @@ export type AvatarImageData = {
 	zoom: number
 }
 
+export const imageData = z.object({
+	image: z.file().mime(["image/gif", "image/webp", "image/jpeg", "image/png", "image/avif"]),
+	crop: z.object({
+		x: z.number(),
+		y: z.number()
+	}),
+	zoom: z.number().min(1).max(3).default(1)
+})
+
 export const profileSchema = z.object({
 	username,
 	pronouns: z.string().max(32, { error: () => m.profile_maxPronounsLen({ max: 32 }) }),
-	biography: z.string().max(1024, { error: () => m.profile_maxBiographyLen({ max: 1024 }) })
+	biography: z.string().max(1024, { error: () => m.profile_maxBiographyLen({ max: 1024 }) }),
+	imageData: imageData.optional()
 })
 
 export type ProfileEdit = z.infer<typeof profileSchema>

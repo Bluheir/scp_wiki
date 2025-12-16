@@ -1,47 +1,53 @@
 <script lang="ts">
+	import UserAvatar from "$lib/components/UserAvatar.svelte"
+	import AvatarSelect from "./AvatarSelect.svelte"
 	import { superForm, type SuperValidated } from "sveltekit-superforms/client"
-	import { type ProfileEdit, profileSchema } from "./profile"
+	import { type Profile, type ProfileEdit, profileSchema } from "./profile"
 	import * as Form from "formsnap"
 	import { m } from "$lib/paraglide/messages"
 	import type { Snippet } from "svelte"
-	import { Pencil, Save } from "lucide-svelte"
+	import { Pencil, Save, X } from "lucide-svelte"
 	import { zod4Client } from "sveltekit-superforms/adapters"
 
 	let {
+		profile,
 		formValidated,
 		onDiscard,
-		onSubmit,
-		ratingTable,
-		avatarEditable
+		ratingTable
 	}: {
-		onDiscard: () => Promise<void> | void
-		onSubmit: (data: ProfileEdit) => Promise<void> | void
-		ratingTable: Snippet<[]>
-		avatarEditable: Snippet<[]>
+		profile: Profile,
 		formValidated: SuperValidated<ProfileEdit, any, ProfileEdit>
+		onDiscard: () => Promise<void> | void
+		ratingTable: Snippet<[]>
 	} = $props()
 
 	const form = superForm(formValidated, {
-		SPA: true,
 		validators: zod4Client(profileSchema)
 	})
 
-	const { form: formData, enhance, errors } = $derived(form)
-	const valid = $derived(!$errors.biography && !$errors.username && !$errors.pronouns)
+	const { form: formData, enhance } = form
+	let modalElement: HTMLDialogElement | undefined = $state()
 </script>
 
 <form
-	onsubmit={async (e) => {
-		e.preventDefault()
-		if(valid) {
-			await onSubmit($formData)
-		}
-	}}
+	method="POST"
 	use:enhance
 >
 	<div class="flex gap-4">
 		<div>
-			{@render avatarEditable()}
+			<button class="cursor-pointer" onclick={(e) => { e.preventDefault(); modalElement?.showModal() }}>
+				<UserAvatar user={{
+					id: profile.id,
+					username: $formData.username,
+					avatarUrl: profile.avatarUrl
+				}} size="lg" style="box" />
+			</button>
+			<dialog bind:this={modalElement} class="modal not-prose">
+				<div class="modal-box">
+					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick={() => modalElement?.close()}><X class="w-[1em]"/></button>
+					<AvatarSelect onsubmit={() => modalElement?.close()} {form}/>
+				</div>
+			</dialog>
 		</div>
 		<div class="flex gap-4">
 			<div class="w-80">

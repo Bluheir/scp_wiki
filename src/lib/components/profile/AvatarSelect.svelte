@@ -1,19 +1,33 @@
 <script lang="ts">
 	import { m } from "$lib/paraglide/messages"
 	import Cropper from "svelte-easy-crop"
-	import type { AvatarImageData } from "./profile"
+	import type { ProfileEdit } from "./profile"
 	import { Image } from "lucide-svelte"
+	import type { SuperForm } from "sveltekit-superforms"
 
 	let {
-		image = $bindable(),
+		form,
 		onsubmit
 	}: {
-		image?: AvatarImageData
-		onsubmit?: (image: AvatarImageData) => Promise<void> | void
+		form: SuperForm<ProfileEdit>
+		onsubmit?: () => Promise<void> | void
 	} = $props()
 
 	const minZoom = 1
 	const maxZoom = 3
+	const formDataWritable = $derived(form.form)
+	let image: { image: File, crop: { x: number, y: number }, zoom: number, fileUrl: string } | undefined = $state()
+	$effect(() => {
+		if(!image) {
+			$formDataWritable.imageData = undefined
+		} else {
+			$formDataWritable.imageData = {
+				crop: image.crop,
+				image: image.image,
+				zoom: image.zoom
+			}
+		}
+	})
 
 	function handleFile(event: Event) {
 		const input = event.target as HTMLInputElement
@@ -23,20 +37,15 @@
 		}
 
 		image = {
-			image: URL.createObjectURL(file),
+			fileUrl: URL.createObjectURL(file),
+			image: file,
 			crop: { x: 0, y: 0 },
 			zoom: 1
 		}
 	}
 </script>
 
-<form
-	method="dialog"
-	onsubmit={async () => {
-		if(onsubmit) {
-			await onsubmit(image!)
-		}
-	}}>
+<div>
 	<h3 class="text-2xl font-bold text-base-content">{m.profile_avatar_title()}</h3>
 	{#if !image}
 		<fieldset class="fieldset">
@@ -54,7 +63,7 @@
 		<div class="flex justify-center my-6">
 			<div class="h-[256px] w-[256px] relative">
 				<Cropper
-					image={image.image}
+					image={image.fileUrl}
 					{minZoom}
 					{maxZoom}
 					bind:zoom={image.zoom}
@@ -76,11 +85,13 @@
 			<Image class="w-8 h-8"/>
 		</div>
 		<div class="flex gap-2">
-			<input class="btn btn-sm btn-primary flex-1" type="submit" value={m.profile_avatar_submit()}/>
+			<button class="btn btn-sm btn-primary flex-1" type="submit" onclick={async () => { if(onsubmit) { await onsubmit() } }}>
+				{m.profile_avatar_submit()}
+			</button>
 			<button class="btn btn-sm btn-error flex-1" onclick={() => {
-				URL.revokeObjectURL(image!.image)
+				URL.revokeObjectURL(image!.fileUrl)
 				image = undefined
 			}}>{m.profile_avatar_back()}</button>
 		</div>
 	{/if}
-</form>
+	</div>
