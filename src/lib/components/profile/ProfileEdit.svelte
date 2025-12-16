@@ -48,6 +48,7 @@
 
 <form
 	method="POST"
+	enctype="multipart/form-data"
 	use:enhance
 >
 	<div class="flex gap-4">
