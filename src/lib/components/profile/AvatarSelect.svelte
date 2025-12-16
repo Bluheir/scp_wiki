@@ -43,7 +43,7 @@
 			<input
 				type="file"
 				class="file-input"
-				accept="image/webp,image/jpeg,image/png"
+				accept="image/webp, image/jpeg, image/png, image/gif, image/avif"
 				onchange={handleFile}
 			/>
 			<span class="label">{m.profile_avatar_sizeHint()}</span>
