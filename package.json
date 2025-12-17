@@ -67,6 +67,7 @@
 		"formsnap": "^2.0.1",
 		"lucide-svelte": "^0.554.0",
 		"sharp": "^0.34.5",
-		"svelte-easy-crop": "^5.0.0"
+		"svelte-easy-crop": "^5.0.0",
+		"svelte-sonner": "^1.0.7"
 	}
 }
