@@ -66,12 +66,14 @@ export const actions: Actions = {
 			error(500)
 		}
 
-		if (listed.data.length >= 3) {
-			const idsToDelete = listed.data
-				.filter((value) => value.name !== ".emptyFolderPlaceholder")
-				.map((value) => value.name)
+		const fileNames = listed.data
+			.filter((value) => value.name !== ".emptyFolderPlaceholder")
+			.map((value) => value.name)
+
+		if (fileNames.length >= 3) {
+			const idsToDelete = fileNames
 				.sort((a, b) => b.localeCompare(a))
-				.slice(1)
+				.slice(2)
 			const deletionResult = await locals.supabaseAdmin.storage
 				.from("avatar")
 				.remove(idsToDelete.map((name) => `${userId}/${name}`))
