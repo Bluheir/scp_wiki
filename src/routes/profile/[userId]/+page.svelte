@@ -16,11 +16,7 @@
 	const form = superForm(data.form, {
 		dataType: "json",
 		validators: zod4Client(profileSchema),
-	})
-
-	const message = form.message
-	$effect(() => {
-		if($message) {
+		onUpdated: () => {
 			editMode = false
 		}
 	})
