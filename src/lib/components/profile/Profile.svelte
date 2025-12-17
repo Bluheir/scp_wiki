@@ -3,18 +3,18 @@
 	import { type Profile, type ProfileEdit } from "./profile"
 	import { m } from "$lib/paraglide/messages"
 	import UserAvatar from "../UserAvatar.svelte"
-	import { type SuperValidated } from "sveltekit-superforms/client"
+	import { type SuperForm } from "sveltekit-superforms/client"
 	import ProfileEditC from "./ProfileEdit.svelte"
 	import { Pencil } from "lucide-svelte"
 
 	let {
 		profile,
 		readonly = true,
-		formValidated
+		form
 	}: {
 		profile: Profile
 		readonly?: boolean
-		formValidated: SuperValidated<ProfileEdit, any, ProfileEdit>
+		form: SuperForm<ProfileEdit>
 	} = $props()
 	let { pronouns, biography, username } = $derived(profile)
 	let editMode: boolean = $state(false)
@@ -107,7 +107,7 @@
 		<ProfileEditC
 			{profile}
 			onDiscard={() => { editMode = false; }}
-			{formValidated}
+			{form}
 			{ratingTable}
 		/>
 	{/if}

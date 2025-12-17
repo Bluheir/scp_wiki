@@ -1,30 +1,24 @@
 <script lang="ts">
 	import UserAvatar from "$lib/components/UserAvatar.svelte"
 	import AvatarSelect from "./AvatarSelect.svelte"
-	import { superForm, type SuperValidated } from "sveltekit-superforms/client"
-	import { type AvatarImageData, type Profile, type ProfileEdit, profileSchema } from "./profile"
+	import { type AvatarImageData, type Profile, type ProfileEdit } from "./profile"
 	import * as Form from "formsnap"
 	import { m } from "$lib/paraglide/messages"
 	import type { Snippet } from "svelte"
 	import { Pencil, Save, X } from "lucide-svelte"
-	import { zod4Client } from "sveltekit-superforms/adapters"
+	import type { SuperForm } from "sveltekit-superforms"
 
 	let {
 		profile,
-		formValidated,
+		form,
 		onDiscard,
 		ratingTable
 	}: {
 		profile: Profile,
-		formValidated: SuperValidated<ProfileEdit, any, ProfileEdit>
+		form: SuperForm<ProfileEdit>
 		onDiscard: () => Promise<void> | void
 		ratingTable: Snippet<[]>
 	} = $props()
-
-	const form = superForm(formValidated, {
-		dataType: "json",
-		validators: zod4Client(profileSchema)
-	})
 
 	const { form: formData, enhance } = form
 	let modalElement: HTMLDialogElement | undefined = $state()

@@ -4,10 +4,18 @@
 	import { onDestroy, onMount } from "svelte"
 	import type { PageProps } from "./$types"
 	import type { RealtimeChannel } from "@supabase/supabase-js"
+	import { zod4Client } from "sveltekit-superforms/adapters"
+	import { superForm } from "sveltekit-superforms"
+	import { profileSchema } from "$lib/components/profile/profile"
 
 	const { data }: PageProps = $props()
-	let { profile, supabase, readonly, form } = $derived(data)
-	const profileEdit = $derived({ username: profile.username, biography: profile.biography, pronouns: profile.pronouns })
+	let { profile, supabase, readonly } = $derived(data)
+
+	const form = superForm(data.form, {
+		dataType: "json",
+		validators: zod4Client(profileSchema)
+	})
+
 	let channel: RealtimeChannel | undefined
 
 	onMount(() => {
@@ -43,5 +51,5 @@
 <Navbar />
 
 <div class="mx-20 my-10 rounded-box border border-base-content/10 p-8 shadow-xl">
-	<Profile {profile} {readonly} formValidated={form} />
+	<Profile {profile} {readonly} form={form} />
 </div>
