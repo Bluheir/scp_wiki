@@ -14,6 +14,7 @@ declare global {
 		interface Locals {
 			supabase: SupabaseClient<Database>
 			supabaseUser: SupabaseClient<Database>
+			supabaseAdmin: SupabaseClient<Database>
 			supabase_anon_key: string
 			supabase_url: string
 		}
