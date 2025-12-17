@@ -11,9 +11,18 @@
 	const { data }: PageProps = $props()
 	let { profile, supabase, readonly } = $derived(data)
 
+	let editMode = $state(false)
+
 	const form = superForm(data.form, {
 		dataType: "json",
-		validators: zod4Client(profileSchema)
+		validators: zod4Client(profileSchema),
+	})
+
+	const message = form.message
+	$effect(() => {
+		if($message) {
+			editMode = false
+		}
 	})
 
 	let channel: RealtimeChannel | undefined
@@ -51,5 +60,5 @@
 <Navbar />
 
 <div class="mx-20 my-10 rounded-box border border-base-content/10 p-8 shadow-xl">
-	<Profile {profile} {readonly} form={form} />
+	<Profile {profile} bind:editMode {readonly} form={form} />
 </div>

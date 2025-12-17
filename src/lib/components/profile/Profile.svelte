@@ -9,15 +9,16 @@
 
 	let {
 		profile,
+		editMode = $bindable(),
 		readonly = true,
 		form
 	}: {
 		profile: Profile
+		editMode: boolean
 		readonly?: boolean
 		form: SuperForm<ProfileEdit>
 	} = $props()
 	let { pronouns, biography, username } = $derived(profile)
-	let editMode: boolean = $state(false)
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
 </script>
 
