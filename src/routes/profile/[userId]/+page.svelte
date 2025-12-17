@@ -15,7 +15,7 @@
 
 	let editMode = $state(false)
 
-	const form = superForm(data.form, {
+	const form = $derived(superForm(data.form, {
 		dataType: "json",
 		validators: zod4Client(profileSchema),
 		onUpdated: () => {
@@ -35,7 +35,7 @@
 					break
 			}
 		}
-	})
+	}))
 
 	let channel: RealtimeChannel | undefined
 
