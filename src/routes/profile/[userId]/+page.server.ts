@@ -18,8 +18,8 @@ function relativePositions(
 	crop: { x: number; y: number },
 	cropSize: { width: number, height: number }
 ) {
-	const width = Math.round(meta.naturalWidth / zoom)
-	const height = Math.round(meta.naturalHeight / zoom)
+	const width = Math.round(cropSize.width / meta.width / zoom * meta.naturalWidth)
+	const height = Math.round(cropSize.height / meta.height / zoom * meta.naturalHeight)
 	const x = Math.round(
 		(((meta.width - cropSize.width / zoom) / 2 - crop.x / zoom) / meta.width) * meta.naturalWidth
 	)
@@ -28,11 +28,6 @@ function relativePositions(
 	)
 
 	let m = { width, height }
-	if(meta.naturalWidth >= meta.naturalHeight) {
-		m.width = height
-	} else {
-		m.height = width
-	}
 
 	return {
 		...m,
@@ -123,6 +118,12 @@ export const actions: Actions = {
 			const metadata = await Readable.fromWeb(imageMetadataStream as ReadableStream).pipe(sharp()).metadata();
 			const pipeline = imageEdit(metadata, imageData.crop, imageData.zoom, 256)
 			if(!pipeline) {
+				issues.push({
+					code: "custom",
+					message: "Crop position invalid",
+					input: imageData.crop,
+					path: ["imageData.crop"]
+				})
 				return
 			}
 			const avifStream = Readable.fromWeb(mainStream as ReadableStream).pipe(pipeline)
