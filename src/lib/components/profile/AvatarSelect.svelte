@@ -77,7 +77,7 @@
 			<Image class="w-8 h-8"/>
 		</div>
 		<div class="flex gap-2">
-			<button class="btn btn-sm btn-primary flex-1" type="submit" onclick={async () => {
+			<button class="btn btn-sm btn-primary flex-1" type="button" onclick={async () => {
 				$formDataWritable.imageData = {
 					image: image!.image,
 					crop

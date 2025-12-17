@@ -47,12 +47,12 @@
 >
 	<div class="flex gap-4">
 		<div>
-			<button class="cursor-pointer" onclick={(e) => { e.preventDefault(); modalElement?.showModal() }}>
+			<button class="cursor-pointer" onclick={() => modalElement?.showModal() } type="button">
 				<UserAvatar user={profileAvatar} size="lg" style="box" />
 			</button>
 			<dialog bind:this={modalElement} class="modal not-prose">
 				<div class="modal-box">
-					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onclick={() => modalElement?.close()}><X class="w-[1em]"/></button>
+					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" onclick={() => modalElement?.close()}><X class="w-[1em]"/></button>
 					<AvatarSelect bind:image onsubmit={() => modalElement?.close()} {form}/>
 				</div>
 			</dialog>
