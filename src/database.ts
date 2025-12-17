@@ -48,7 +48,7 @@ export type Database = {
 					biography?: string
 					pronouns?: string
 					username?: string
-					avatar_url?: never
+					avatar_url?: string
 					created_at?: never
 					forum_rating?: never
 					id?: never
