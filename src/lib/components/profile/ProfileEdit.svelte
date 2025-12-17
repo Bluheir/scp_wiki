@@ -114,7 +114,16 @@
 	</section>
 	<div class="flex gap-2">
 		<button type="submit" class="btn btn-sm btn-primary"><Save class="w-[1em]" />{m.profile_saveChanges()}</button>
-		<button class="btn btn-sm btn-error" onclick={onDiscard}>
+		<button class="btn btn-sm btn-error" onclick={async () => {
+			form.reset({
+				data: {
+					biography: profile.biography,
+					pronouns: profile.pronouns,
+					username: profile.username
+				}
+			})
+			await onDiscard()
+		}}>
 			<Pencil class="w-[1em]" />
 			{m.profile_discardChanges()}
 		</button>
