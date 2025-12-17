@@ -1,4 +1,4 @@
-import { profileSchema } from "$lib/components/profile/profile"
+import { profileSchema, type CropData } from "$lib/components/profile/profile"
 import { error, type Actions } from "@sveltejs/kit"
 import sharp, { type Sharp } from "sharp"
 import { Readable } from "node:stream"
@@ -7,47 +7,12 @@ import { fail, message, superValidate } from "sveltekit-superforms"
 import { zod4 } from "sveltekit-superforms/adapters"
 import { v7 } from "uuid"
 
-function relativePositions(
-	meta: {
-		width: number
-		height: number
-		naturalWidth: number
-		naturalHeight: number
-	},
-	zoom: number,
-	crop: { x: number; y: number },
-	cropSize: { width: number, height: number }
-) {
-	const width = Math.round(cropSize.width / meta.width / zoom * meta.naturalWidth)
-	const height = Math.round(cropSize.height / meta.height / zoom * meta.naturalHeight)
-	const x = Math.round(
-		(((meta.width - cropSize.width / zoom) / 2 - crop.x / zoom) / meta.width) * meta.naturalWidth
-	)
-	const y = Math.round(
-		(((meta.height - cropSize.height / zoom) / 2 - crop.y / zoom) / meta.height) * meta.naturalHeight
-	)
-
-	let m = { width, height }
-
-	return {
-		...m,
-		x,
-		y
-	}
-}
-
 function imageEdit(
 	meta: sharp.Metadata,
-	crop: { x: number; y: number },
-	zoom: number,
+	crop: CropData,
 	size: number
 ): Sharp | undefined {
-	const { x, y, width, height } = relativePositions({
-		width: size,
-		height: size,
-		naturalWidth: meta.width,
-		naturalHeight: meta.height
-	}, zoom, crop, { width: size, height: size })
+	const { x, y, width, height } = crop
 
 	if (x + width > meta.width || y + height > meta.height || x < 0 || y < 0) {
 		return
@@ -116,12 +81,12 @@ export const actions: Actions = {
 			const imageStream = imageData.image.stream()
 			const [imageMetadataStream, mainStream] = imageStream.tee()
 			const metadata = await Readable.fromWeb(imageMetadataStream as ReadableStream).pipe(sharp()).metadata();
-			const pipeline = imageEdit(metadata, imageData.crop, imageData.zoom, 256)
+			const pipeline = imageEdit(metadata, imageData.crop, 256)
 			if(!pipeline) {
 				issues.push({
 					code: "custom",
 					message: "Crop position invalid",
-					input: imageData.crop,
+					input: null,
 					path: ["imageData.crop"]
 				})
 				return

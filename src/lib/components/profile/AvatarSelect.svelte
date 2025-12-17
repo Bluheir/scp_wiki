@@ -18,6 +18,7 @@
 	const minZoom = 1
 	const maxZoom = 3
 	const formDataWritable = $derived(form.form)
+	let crop = $state({ x: 0, y: 0, width: 0, height: 0 })
 
 	function handleFile(event: Event) {
 		const input = event.target as HTMLInputElement
@@ -27,8 +28,8 @@
 		}
 
 		image = {
-			fileUrl: URL.createObjectURL(file),
 			image: file,
+			fileUrl: URL.createObjectURL(file),
 			crop: { x: 0, y: 0 },
 			zoom: 1
 		}
@@ -63,6 +64,7 @@
 					showGrid={false}
 					restrictPosition
 					cropShape="round"
+					oncropcomplete={(e) => crop = e.pixels}
 				/>
 			</div>
 		</div>
@@ -77,9 +79,8 @@
 		<div class="flex gap-2">
 			<button class="btn btn-sm btn-primary flex-1" type="submit" onclick={async () => {
 				$formDataWritable.imageData = {
-					crop: image!.crop,
 					image: image!.image,
-					zoom: image!.zoom
+					crop
 				}
 				if(onsubmit) { await onsubmit() }
 			}}>
