@@ -58,7 +58,7 @@ export const actions: Actions = {
 		}
 
 		if (!value.imageData) {
-			return { form }
+			return message(form, "")
 		}
 
 		const listed = await locals.supabaseAdmin.storage.from("avatar").list(`${userId}`)
@@ -112,6 +112,6 @@ export const actions: Actions = {
 			error(500)
 		}
 
-		return { form }
+		return message(form, "")
 	}
 }
