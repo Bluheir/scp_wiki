@@ -7,6 +7,7 @@
 	import { zod4Client } from "sveltekit-superforms/adapters"
 	import { superForm } from "sveltekit-superforms"
 	import { profileSchema } from "$lib/components/profile/profile"
+	import { toast } from "svelte-sonner"
 
 	const { data }: PageProps = $props()
 	let { profile, supabase, readonly } = $derived(data)
@@ -18,6 +19,20 @@
 		validators: zod4Client(profileSchema),
 		onUpdated: () => {
 			editMode = false
+		},
+		onError({ result }) {
+			if(!result.status) {
+				return
+			}
+
+			switch(result.status) {
+				case 403:
+					toast.error("You no longer have permission to edit this profile", { class: "alert alert-error" })
+					break
+				case 500:
+					toast.error("500: Internal server error", { class: "alert alert-error" })
+					break
+			}
 		}
 	})
 
