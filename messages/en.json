@@ -1,6 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"hello_world": "Hello, {name} from en!",
+	"generic_error500": "500: Internal server error",
+
 	"login_welcomeBack": "Welcome back Doctor [REDACTED]",
 	"auth_email": "Email",
 	"auth_emailDescription": "Email address for the account",
@@ -47,6 +49,7 @@
 	"profile_editProfile": "Edit profile",
 	"profile_saveChanges": "Save changes",
 	"profile_discardChanges": "Discard changes",
+	"profile_noPermission": "You no longer have permission to edit this profile",
 
 	"profile_avatar_title": "Avatar Image",
 	"profile_avatar_description": "Upload a profile picture",
