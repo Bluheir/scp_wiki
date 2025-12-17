@@ -1,5 +1,5 @@
 import { profileSchema, type CropData } from "$lib/components/profile/profile"
-import { json, type Actions } from "@sveltejs/kit"
+import { error, type Actions } from "@sveltejs/kit"
 import sharp, { type Sharp } from "sharp"
 import { Readable } from "node:stream"
 import { ReadableStream } from "node:stream/web"
@@ -54,16 +54,16 @@ export const actions: Actions = {
 			.single()
 
 		if (!result.data) {
-			return json({ code: "permission_updated", status: 403 }, { status: 403 })
+			error(403)
 		}
 
 		if (!value.imageData) {
-			return message(form, "")
+			return { form }
 		}
 
 		const listed = await locals.supabaseAdmin.storage.from("avatar").list(`${userId}`)
 		if (!listed.data) {
-			return json({ status: 500 }, { status: 500 })
+			error(500)
 		}
 
 		if (listed.data.length >= 3) {
@@ -77,7 +77,7 @@ export const actions: Actions = {
 				.remove(idsToDelete.map((name) => `${userId}/${name}`))
 			
 			if(deletionResult.error) {
-				return json({ status: 500 }, { status: 500 })
+				error(500)
 			}
 		}
 
@@ -100,7 +100,7 @@ export const actions: Actions = {
 			.upload(newAvatarPath, avifStream, { contentType: "image/avif" })
 
 		if(uploadResult.error) {
-			return json({ status: 500 }, { status: 500 })
+			error(500)
 		}
 
 		const newAvatarUrl = locals.supabaseAdmin.storage.from("avatar").getPublicUrl(newAvatarPath)
@@ -109,9 +109,9 @@ export const actions: Actions = {
 		const updateUrlResult = await locals.supabaseAdmin.from("profile").update({ avatar_url: newAvatarUrl }).eq("id", userId)
 
 		if(updateUrlResult.error) {
-			return json({ status: 500 }, { status: 500 })
+			error(500)
 		}
 
-		return message(form, "")
+		return { form }
 	}
 }
