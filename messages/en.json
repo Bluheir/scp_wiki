@@ -57,6 +57,7 @@
 	"profile_avatar_selectionHint": "Select the area of the image you want to display as your avatar",
 	"profile_avatar_submit": "Set as avatar",
 	"profile_avatar_badCrop": "Bad crop for the avatar image. Please try selecting a region again.",
+	"profile_avatar_imageMax": "This image exceeds the avatar size limit. Please choose a smaller image",
 
 	"topic_parent_topic": "Topic",
 	"topic_parent_threadAmount": "Thread Amount",

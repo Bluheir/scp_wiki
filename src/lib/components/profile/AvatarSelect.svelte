@@ -28,15 +28,17 @@
 			return
 		}
 
-		image = {
-			image: file,
-			fileUrl: URL.createObjectURL(file),
-			crop: { x: 0, y: 0 },
-			zoom: 1
-		}
 		$formDataWritable.imageData = {
 			image: file,
 			crop
+		}
+		if(file.size <= 1024 * 1024) {
+			image = {
+				image: file,
+				fileUrl: URL.createObjectURL(file),
+				crop: { x: 0, y: 0 },
+				zoom: 1
+			}
 		}
 	}
 </script>
