@@ -1,8 +1,9 @@
 import { test as base, Page } from "@playwright/test"
+import type { Database } from "../src/database"
 import { createClient, SupabaseClient, User } from "@supabase/supabase-js"
 
 export const test = base.extend<{
-	supabaseAdmin: SupabaseClient,
+	supabaseAdmin: SupabaseClient<Database>,
 	pageUtils: {
 		waitForStart: (page: Page, options?: { timeout?: number }) => Promise<void>
 	}
@@ -30,7 +31,7 @@ export const userTest = test.extend<{
 			password: string
 		}
 		user: User
-		client: SupabaseClient
+		client: SupabaseClient<Database>
 	}
 }>({
 	user: async ({ page, supabaseAdmin }, use) => {
