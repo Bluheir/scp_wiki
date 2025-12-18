@@ -3,8 +3,13 @@
 	import "$lib/fonts.css"
 	import favicon from "$lib/assets/favicon.svg"
 	import { Toaster } from "svelte-sonner"
+	import { onMount } from "svelte"
 
 	let { children } = $props()
+
+	onMount(() => {
+		document.body.classList.add("started")
+	})
 </script>
 
 <svelte:head>

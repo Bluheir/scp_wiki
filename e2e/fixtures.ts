@@ -1,11 +1,23 @@
-import { test as base } from "@playwright/test"
+import { test as base, Page } from "@playwright/test"
 import { createClient, SupabaseClient, User } from "@supabase/supabase-js"
 
-export const test = base.extend<{ supabaseAdmin: SupabaseClient }>({
+export const test = base.extend<{
+	supabaseAdmin: SupabaseClient,
+	pageUtils: {
+		waitForStart: (page: Page, options?: { timeout?: number }) => Promise<void>
+	}
+}>({
 	supabaseAdmin: async ({}, use) => {
 		const client = createClient(process.env.PUBLIC_SUPABASE_URL!, process.env.PRIVATE_SUPABASE_KEY!)
 
 		await use(client)
+	},
+	pageUtils: async ({}, use) => {
+    await use({
+			waitForStart: async (page: Page, options) => {
+				await page.waitForSelector("body.started", { timeout: options?.timeout, state: "attached" })
+			}
+		})
 	}
 })
 
@@ -39,6 +51,7 @@ export const userTest = test.extend<{
 		await page.getByLabel("Email").fill(email)
 		await page.getByLabel("Password").fill(password)
 		await page.locator("[type=submit]").click()
+		await page.waitForURL("/")
 
 		await use({
 			userInfo: { id: data.user.id, username, email, password },
