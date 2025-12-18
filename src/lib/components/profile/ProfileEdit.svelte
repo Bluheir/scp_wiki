@@ -14,7 +14,7 @@
 		onDiscard,
 		ratingTable
 	}: {
-		profile: Profile,
+		profile: Profile
 		form: SuperForm<ProfileEdit>
 		onDiscard: () => Promise<void> | void
 		ratingTable: Snippet<[]>
@@ -24,7 +24,7 @@
 	let modalElement: HTMLDialogElement | undefined = $state()
 	let image: AvatarImageData | undefined = $state()
 	const profileAvatar = $derived.by(() => {
-		if(image) {
+		if (image) {
 			return {
 				id: profile.id,
 				avatarUrl: image.fileUrl,
@@ -40,20 +40,20 @@
 	})
 </script>
 
-<form
-	method="POST"
-	enctype="multipart/form-data"
-	use:enhance
->
+<form method="POST" enctype="multipart/form-data" use:enhance>
 	<div class="flex gap-4">
 		<div>
-			<button class="cursor-pointer" onclick={() => modalElement?.showModal() } type="button">
+			<button class="cursor-pointer" onclick={() => modalElement?.showModal()} type="button">
 				<UserAvatar user={profileAvatar} size="lg" style="box" />
 			</button>
-			<dialog bind:this={modalElement} class="modal not-prose">
+			<dialog bind:this={modalElement} class="not-prose modal">
 				<div class="modal-box">
-					<button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" type="button" onclick={() => modalElement?.close()}><X class="w-[1em]"/></button>
-					<AvatarSelect bind:image onsubmit={() => modalElement?.close()} {form}/>
+					<button
+						class="btn absolute top-2 right-2 btn-circle btn-ghost btn-sm"
+						type="button"
+						onclick={() => modalElement?.close()}><X class="w-[1em]" /></button
+					>
+					<AvatarSelect bind:image onsubmit={() => modalElement?.close()} {form} />
 				</div>
 			</dialog>
 		</div>
@@ -113,17 +113,22 @@
 		</Form.Field>
 	</section>
 	<div class="flex gap-2">
-		<button type="submit" class="btn btn-sm btn-primary"><Save class="w-[1em]" />{m.profile_saveChanges()}</button>
-		<button class="btn btn-sm btn-error" onclick={async () => {
-			form.reset({
-				data: {
-					biography: profile.biography,
-					pronouns: profile.pronouns,
-					username: profile.username
-				}
-			})
-			await onDiscard()
-		}}>
+		<button type="submit" class="btn btn-sm btn-primary"
+			><Save class="w-[1em]" />{m.profile_saveChanges()}</button
+		>
+		<button
+			class="btn btn-sm btn-error"
+			onclick={async () => {
+				form.reset({
+					data: {
+						biography: profile.biography,
+						pronouns: profile.pronouns,
+						username: profile.username
+					}
+				})
+				await onDiscard()
+			}}
+		>
 			<Pencil class="w-[1em]" />
 			{m.profile_discardChanges()}
 		</button>

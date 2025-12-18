@@ -71,14 +71,12 @@ export const actions: Actions = {
 			.map((value) => value.name)
 
 		if (fileNames.length >= 3) {
-			const idsToDelete = fileNames
-				.sort((a, b) => b.localeCompare(a))
-				.slice(2)
+			const idsToDelete = fileNames.sort((a, b) => b.localeCompare(a)).slice(2)
 			const deletionResult = await locals.supabaseAdmin.storage
 				.from("avatar")
 				.remove(idsToDelete.map((name) => `${userId}/${name}`))
-			
-			if(deletionResult.error) {
+
+			if (deletionResult.error) {
 				error(500)
 			}
 		}
@@ -101,16 +99,19 @@ export const actions: Actions = {
 			.from("avatar")
 			.upload(newAvatarPath, avifStream, { contentType: "image/avif" })
 
-		if(uploadResult.error) {
+		if (uploadResult.error) {
 			error(500)
 		}
 
 		const newAvatarUrl = locals.supabaseAdmin.storage.from("avatar").getPublicUrl(newAvatarPath)
 			.data.publicUrl
 
-		const updateUrlResult = await locals.supabaseAdmin.from("profile").update({ avatar_url: newAvatarUrl }).eq("id", userId)
+		const updateUrlResult = await locals.supabaseAdmin
+			.from("profile")
+			.update({ avatar_url: newAvatarUrl })
+			.eq("id", userId)
 
-		if(updateUrlResult.error) {
+		if (updateUrlResult.error) {
 			error(500)
 		}
 

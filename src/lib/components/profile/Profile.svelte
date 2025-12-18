@@ -97,7 +97,9 @@
 			<div class="my-6 flex gap-2">
 				<button
 					class="btn btn-outline btn-sm"
-					onclick={() => { editMode = true; }}
+					onclick={() => {
+						editMode = true
+					}}
 				>
 					<Pencil class="w-[1em]" />
 					{m.profile_editProfile()}
@@ -107,7 +109,9 @@
 	{:else}
 		<ProfileEditC
 			{profile}
-			onDiscard={() => { editMode = false; }}
+			onDiscard={() => {
+				editMode = false
+			}}
 			{form}
 			{ratingTable}
 		/>

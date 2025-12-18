@@ -17,9 +17,9 @@ export const load: PageLoad = async ({ parent, params }) => {
 		error(404)
 	}
 
-	const { data: userData } = await supabase.auth.getUser();
+	const { data: userData } = await supabase.auth.getUser()
 	let readonly = true
-	if(userData.user) {
+	if (userData.user) {
 		const { data: permissionData } = await supabase
 			.from("user_victim_single_action")
 			.select("profile_id")

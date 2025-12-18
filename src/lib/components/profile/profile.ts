@@ -14,9 +14,9 @@ export type Profile = {
 }
 
 export type AvatarImageData = {
-	image: File,
-	crop: { x: number, y: number },
-	zoom: number,
+	image: File
+	crop: { x: number; y: number }
+	zoom: number
 	fileUrl: string
 }
 
@@ -28,7 +28,10 @@ export const cropData = z.object({
 })
 
 export const imageData = z.object({
-	image: z.file().mime(["image/gif", "image/webp", "image/jpeg", "image/png", "image/avif"]).max(1024 * 1024, { error: m.profile_avatar_imageMax }),
+	image: z
+		.file()
+		.mime(["image/gif", "image/webp", "image/jpeg", "image/png", "image/avif"])
+		.max(1024 * 1024, { error: m.profile_avatar_imageMax }),
 	crop: cropData
 })
 

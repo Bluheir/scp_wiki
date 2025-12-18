@@ -15,32 +15,34 @@
 
 	let editMode = $state(false)
 
-	const form = $derived(superForm(data.form, {
-		dataType: "json",
-		validators: zod4Client(profileSchema),
-		onUpdated: () => {
-			editMode = false
-		},
-		onError({ result }) {
-			if(!result.status) {
-				return
-			}
+	const form = $derived(
+		superForm(data.form, {
+			dataType: "json",
+			validators: zod4Client(profileSchema),
+			onUpdated: () => {
+				editMode = false
+			},
+			onError({ result }) {
+				if (!result.status) {
+					return
+				}
 
-			switch(result.status) {
-				case 400:
-					if("code" in result.error && result.error.code === "bad_crop") {
-						toast.error(m.profile_avatar_badCrop(), { class: "alert alert-error" })
-					}
-					break
-				case 403:
-					toast.error(m.profile_noPermission(), { class: "alert alert-error" })
-					break
-				case 500:
-					toast.error(m.generic_error500(), { class: "alert alert-error" })
-					break
+				switch (result.status) {
+					case 400:
+						if ("code" in result.error && result.error.code === "bad_crop") {
+							toast.error(m.profile_avatar_badCrop(), { class: "alert alert-error" })
+						}
+						break
+					case 403:
+						toast.error(m.profile_noPermission(), { class: "alert alert-error" })
+						break
+					case 500:
+						toast.error(m.generic_error500(), { class: "alert alert-error" })
+						break
+				}
 			}
-		}
-	}))
+		})
+	)
 
 	let channel: RealtimeChannel | undefined
 
@@ -67,7 +69,8 @@
 						wikiRating: data.wiki_rating
 					}
 				}
-			).subscribe()
+			)
+			.subscribe()
 	})
 	onDestroy(async () => {
 		await channel?.unsubscribe()
@@ -77,5 +80,5 @@
 <Navbar />
 
 <div class="mx-20 my-10 rounded-box border border-base-content/10 p-8 shadow-xl">
-	<Profile {profile} bind:editMode {readonly} form={form} />
+	<Profile {profile} bind:editMode {readonly} {form} />
 </div>
