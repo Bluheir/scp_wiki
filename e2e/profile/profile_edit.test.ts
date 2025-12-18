@@ -21,11 +21,11 @@ userTest.describe("user", () => {
 		expect(newPronouns).toBe("she/her")
 	})
 
-	userTest("can see live profile updates", async ({ page, pageUtils, user }) => {
+	userTest("can see live profile updates", async ({ page, pageUtils, supabaseAdmin, user }) => {
 		await page.goto(`/profile/${user.userInfo.id}`)
 		await pageUtils.waitForStart(page)
 
-		await user.client.from("profile")
+		await supabaseAdmin.from("profile")
 			.update({ username: "Cute Girl", biography: "I am a cute girl who likes Hatsune Miku :3" })
 			.eq("id", user.userInfo.id)
 
