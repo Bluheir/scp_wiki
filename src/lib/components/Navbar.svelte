@@ -1,7 +1,6 @@
 <script lang="ts">
 	import SCPEmblem from "$lib/icons/SCPEmblem.svelte"
 	import { m } from "$lib/paraglide/messages"
-	import { NavigationMenu } from "bits-ui"
 	import { ChevronDown, Earth, Newspaper, Search } from "lucide-svelte"
 	import UserAvatar from "./UserAvatar.svelte"
 
@@ -88,93 +87,91 @@
 
 <div class="rounded-b-box p-2">
 	<nav
-		class="navbar sticky top-0 rounded-box border-b border-base-content/10 bg-base-200 px-4 shadow-lg shadow-primary transition"
+		class="navbar sticky top-0 rounded-box border-b border-base-content/10 bg-base-200 px-4 shadow-lg shadow-primary/20 transition"
 	>
 		<div class="navbar-start">
-			<NavigationMenu.Root class="relative z-10 flex w-full" orientation="horizontal">
-				<NavigationMenu.List class="navbar gap-1">
-					<NavigationMenu.Item value="community">
-						<NavigationMenu.Trigger class="btn cursor-default btn-ghost btn-sm"
-							><Newspaper class="w-[1em]" />{m.navbar_community()}<ChevronDown
-								class="w-[1em]"
-							/></NavigationMenu.Trigger
-						>
-						<NavigationMenu.Content
-							class="data-[motion=from-end]:animate-enter-from-right data-[motion=from-start]:animate-enter-from-left data-[motion=to-end]:animate-exit-to-right data-[motion=to-start]:animate-exit-to-left absolute top-0 left-0 w-full sm:w-auto"
-						>
-							<div class="w-150 p-4">
-								<div class="text-xl font-bold p-4 select-none">{m.navbar_community()}</div>
-								<ul
-									class="m-0 grid list-none gap-x-2.5 gap-y-2.5 grid-cols-2 grid-rows-2 bg-base-200 justify-items-stretch"
-								>
-									{#each forumLinks as link}
-										<li class="contents">
-											<NavigationMenu.Link
-												class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10 hover:border-primary"
-												href={link.href}
-											>
-												<div class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</div>
-												<p class="text-base-content/50 line-clamp-2 text-sm leading-snug">
-													{link.description}
-												</p>
-											</NavigationMenu.Link>
-										</li>
-									{/each}
-								</ul>
-							</div>
-						</NavigationMenu.Content>
-					</NavigationMenu.Item>
-					<NavigationMenu.Item value="wiki">
-						<NavigationMenu.Trigger class="btn cursor-default btn-ghost btn-sm">
-							<Earth class="w-[1em]" />
-							{m.navbar_wiki()}
-							<ChevronDown class="w-[1em]" />
-						</NavigationMenu.Trigger>
-						<NavigationMenu.Content class="data-[motion=from-end]:animate-enter-from-right data-[motion=from-start]:animate-enter-from-left data-[motion=to-end]:animate-exit-to-right data-[motion=to-start]:animate-exit-to-left absolute top-0 left-0 w-full sm:w-auto">
-							<div class="w-150 p-4">
-								<div class="text-xl font-bold p-4 select-none">{m.navbar_wiki()}</div>
-								<ul
-									class="m-0 grid gap-2.5 grid-cols-2 grid-rows-3 bg-base-200"
-								>
-									<li class="contents">
-										<div class="row-span-3 border border-base-content/10 rounded-box hover:border-primary transition p-4 hover:bg-base-300">
-											<div class="font-medium leading-none select-none">{m.navbar_scpBySeries()}</div>
-											<ol class="text-base-content/50 text-sm list-disc ms-4">
-												{#each [1,2,3,4,5,6,7,8,9,10] as serie}
-													<li class="my-1"><a href="/series/{serie}">{m.navbar_seriesN({ series: toRomanNumeral(serie) })}</a></li>
-												{/each}
-											</ol>
-										</div>
-									</li>
-									{#each wikiLinks as link}
-										<li class="contents">
-											<NavigationMenu.Link
-												class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10 hover:border-primary"
-												href={link.href}
-											>
-												<div class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</div>
-												<p class="text-base-content/50 line-clamp-2 text-sm leading-snug">
-													{link.description}
-												</p>
-											</NavigationMenu.Link>
-										</li>
-									{/each}
-								</ul>
-							</div>
-						</NavigationMenu.Content>
-					</NavigationMenu.Item>
-					<NavigationMenu.Item value="search">
-						<NavigationMenu.Link class="btn cursor-default btn-ghost btn-sm" href="/search"
-							><Search class="w-[1em]" />{m.navbar_search()}</NavigationMenu.Link
-						>
-					</NavigationMenu.Item>
-				</NavigationMenu.List>
-				<div class="absolute top-full left-0 flex w-150 justify-center perspective-[2000px]">
-					<NavigationMenu.Viewport
-						class="text-popover-foreground bg-base-200 data-[state=closed]:animate-scale-out data-[state=open]:animate-scale-in relative mt-2.5 h-(--bits-navigation-menu-viewport-height) origin-[top_center] overflow-hidden rounded-md border border-base-content/10 shadow-2xl shadow-primary transition-[width,height] duration-200 w-150"
-					/>
-				</div>
-			</NavigationMenu.Root>
+			<button
+				class="btn cursor-default btn-ghost btn-sm"
+				style="anchor-name:--community-anchor"
+				popovertarget="community-popover"
+			>
+				<Newspaper class="w-[1em]" />
+				{m.navbar_community()}
+				<ChevronDown class="w-[1em]" />
+			</button>
+			<div
+				class="dropdown bg-base-200 p-4 rounded-box border border-base-content/10 w-140 shadow-xl"
+				id="community-popover"
+				style="position-anchor:--community-anchor"
+				popover
+			>
+				<h2 class="text-xl font-bold p-4 select-none">{m.navbar_community()}</h2>
+				<ul
+					class="m-0 grid list-none gap-x-2.5 gap-y-2.5 grid-cols-2 grid-rows-2 bg-base-200 justify-items-stretch"
+				>
+					{#each forumLinks as link}
+						<li class="contents">
+							<a
+								class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10 hover:border-primary"
+								href={link.href}
+							>
+								<h3 class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</h3>
+								<p class="text-base-content/50 line-clamp-2 text-sm leading-snug">
+									{link.description}
+								</p>
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+			<button
+				class="btn cursor-default btn-ghost btn-sm"
+				style="anchor-name:--wiki-anchor"
+				popovertarget="wiki-popover"
+			>
+				<Earth class="w-[1em]" />
+				{m.navbar_wiki()}
+				<ChevronDown class="w-[1em]" />
+			</button>
+			<div
+				class="dropdown bg-base-200 p-4 rounded-box border border-base-content/10 w-140 shadow-xl"
+				id="wiki-popover"
+				style="position-anchor:--wiki-anchor"
+				popover
+			>
+				<h2 class="text-xl font-bold p-4 select-none">{m.navbar_wiki()}</h2>
+				<ul
+					class="m-0 grid gap-2.5 grid-cols-2 grid-rows-3 bg-base-200"
+				>
+					<li class="contents">
+						<div class="row-span-3 border border-base-content/10 rounded-box hover:border-primary transition p-4 hover:bg-base-300">
+							<h3 class="font-medium leading-none select-none">{m.navbar_scpBySeries()}</h3>
+							<ol class="text-base-content/50 text-sm list-disc ms-4">
+								{#each [1,2,3,4,5,6,7,8,9,10] as serie}
+									<li class="my-1"><a href="/series/{serie}">{m.navbar_seriesN({ series: toRomanNumeral(serie) })}</a></li>
+								{/each}
+							</ol>
+						</div>
+					</li>
+					{#each wikiLinks as link}
+						<li class="contents">
+							<a
+								class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10 hover:border-primary"
+								href={link.href}
+							>
+								<h3 class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</h3>
+								<p class="text-base-content/50 line-clamp-2 text-sm leading-snug">
+									{link.description}
+								</p>
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+			<a href="/search" class="btn btn-ghost btn-sm">
+				<Search class="w-[1em]" />
+				{m.navbar_search()}
+			</a>
 		</div>
 		<a href="/" class="navbar-center flex items-center gap-4 select-none">
 			<SCPEmblem class="h-20" />
