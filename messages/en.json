@@ -56,7 +56,6 @@
 	"profile_avatar_sizeHint": "Max size 1 MiB",
 	"profile_avatar_selectionHint": "Select the area of the image you want to display as your avatar",
 	"profile_avatar_submit": "Set as avatar",
-	"profile_avatar_back": "Select a different image",
 	"profile_avatar_badCrop": "Bad crop for the avatar image. Please try selecting a region again.",
 
 	"topic_parent_topic": "Topic",
