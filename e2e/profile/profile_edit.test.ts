@@ -20,4 +20,16 @@ userTest.describe("user", () => {
 		expect(newUsername).toBe("TGirl1234")
 		expect(newPronouns).toBe("she/her")
 	})
+
+	userTest("can see live profile updates", async ({ page, pageUtils, user }) => {
+		await page.goto(`/profile/${user.userInfo.id}`)
+		await pageUtils.waitForStart(page)
+
+		await user.client.from("profile")
+			.update({ username: "Cute Girl", biography: "I am a cute girl who likes Hatsune Miku :3" })
+			.eq("id", user.userInfo.id)
+
+		await expect(page.getByTestId("profile-username")).toHaveText("Cute Girl")
+		await expect(page.getByTestId("profile-biography")).toHaveText("I am a cute girl who likes Hatsune Miku :3")
+	})
 })

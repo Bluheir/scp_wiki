@@ -89,7 +89,7 @@
 		{@render ratingTable()}
 		<div>
 			<h3>{m.profile_biography()}</h3>
-			<p>
+			<p data-testid="profile-biography">
 				{biography}
 			</p>
 		</div>
