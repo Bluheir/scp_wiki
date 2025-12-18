@@ -1,6 +1,8 @@
 import { error } from "@sveltejs/kit"
 import type { PageLoad } from "./$types"
-import type { Profile } from "$lib/components/profile/profile"
+import { profileSchema, type Profile } from "$lib/components/profile/profile"
+import { superValidate } from "sveltekit-superforms"
+import { zod4 } from "sveltekit-superforms/adapters"
 
 export const load: PageLoad = async ({ parent, params }) => {
 	const { supabase } = await parent()
@@ -15,9 +17,9 @@ export const load: PageLoad = async ({ parent, params }) => {
 		error(404)
 	}
 
-	const { data: userData } = await supabase.auth.getUser();
+	const { data: userData } = await supabase.auth.getUser()
 	let readonly = true
-	if(userData.user) {
+	if (userData.user) {
 		const { data: permissionData } = await supabase
 			.from("user_victim_single_action")
 			.select("profile_id")
@@ -41,5 +43,13 @@ export const load: PageLoad = async ({ parent, params }) => {
 		createdAt: new Date(data.created_at)
 	}
 
-	return { supabase, profile, readonly }
+	const form = await superValidate(zod4(profileSchema), {
+		defaults: {
+			username: profile.username,
+			pronouns: profile.pronouns,
+			biography: profile.biography
+		}
+	})
+
+	return { supabase, profile, readonly, form }
 }

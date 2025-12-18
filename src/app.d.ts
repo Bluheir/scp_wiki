@@ -6,7 +6,10 @@ import type { Database } from "./database"
 // for information about these interfaces
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			message?: string
+			code: string
+		}
 		// interface Locals {}
 		// interface PageData {}
 		// interface PageState {}
@@ -14,6 +17,7 @@ declare global {
 		interface Locals {
 			supabase: SupabaseClient<Database>
 			supabaseUser: SupabaseClient<Database>
+			supabaseAdmin: SupabaseClient<Database>
 			supabase_anon_key: string
 			supabase_url: string
 		}

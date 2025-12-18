@@ -36,7 +36,7 @@ Features on the forums include/will include:
 Features shared by the forum and wiki include/will include:
 - [ ] Robust and flexible permissions system, with roles
 - [ ] "Reactive" updates in the UI (e.g. a user changes their username, reflecting the change immediately in the UI)
-- [ ] Profile system, where users can set their profile picture, username, pronouns, and description
+- [x] Profile system, where users can set their profile picture, username, pronouns, and description
 - [ ] User rating system: the sum of their post ratings + their wiki page ratings
 - [ ] Localizations by default using Paraglide
 

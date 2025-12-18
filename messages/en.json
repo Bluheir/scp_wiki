@@ -1,6 +1,8 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
 	"hello_world": "Hello, {name} from en!",
+	"generic_error500": "500: Internal server error",
+
 	"login_welcomeBack": "Welcome back Doctor [REDACTED]",
 	"auth_email": "Email",
 	"auth_emailDescription": "Email address for the account",
@@ -47,13 +49,15 @@
 	"profile_editProfile": "Edit profile",
 	"profile_saveChanges": "Save changes",
 	"profile_discardChanges": "Discard changes",
+	"profile_noPermission": "You no longer have permission to edit this profile",
 
 	"profile_avatar_title": "Avatar Image",
 	"profile_avatar_description": "Upload a profile picture",
 	"profile_avatar_sizeHint": "Max size 1 MiB",
 	"profile_avatar_selectionHint": "Select the area of the image you want to display as your avatar",
 	"profile_avatar_submit": "Set as avatar",
-	"profile_avatar_back": "Select a different image",
+	"profile_avatar_badCrop": "Bad crop for the avatar image. Please try selecting a region again.",
+	"profile_avatar_imageMax": "This image exceeds the avatar size limit. Please choose a smaller image",
 
 	"topic_parent_topic": "Topic",
 	"topic_parent_threadAmount": "Thread Amount",

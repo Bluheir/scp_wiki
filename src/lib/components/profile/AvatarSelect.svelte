@@ -1,60 +1,76 @@
 <script lang="ts">
+	import * as Form from "formsnap"
 	import { m } from "$lib/paraglide/messages"
 	import Cropper from "svelte-easy-crop"
-	import type { AvatarImageData } from "./profile"
-	import { Image } from "lucide-svelte"
+	import type { AvatarImageData, ProfileEdit } from "./profile"
+	import { Image, Info } from "lucide-svelte"
+	import type { SuperForm } from "sveltekit-superforms"
 
 	let {
+		form,
 		image = $bindable(),
 		onsubmit
 	}: {
-		image?: AvatarImageData
-		onsubmit?: (image: AvatarImageData) => Promise<void> | void
+		form: SuperForm<ProfileEdit>
+		image: AvatarImageData | undefined
+		onsubmit?: () => Promise<void> | void
 	} = $props()
 
 	const minZoom = 1
 	const maxZoom = 3
+	const formDataWritable = $derived(form.form)
+	let crop = $state({ x: 0, y: 0, width: 0, height: 0 })
 
 	function handleFile(event: Event) {
 		const input = event.target as HTMLInputElement
 		const file = input.files?.[0]
-		if(!file) {
+		if (!file) {
 			return
 		}
 
-		image = {
-			image: URL.createObjectURL(file),
-			crop: { x: 0, y: 0 },
-			zoom: 1
+		$formDataWritable.imageData = {
+			image: file,
+			crop
+		}
+		if (file.size <= 1024 * 1024) {
+			image = {
+				image: file,
+				fileUrl: URL.createObjectURL(file),
+				crop: { x: 0, y: 0 },
+				zoom: 1
+			}
 		}
 	}
 </script>
 
-<form
-	method="dialog"
-	onsubmit={async () => {
-		if(onsubmit) {
-			await onsubmit(image!)
-		}
-	}}>
+<div>
 	<h3 class="text-2xl font-bold text-base-content">{m.profile_avatar_title()}</h3>
-	{#if !image}
-		<fieldset class="fieldset">
-			<legend class="fieldset-legend">{m.profile_avatar_description()}</legend>
-			<input
-				type="file"
-				class="file-input"
-				accept="image/webp,image/jpeg,image/png"
-				onchange={handleFile}
-			/>
-			<span class="label">{m.profile_avatar_sizeHint()}</span>
-		</fieldset>
-	{:else}
-		<p class="text-base-content/50 text-sm my-2">{m.profile_avatar_selectionHint()}</p>
-		<div class="flex justify-center my-6">
-			<div class="h-[256px] w-[256px] relative">
+	<Form.Field {form} name="imageData.image">
+		<div class="fieldset">
+			<Form.Control>
+				{#snippet children({ props })}
+					<Form.Label class="fieldset-legend">{m.profile_avatar_description()}</Form.Label>
+					<input
+						type="file"
+						class="file-input"
+						accept="image/webp, image/jpeg, image/png, image/gif, image/avif"
+						onchange={handleFile}
+						{...props}
+					/>
+				{/snippet}
+			</Form.Control>
+			<Form.Description class="label">{m.profile_avatar_sizeHint()}</Form.Description>
+			<Form.FieldErrors class="label text-error" />
+		</div>
+	</Form.Field>
+	{#if image}
+		<p class="my-2 flex items-center gap-1.5 text-sm text-base-content/50">
+			<Info class="w-[1em]" />{m.profile_avatar_selectionHint()}
+		</p>
+		<div class="my-6 flex justify-center">
+			<div class="relative h-[256px] w-[256px]">
 				<Cropper
-					image={image.image}
+					image={image.fileUrl}
 					{minZoom}
 					{maxZoom}
 					bind:zoom={image.zoom}
@@ -64,23 +80,38 @@
 					showGrid={false}
 					restrictPosition
 					cropShape="round"
+					oncropcomplete={(e) => (crop = e.pixels)}
 				/>
 			</div>
 		</div>
-		<div class="my-6 flex justify-center text-xl gap-3 items-center">
-			<Image class="w-4"/>
-			<input class="range" type="range" min={0} max={100} bind:value={
-				() => (image!.zoom - minZoom) / (maxZoom - minZoom) * 100,
-				(v) => image!.zoom = v / 100 * (maxZoom - minZoom) + minZoom
-			}/>
-			<Image class="w-8 h-8"/>
+		<div class="my-6 flex items-center justify-center gap-3 text-xl">
+			<Image class="w-4" />
+			<input
+				class="range"
+				type="range"
+				min={0}
+				max={100}
+				bind:value={
+					() => ((image!.zoom - minZoom) / (maxZoom - minZoom)) * 100,
+					(v) => (image!.zoom = (v / 100) * (maxZoom - minZoom) + minZoom)
+				}
+			/>
+			<Image class="h-8 w-8" />
 		</div>
-		<div class="flex gap-2">
-			<input class="btn btn-sm btn-primary flex-1" type="submit" value={m.profile_avatar_submit()}/>
-			<button class="btn btn-sm btn-error flex-1" onclick={() => {
-				URL.revokeObjectURL(image!.image)
-				image = undefined
-			}}>{m.profile_avatar_back()}</button>
-		</div>
+		<button
+			class="btn w-full btn-sm btn-primary"
+			type="button"
+			onclick={async () => {
+				$formDataWritable.imageData = {
+					image: image!.image,
+					crop
+				}
+				if (onsubmit) {
+					await onsubmit()
+				}
+			}}
+		>
+			{m.profile_avatar_submit()}
+		</button>
 	{/if}
-</form>
+</div>
