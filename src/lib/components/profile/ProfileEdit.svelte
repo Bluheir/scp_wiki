@@ -66,8 +66,9 @@
 							<input
 								class="input"
 								placeholder={m.register_username()}
-								{...props}
+								data-testid="profile-edit-username"
 								bind:value={$formData.username}
+								{...props}
 							/>
 						{/snippet}
 					</Form.Control>
@@ -83,6 +84,7 @@
 								class="input"
 								type="text"
 								placeholder={m.profile_pronouns()}
+								data-testid="profile-edit-pronouns"
 								bind:value={$formData.pronouns}
 								{...props}
 							/>

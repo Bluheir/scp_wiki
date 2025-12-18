@@ -50,7 +50,7 @@
 			<Tooltip.Provider>
 				<Tooltip.Root delayDuration={200}>
 					<Tooltip.Trigger class="select-all">
-						<h2>{username}</h2>
+						<h2 data-testid="profile-username">{username}</h2>
 					</Tooltip.Trigger>
 					<Tooltip.Content sideOffset={8}>
 						<div
@@ -62,9 +62,9 @@
 				</Tooltip.Root>
 				<Tooltip.Root delayDuration={200}>
 					<Tooltip.Trigger class="select-all">
-						{pronouns}
+						<span data-testid="profile-pronouns">{pronouns}</span>
 					</Tooltip.Trigger>
-					<Tooltip.Content sideOffset={8} class="">
+					<Tooltip.Content sideOffset={8}>
 						<div
 							class="shadow-popover z-0 flex items-center justify-center rounded-box border border-base-content/10 bg-base-200 p-2 text-sm font-medium outline-hidden"
 						>
@@ -96,10 +96,12 @@
 		{#if !readonly}
 			<div class="my-6 flex gap-2">
 				<button
+					type="button"
 					class="btn btn-outline btn-sm"
 					onclick={() => {
 						editMode = true
 					}}
+					data-testid="profile-edit"
 				>
 					<Pencil class="w-[1em]" />
 					{m.profile_editProfile()}
