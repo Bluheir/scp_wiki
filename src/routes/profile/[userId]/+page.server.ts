@@ -3,7 +3,7 @@ import { error, type Actions } from "@sveltejs/kit"
 import sharp, { type Sharp } from "sharp"
 import { Readable } from "node:stream"
 import { ReadableStream } from "node:stream/web"
-import { setError, fail, message, superValidate } from "sveltekit-superforms"
+import { fail, message, superValidate } from "sveltekit-superforms"
 import { zod4 } from "sveltekit-superforms/adapters"
 import { v7 } from "uuid"
 
@@ -91,7 +91,7 @@ export const actions: Actions = {
 			.metadata()
 		const pipeline = imageEdit(metadata, imageData.crop, 256)
 		if (!pipeline) {
-			return setError(form, "imageData.crop")
+			error(400, { code: "bad_crop" })
 		}
 		const avifStream = Readable.fromWeb(mainStream as ReadableStream).pipe(pipeline)
 		const generatedUuid = v7()

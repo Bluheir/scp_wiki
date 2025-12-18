@@ -6,7 +6,10 @@ import type { Database } from "./database"
 // for information about these interfaces
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			message?: string
+			code: string
+		}
 		// interface Locals {}
 		// interface PageData {}
 		// interface PageState {}

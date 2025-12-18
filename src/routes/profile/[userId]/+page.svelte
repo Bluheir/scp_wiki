@@ -27,6 +27,11 @@
 			}
 
 			switch(result.status) {
+				case 400:
+					if("code" in result.error && result.error.code === "bad_crop") {
+						toast.error(m.profile_avatar_badCrop(), { class: "alert alert-error" })
+					}
+					break
 				case 403:
 					toast.error(m.profile_noPermission(), { class: "alert alert-error" })
 					break
