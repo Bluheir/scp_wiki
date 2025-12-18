@@ -105,7 +105,7 @@
 				style="position-anchor:--community-anchor"
 				popover
 			>
-				<div class="text-xl font-bold p-4 select-none">{m.navbar_community()}</div>
+				<h2 class="text-xl font-bold p-4 select-none">{m.navbar_community()}</h2>
 				<ul
 					class="m-0 grid list-none gap-x-2.5 gap-y-2.5 grid-cols-2 grid-rows-2 bg-base-200 justify-items-stretch"
 				>
@@ -115,7 +115,7 @@
 								class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10 hover:border-primary"
 								href={link.href}
 							>
-								<div class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</div>
+								<h3 class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</h3>
 								<p class="text-base-content/50 line-clamp-2 text-sm leading-snug">
 									{link.description}
 								</p>
@@ -139,13 +139,13 @@
 				style="position-anchor:--wiki-anchor"
 				popover
 			>
-				<div class="text-xl font-bold p-4 select-none">{m.navbar_wiki()}</div>
+				<h2 class="text-xl font-bold p-4 select-none">{m.navbar_wiki()}</h2>
 				<ul
 					class="m-0 grid gap-2.5 grid-cols-2 grid-rows-3 bg-base-200"
 				>
 					<li class="contents">
 						<div class="row-span-3 border border-base-content/10 rounded-box hover:border-primary transition p-4 hover:bg-base-300">
-							<div class="font-medium leading-none select-none">{m.navbar_scpBySeries()}</div>
+							<h3 class="font-medium leading-none select-none">{m.navbar_scpBySeries()}</h3>
 							<ol class="text-base-content/50 text-sm list-disc ms-4">
 								{#each [1,2,3,4,5,6,7,8,9,10] as serie}
 									<li class="my-1"><a href="/series/{serie}">{m.navbar_seriesN({ series: toRomanNumeral(serie) })}</a></li>
@@ -159,7 +159,7 @@
 								class="p-4 hover:bg-base-300 rounded-box transition block border border-base-content/10 hover:border-primary"
 								href={link.href}
 							>
-								<div class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</div>
+								<h3 class="text-sm font-medium leading-none flex gap-2 items-center">{link.title}</h3>
 								<p class="text-base-content/50 line-clamp-2 text-sm leading-snug">
 									{link.description}
 								</p>
