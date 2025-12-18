@@ -43,7 +43,7 @@
 <form method="POST" enctype="multipart/form-data" use:enhance>
 	<div class="flex gap-4">
 		<div>
-			<button class="cursor-pointer" onclick={() => modalElement?.showModal()} type="button">
+			<button class="cursor-pointer" onclick={() => modalElement?.showModal()} type="button" data-testid="profile-edit-avatar">
 				<UserAvatar user={profileAvatar} size="lg" style="box" />
 			</button>
 			<dialog bind:this={modalElement} class="not-prose modal">
@@ -66,8 +66,9 @@
 							<input
 								class="input"
 								placeholder={m.register_username()}
-								{...props}
+								data-testid="profile-edit-username"
 								bind:value={$formData.username}
+								{...props}
 							/>
 						{/snippet}
 					</Form.Control>
@@ -83,6 +84,7 @@
 								class="input"
 								type="text"
 								placeholder={m.profile_pronouns()}
+								data-testid="profile-edit-pronouns"
 								bind:value={$formData.pronouns}
 								{...props}
 							/>

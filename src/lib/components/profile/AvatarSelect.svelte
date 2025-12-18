@@ -55,6 +55,7 @@
 						class="file-input"
 						accept="image/webp, image/jpeg, image/png, image/gif, image/avif"
 						onchange={handleFile}
+						data-testid="profile-edit-avatar-upload"
 						{...props}
 					/>
 				{/snippet}
@@ -110,6 +111,7 @@
 					await onsubmit()
 				}
 			}}
+			data-testid="profile-edit-avatar-submit"
 		>
 			{m.profile_avatar_submit()}
 		</button>
