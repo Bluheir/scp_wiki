@@ -43,7 +43,7 @@
 <form method="POST" enctype="multipart/form-data" use:enhance>
 	<div class="flex gap-4">
 		<div>
-			<button class="cursor-pointer" onclick={() => modalElement?.showModal()} type="button">
+			<button class="cursor-pointer" onclick={() => modalElement?.showModal()} type="button" data-testid="profile-edit-avatar">
 				<UserAvatar user={profileAvatar} size="lg" style="box" />
 			</button>
 			<dialog bind:this={modalElement} class="not-prose modal">
