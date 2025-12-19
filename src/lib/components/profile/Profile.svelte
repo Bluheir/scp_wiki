@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Tooltip } from "bits-ui"
 	import { type Profile, type ProfileEdit } from "./profile"
 	import { m } from "$lib/paraglide/messages"
 	import UserAvatar from "../UserAvatar.svelte"
@@ -18,8 +17,9 @@
 		readonly?: boolean
 		form: SuperForm<ProfileEdit>
 	} = $props()
-	let { pronouns, biography, username } = $derived(profile)
 	const totalRating = $derived(profile.wikiRating + profile.forumRating)
+
+	const pronouns = $derived(profile.pronouns.trim())
 </script>
 
 {#snippet ratingTable()}
@@ -46,51 +46,26 @@
 >
 	{#if !editMode}
 		<div class="flex items-center gap-4">
-			<UserAvatar user={profile} size="lg" style="box" />
-			<Tooltip.Provider>
-				<Tooltip.Root delayDuration={200}>
-					<Tooltip.Trigger class="select-all">
-						<h2 data-testid="profile-username">{username}</h2>
-					</Tooltip.Trigger>
-					<Tooltip.Content sideOffset={8}>
-						<div
-							class="shadow-popover z-0 flex items-center justify-center rounded-box border border-base-content/10 bg-base-200 p-2 text-sm font-medium outline-hidden"
-						>
-							{m.profile_username()}
-						</div>
-					</Tooltip.Content>
-				</Tooltip.Root>
-				<Tooltip.Root delayDuration={200}>
-					<Tooltip.Trigger class="select-all">
-						<span data-testid="profile-pronouns">{pronouns}</span>
-					</Tooltip.Trigger>
-					<Tooltip.Content sideOffset={8}>
-						<div
-							class="shadow-popover z-0 flex items-center justify-center rounded-box border border-base-content/10 bg-base-200 p-2 text-sm font-medium outline-hidden"
-						>
-							{m.profile_pronouns()}
-						</div>
-					</Tooltip.Content>
-				</Tooltip.Root>
-				<Tooltip.Root delayDuration={200}>
-					<Tooltip.Trigger class="select-all">
-						<div class="rounded-box bg-base-200 px-2">{profile.createdAt.toLocaleDateString()}</div>
-					</Tooltip.Trigger>
-					<Tooltip.Content sideOffset={8}>
-						<div
-							class="shadow-popover z-0 flex items-center justify-center rounded-box border border-base-content/10 bg-base-200 p-2 text-sm font-medium outline-hidden"
-						>
-							{m.profile_joined()}
-						</div>
-					</Tooltip.Content>
-				</Tooltip.Root>
-			</Tooltip.Provider>
+			<div class="tooltip tooltip-info" data-tip={m.profile_avatar()}>
+				<UserAvatar user={profile} size="lg" style="box" />
+			</div>
+			<div class="tooltip cursor-default tooltip-info" data-tip={m.profile_username()}>
+				<h2 data-testid="profile-username">{profile.username}</h2>
+			</div>
+			{#if pronouns.length !== 0}
+				<div class="tooltip cursor-default tooltip-info" data-tip={m.profile_pronouns()}>
+					<span data-testid="profile-pronouns">{pronouns}</span>
+				</div>
+			{/if}
+			<div class="tooltip cursor-default tooltip-info" data-tip={m.profile_joined()}>
+				{profile.createdAt.toLocaleDateString()}
+			</div>
 		</div>
 		{@render ratingTable()}
 		<div>
 			<h3>{m.profile_biography()}</h3>
 			<p data-testid="profile-biography">
-				{biography}
+				{profile.biography}
 			</p>
 		</div>
 		{#if !readonly}
