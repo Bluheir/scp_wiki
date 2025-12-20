@@ -74,7 +74,7 @@ from (
 		)
 ;
 
-create or replace function can_view_topic(topic_id UUID, parent_topic_id UUID, user_id UUID)
+create or replace function can_view_topic(topic_id UUID, parent_topic_id UUID)
 returns boolean
 language sql
 security definer
@@ -100,7 +100,7 @@ as $$
 				user_single_action.victim_type = 'topic'
 				and user_single_action.victim_id = ancestor.id
 				and user_single_action.action_type = 'view_topic'
-				and user_single_action.profile_id is not distinct from user_id
+				and user_single_action.profile_id is not distinct from auth.uid()
 		where
 			user_single_action.id is null
 	)
@@ -111,7 +111,7 @@ create policy "anon or auth can view topics they have permission to view"
 on public.topic
 for select to authenticated, anon
 using (
-	can_view_topic(id, parent_id, auth.uid())
+	can_view_topic(id, parent_id)
 );
 
 create policy "anon or auth can view info for topics they can view"
