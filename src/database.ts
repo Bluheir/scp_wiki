@@ -56,6 +56,108 @@ export type Database = {
 				}
 				Relationships: []
 			}
+			topic: {
+				Row: {
+					creator_id: string | null
+					id: string
+					parent_id: string | null
+				}
+				Insert: {
+					creator_id?: string | null
+					id?: string
+					parent_id?: string | null
+				}
+				Update: {
+					creator_id?: never
+					id?: never
+					parent_id?: string | null
+				}
+				Relationships: [
+					{
+						foreignKeyName: "topic_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "profile"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "topic_parent_id_fkey"
+						columns: ["parent_id"]
+						isOneToOne: false
+						referencedRelation: "parent_topic"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+			topic_info: {
+				Row: {
+					id: string
+					locale_code: string
+					topic_description: string
+					topic_name: string
+				}
+				Insert: {
+					id: string
+					locale_code: string
+					topic_description: string
+					topic_name: string
+				}
+				Update: {
+					id?: never
+					locale_code?: string
+					topic_description?: string
+					topic_name?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "topic_info_id_fkey"
+						columns: ["id"]
+						isOneToOne: false
+						referencedRelation: "topic"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+			immediate_parent_topic: {
+				Row: {
+					id: string
+				}
+				Insert: {
+					id: string
+				}
+				Update: {
+					id?: never
+				}
+				Relationships: [
+					{
+						foreignKeyName: "immediate_parent_topic_id_fkey"
+						columns: ["id"]
+						isOneToOne: true
+						referencedRelation: "topic"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+			parent_topic: {
+				Row: {
+					id: string
+				}
+				Insert: {
+					id: string
+				}
+				Update: {
+					id?: never
+				}
+				Relationships: [
+					{
+						foreignKeyName: "parent_topic_id_fkey"
+						columns: ["id"]
+						isOneToOne: true
+						referencedRelation: "topic"
+						referencedColumns: ["id"]
+					}
+				]
+			}
 		}
 		Views: {
 			user_single_action: {
