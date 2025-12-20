@@ -56,7 +56,94 @@ export type Database = {
 				}
 				Relationships: []
 			}
+			urole: {
+				Row: {
+					id: string
+				}
+				Insert: {
+					id: string
+				}
+				Update: {
+					id?: string
+				}
+				Relationships: []
+			}
+
+			urole_custom: {
+				Row: {
+					id: string
+					is_default: boolean
+					is_hidden: boolean
+					profile_id: string | null
+					role_color: string | null
+					role_name: string
+				}
+				Insert: {
+					id: string
+					is_default?: boolean
+					is_hidden?: boolean
+					profile_id?: string | null
+					role_color?: string | null
+					role_name: string
+				}
+				Update: {
+					id?: string
+					is_default?: boolean
+					is_hidden?: boolean
+					profile_id?: string | null
+					role_color?: string | null
+					role_name?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "urole_custom_id_fkey"
+						columns: ["id"]
+						isOneToOne: true
+						referencedRelation: "urole"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "urole_custom_profile_id_fkey"
+						columns: ["profile_id"]
+						isOneToOne: false
+						referencedRelation: "profile"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+
+			urole_profile: {
+				Row: {
+					profile_id: string
+					urole_id: string
+				}
+				Insert: {
+					profile_id: string
+					urole_id: string
+				}
+				Update: {
+					profile_id?: string
+					urole_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "urole_profile_profile_id_fkey"
+						columns: ["profile_id"]
+						isOneToOne: false
+						referencedRelation: "profile"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "urole_profile_urole_id_fkey"
+						columns: ["urole_id"]
+						isOneToOne: false
+						referencedRelation: "urole_custom"
+						referencedColumns: ["id"]
+					}
+				]
+			}
 		}
+
 		Views: {
 			user_single_action: {
 				Row: {
