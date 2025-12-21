@@ -2,6 +2,13 @@ import * as z from "zod"
 import { username } from "$lib/schema/auth"
 import { m } from "$lib/paraglide/messages"
 
+export type ProfileRole = {
+	readonly isHidden: boolean
+	readonly roleId: string
+	readonly roleName: string
+	readonly roleColor: string
+}
+
 export type Profile = {
 	readonly id: string
 	readonly username: string
@@ -11,6 +18,7 @@ export type Profile = {
 	readonly createdAt: Date
 	readonly forumRating: number
 	readonly wikiRating: number
+	readonly roles: ProfileRole[]
 }
 
 export type AvatarImageData = {

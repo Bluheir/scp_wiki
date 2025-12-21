@@ -17,6 +17,15 @@ export const load: PageLoad = async ({ parent, params }) => {
 		error(404)
 	}
 
+	const { data: role_data } = await supabase 
+		.from("urole_profile")
+		.select("profile_id, urole_id, urole_custom(is_hidden, role_color, role_name)")
+		.eq("profile_id", params.userId)
+
+	if (!role_data) {
+		error(500)
+	}
+
 	const { data: userData } = await supabase.auth.getUser()
 	let readonly = true
 	if (userData.user) {
@@ -40,8 +49,15 @@ export const load: PageLoad = async ({ parent, params }) => {
 		biography: data.biography,
 		forumRating: data.forum_rating,
 		wikiRating: data.wiki_rating,
-		createdAt: new Date(data.created_at)
+		createdAt: new Date(data.created_at),
+		roles: role_data.map(value => ({
+			isHidden: value.urole_custom.is_hidden,
+			roleId: value.urole_id,
+			roleName: value.urole_custom.role_name,
+			roleColor: value.urole_custom.role_color
+		}))
 	}
+
 
 	const form = await superValidate(zod4(profileSchema), {
 		defaults: {
