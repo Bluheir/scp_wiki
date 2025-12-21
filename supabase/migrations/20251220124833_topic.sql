@@ -38,40 +38,15 @@ alter table public.immediate_parent_topic enable row level security;
 
 create or replace view public.single_action
 with(security_invoker = true)
-as select pa.*
-from (
-		select
-			id,
-			role_id,
-			action_type,
-			action_data,
-			try_uuid(action_data#>>'{victim,id}') as victim_id,
-			action_data#>>'{victim,type}' as victim_type
-		from public.permission_action
-	) pa
-	where
-		pa.victim_type = 'self'
-		or (
-			pa.victim_type = 'tag'
-			and exists (
-				select 1 from public.utag t
-				where t.id = pa.victim_id
-			)
-		)
-		or (
-			pa.victim_type = 'role'
-			and exists (
-				select 1 from public.urole r
-				where r.id = pa.victim_id
-			)
-		)
-		or (
-			pa.victim_type = 'topic'
-			and exists (
-				select 1 from public.topic t
-				where t.id = pa.victim_id
-			)
-		)
+as
+select
+	id,
+	role_id,
+	action_type,
+	action_data,
+	try_uuid(action_data#>>'{victim,id}') as victim_id,
+	action_data#>>'{victim,type}' as victim_type
+from public.permission_action
 ;
 
 create or replace function can_view_topic(topic_id UUID, parent_topic_id UUID)
