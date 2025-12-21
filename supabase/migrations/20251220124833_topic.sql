@@ -159,7 +159,7 @@ create type public.topic_type as enum (
 	'immediate_parent'
 );
 
-create function public.create_topic(
+create or replace function public.create_topic_inner(
 	t_type public.topic_type,
 	t_parent_topic_id uuid,
 	t_locale_code varchar(8),
@@ -171,18 +171,14 @@ language plpgsql
 security definer
 set search_path = ''
 set row_security = off
+volatile
 as $$
 declare
 	new_topic_id uuid;
 begin
-	if not pg_is_superuser() and not public.can_create_topic(t_parent_topic_id) then
-		raise exception 'permission denied to write under parent topic %', t_parent_topic_id
-		using errcode = '42501';
-	end if;
-
 	insert into public.topic (parent_id, creator_id)
-	values (t_parent_topic_id, auth.uid())
-	returning id into new_topic_id;
+		values (t_parent_topic_id, auth.uid())
+		returning topic.id into new_topic_id;
 
 	if t_type = 'parent' then
 		insert into public.parent_topic (id) values (new_topic_id);
@@ -199,6 +195,43 @@ begin
 			t_parent_topic_id as parent_id,
 			auth.uid() as creator_id
 	;
+end;
+$$;
+
+revoke all on function public.create_topic_inner(
+	public.topic_type, uuid, varchar(8), text, text
+) from authenticated, anon;
+
+create or replace function public.create_topic(
+	t_type public.topic_type,
+	t_parent_topic_id uuid,
+	t_locale_code varchar(8),
+	t_name text,
+	t_description text
+)
+returns table (id uuid, parent_id uuid, creator_id uuid)
+language plpgsql
+security definer
+set search_path = ''
+volatile
+as $$
+declare
+	new_topic_id uuid;
+begin
+	if not public.can_create_topic(t_parent_topic_id) then
+		raise exception 'permission denied to write under parent topic %', t_parent_topic_id
+		using errcode = '42501';
+	end if;
+
+	return query
+	select *
+	from public.create_topic_inner(
+		t_type,
+		t_parent_topic_id,
+		t_locale_code,
+		t_name,
+		t_description
+	);
 end;
 $$;
 
