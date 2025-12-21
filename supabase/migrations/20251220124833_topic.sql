@@ -96,7 +96,7 @@ as $$
 				parent_topic_id as id,
 				topic.parent_id
 			from
-				(select parent_topic_id as id) d left join topic on d.id = topic.id
+				(select parent_topic_id as id) d left join public.topic on d.id = topic.id
 
 			union all
 
@@ -129,9 +129,9 @@ as $$
 		with recursive ancestor as (
 			select
 				topic.id,
-				topic.parent_topic_id
+				topic.parent_id
 			from
-				topic
+				public.topic
 			where
 				topic.id = parent_topic_id
 
@@ -161,10 +161,10 @@ create type public.topic_type as enum (
 
 create function public.create_topic(
 	t_type public.topic_type,
-  t_parent_topic_id uuid,
-  t_locale_code varchar(8),
-  t_name text,
-  t_description text
+	t_parent_topic_id uuid,
+	t_locale_code varchar(8),
+	t_name text,
+	t_description text
 )
 returns table (id uuid, parent_id uuid, creator_id uuid)
 language plpgsql
@@ -175,7 +175,7 @@ as $$
 declare
 	new_topic_id uuid;
 begin
-	if not public.can_create_topic(t_parent_topic_id) then
+	if not pg_is_superuser() and not public.can_create_topic(t_parent_topic_id) then
 		raise exception 'permission denied to write under parent topic %', t_parent_topic_id
 		using errcode = '42501';
 	end if;
@@ -193,16 +193,16 @@ begin
 	insert into public.topic_info (id, locale_code, topic_name, topic_description)
 		values (new_topic_id, t_locale_code, t_name, t_description);
 
-	return (
+	return query
 		select
 			new_topic_id as id,
 			t_parent_topic_id as parent_id,
 			auth.uid() as creator_id
-	);
+	;
 end;
 $$;
 
-grant execute on function public.create_topic(public.topic_type, uuid, varchar(8), text, text);
+grant execute on function public.create_topic(public.topic_type, uuid, varchar(8), text, text) to authenticated, anon;
 
 create policy "anon or auth can view topics they have permission to view"
 on public.topic
