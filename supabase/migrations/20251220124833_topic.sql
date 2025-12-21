@@ -154,6 +154,56 @@ as $$
 end;
 $$;
 
+create type public.topic_type as enum (
+	'parent',
+	'immediate_parent'
+);
+
+create function public.create_topic(
+	t_type public.topic_type,
+  t_parent_topic_id uuid,
+  t_locale_code varchar(8),
+  t_name text,
+  t_description text
+)
+returns table (id uuid, parent_id uuid, creator_id uuid)
+language plpgsql
+security definer
+set search_path = ''
+set row_security = off
+as $$
+declare
+	new_topic_id uuid;
+begin
+	if not public.can_create_topic(t_parent_topic_id) then
+		raise exception 'permission denied to write under parent topic %', t_parent_topic_id
+		using errcode = '42501';
+	end if;
+
+	insert into public.topic (parent_id, creator_id)
+	values (t_parent_topic_id, auth.uid())
+	returning id into new_topic_id;
+
+	if t_type = 'parent' then
+		insert into public.parent_topic (id) values (new_topic_id);
+	else
+		insert into public.immediate_parent_topic (id) values (new_topic_id);
+	end if;
+
+	insert into public.topic_info (id, locale_code, topic_name, topic_description)
+		values (new_topic_id, t_locale_code, t_name, t_description);
+
+	return (
+		select
+			new_topic_id as id,
+			t_parent_topic_id as parent_id,
+			auth.uid() as creator_id
+	);
+end;
+$$;
+
+grant execute on function public.create_topic(public.topic_type, uuid, varchar(8), text, text);
+
 create policy "anon or auth can view topics they have permission to view"
 on public.topic
 for select to authenticated, anon
