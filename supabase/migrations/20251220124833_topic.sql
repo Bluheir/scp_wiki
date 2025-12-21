@@ -259,4 +259,16 @@ on public.parent_topic
 for select to authenticated, anon
 using (id in (select id from topic));
 
+alter publication supabase_realtime
+add table public.topic;
+
+alter publication supabase_realtime
+add table public.topic_info;
+
+alter publication supabase_realtime
+add table public.parent_topic;
+
+alter publication supabase_realtime
+add table public.immediate_parent_topic;
+
 commit;
