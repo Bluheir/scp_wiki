@@ -75,7 +75,7 @@ export type Database = {
 					is_default: boolean
 					is_hidden: boolean
 					profile_id: string | null
-					role_color: string | null
+					role_color: string
 					role_name: string
 				}
 				Insert: {
@@ -83,7 +83,7 @@ export type Database = {
 					is_default?: boolean
 					is_hidden?: boolean
 					profile_id?: string | null
-					role_color?: string | null
+					role_color?: string
 					role_name: string
 				}
 				Update: {
@@ -91,7 +91,7 @@ export type Database = {
 					is_default?: boolean
 					is_hidden?: boolean
 					profile_id?: string | null
-					role_color?: string | null
+					role_color?: string
 					role_name?: string
 				}
 				Relationships: [

@@ -6,6 +6,6 @@ CHECK (
 );
 
 ALTER TABLE urole_custom
-ADD role_color color
+ADD role_color color NOT NULL
 DEFAULT 'rgb(43, 215, 251)';
-END;
+COMMIT;
