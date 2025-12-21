@@ -5,6 +5,7 @@
 	import { type SuperForm } from "sveltekit-superforms/client"
 	import ProfileEditC from "./ProfileEdit.svelte"
 	import { Pencil } from "lucide-svelte"
+	import { contrastingForeground } from "$lib/utils"
 
 	let {
 		profile,
@@ -60,6 +61,13 @@
 			<div class="tooltip cursor-default tooltip-info" data-tip={m.profile_joined()}>
 				{profile.createdAt.toLocaleDateString()}
 			</div>
+		</div>
+		<div class="flex gap-1 pt-2">
+			{#each profile.roles as role}
+				{#if !role.isHidden}
+					<div class="rounded p-1 text-sm" style="background-color: {role.roleColor}; border-color: {role.roleColor}; color: {contrastingForeground(role.roleColor)}">{role.roleName}</div>
+				{/if}
+			{/each}
 		</div>
 		{@render ratingTable()}
 		<div>
