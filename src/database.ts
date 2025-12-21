@@ -178,10 +178,23 @@ export type Database = {
 			}
 		}
 		Functions: {
-			[_ in never]: never
+			create_topic: {
+				Args: {
+					t_description: string
+					t_locale_code: string
+					t_name: string
+					t_parent_topic_id: string | null
+					t_type: Database["public"]["Enums"]["topic_type"]
+				}
+				Returns: [{
+					creator_id: string
+					id: string
+					parent_id: string
+				}]
+			}
 		}
 		Enums: {
-			[_ in never]: never
+			topic_type: "parent" | "immediate_parent"
 		}
 		CompositeType: {
 			[_ in never]: never
