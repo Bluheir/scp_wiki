@@ -82,6 +82,78 @@ as $$
 end;
 $$;
 
+create or replace function can_create_topic(parent_topic_id UUID)
+returns boolean
+language sql
+security definer
+set search_path = ''
+set row_security = off
+stable
+as $$
+	select not exists (
+		with recursive ancestor as (
+			select
+				parent_topic_id as id,
+				topic.parent_id
+			from
+				(select parent_topic_id as id) d left join topic on d.id = topic.id
+
+			union all
+
+			select topic.id, topic.parent_id
+			from public.topic join ancestor on topic.parent_id = ancestor.id
+		)
+		select 1
+		from
+			ancestor
+			left join public.user_single_action on
+				user_single_action.victim_type = 'topic'
+				and user_single_action.victim_id is not distinct from ancestor.id
+				and user_single_action.action_type = 'create_topic'
+				and user_single_action.profile_id is not distinct from auth.uid()
+		where
+			user_single_action.id is null
+	)
+end;
+$$;
+
+create or replace function can_edit_topic(parent_topic_id UUID)
+returns boolean
+language sql
+security definer
+set search_path = ''
+set row_security = off
+stable
+as $$
+	select not exists (
+		with recursive ancestor as (
+			select
+				topic.id,
+				topic.parent_topic_id
+			from
+				topic
+			where
+				topic.id = parent_topic_id
+
+			union all
+
+			select topic.id, topic.parent_id
+			from public.topic join ancestor on topic.parent_id = ancestor.id
+		)
+		select 1
+		from
+			ancestor
+			left join public.user_single_action on
+				user_single_action.victim_type = 'topic'
+				and user_single_action.victim_id = ancestor.id
+				and user_single_action.action_type = 'edit_topic'
+				and user_single_action.profile_id is not distinct from auth.uid()
+		where
+			user_single_action.id is null
+	)
+end;
+$$;
+
 create policy "anon or auth can view topics they have permission to view"
 on public.topic
 for select to authenticated, anon
