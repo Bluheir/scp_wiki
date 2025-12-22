@@ -3,10 +3,23 @@
 	import type { Editor } from "@tiptap/core"
 	import * as Icon from "lucide-svelte"
 	import { m } from "$lib/paraglide/messages"
+	import { slide } from "svelte/transition"
 
 	const {
 		editor,
-		fonts = ["DEFAULT", "Arial", "monospace", "ITC Bauhaus Demi"]
+		fonts = [
+			"DEFAULT",
+			"Arial",
+			"monospace",
+			"ITC Bauhaus Demi",
+			"Courier New",
+			"sans-serif",
+			"Trebuchet MS",
+			"Times New Roman",
+			"Garamond",
+			"cursive",
+			"Noto Sans"
+		]
 	}: {
 		editor: Editor
 		fonts?: string[]
@@ -25,9 +38,9 @@
 	function setFont(newFontI: string | undefined) {
 		open = false
 		let newFont = newFontI
-		switch(newFontI) {
-			case(undefined):
-			case(""):
+		switch (newFontI) {
+			case undefined:
+			case "":
 				newFont = "DEFAULT"
 				break
 			default:
@@ -47,26 +60,35 @@
 	}
 
 	const filteredFonts = $derived(
-		searchValue === ""
-			? fontInfo
-			: fontInfo.filter(
-					(font) =>
-						font.value.toLowerCase().includes(searchTextLower) ||
-						font.label.toLowerCase().includes(searchTextLower)
-				)
+		fontInfo
+			.filter(
+				(font) =>
+					font.value.toLowerCase().includes(searchTextLower) ||
+					font.label.toLowerCase().includes(searchTextLower)
+			)
+			.sort((a, b) => {
+				if (a.label === searchValue) {
+					return -1
+				} else if (b.label === searchValue) {
+					return 1
+				} else if (searchValue !== "" && a.label.startsWith(searchValue)) {
+					return -1
+				} else if (searchValue !== "" && b.label.startsWith(searchValue)) {
+					return 1
+				}
+
+				return a.label.localeCompare(b.label)
+			})
 	)
 </script>
 
 <Combobox.Root
 	type="single"
 	bind:open
-	bind:value={
-		() => currentFont,
-		(newFont) => setFont(newFont)
-	}
+	bind:value={() => currentFont, (newFont) => setFont(newFont)}
 	inputValue={searchValue}
 	onOpenChangeComplete={(o) => {
-		if(filteredFonts.length === 0) {
+		if (filteredFonts.length === 0) {
 			setFont(currentFont)
 		} else {
 			setFont(filteredFonts[0].value)
@@ -75,7 +97,8 @@
 >
 	<div class="relative">
 		<Combobox.Input
-			class="input px-9 placeholder:text-base-content"
+			style="font-family: {currentFont};"
+			class="input min-w-30 px-9 placeholder:text-base-content"
 			oninput={(e) => {
 				searchValue = e.currentTarget.value
 			}}
@@ -87,21 +110,29 @@
 	</div>
 	<Combobox.Portal>
 		<Combobox.Content
-			class="menu z-20 rounded-box border border-base-content/10 bg-base-200 p-1 shadow-lg"
+			class="menu z-20 min-w-60 rounded-box border border-base-content/10 bg-base-200 p-1 shadow-lg transition-opacity"
 		>
 			<Combobox.Viewport>
-				{#each filteredFonts as font (font.value)}
-					<Combobox.Item value={font.value} label={font.label}>
-						<div class="btn w-full min-w-50 justify-start btn-ghost data-highlighted:bg-base-300">
-							{#if font.value !== "DEFAULT"}
-								<span style={`font-family: ${font.value};`}>{font.label}</span>
-							{:else}
-								{font.label}
-							{/if}
-						</div>
-					</Combobox.Item>
+				{#each filteredFonts as font, index (font.value)}
+					<div transition:slide={{ duration: 300 }}>
+						<Combobox.Item value={font.value} label={font.label}>
+							<div
+								class="btn btn-block justify-between font-normal btn-ghost"
+								class:bg-base-300={index === 0}
+							>
+								{#if font.value !== "DEFAULT"}
+									<span style={`font-family: ${font.value};`}>{font.label}</span>
+								{:else}
+									{font.label}
+								{/if}
+								{#if font.value === currentFont}
+									<Icon.Check class="w-4" />
+								{/if}
+							</div>
+						</Combobox.Item>
+					</div>
 				{:else}
-					<span class="p-2">{m.composer_noFontFound()}</span>
+					<span class="p-2 h-4">{m.composer_noFontFound()}</span>
 				{/each}
 			</Combobox.Viewport>
 		</Combobox.Content>
