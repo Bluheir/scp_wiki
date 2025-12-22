@@ -12,7 +12,7 @@
 </script>
 
 <div
-	class="flex flex-wrap items-stretch gap-2 rounded border border-base-content/10 px-2 py-[0.3rem]"
+	class="flex flex-wrap items-stretch gap-2"
 >
 	<button
 		class="btn px-1 py-0.5 btn-ghost"

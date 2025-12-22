@@ -18,9 +18,10 @@
 	import Heading from "@tiptap/extension-heading"
 	import Paragraph from "@tiptap/extension-paragraph"
 	import Text from "@tiptap/extension-text"
-	import { onDestroy, onMount } from "svelte"
+	import { onDestroy, onMount, type Snippet } from "svelte"
 	import { m } from "$lib/paraglide/messages"
-	import ComposerToolbar from "./ComposerToolbar.svelte"
+
+	const { toolbar }: { toolbar: Snippet<[{ editor: Editor }]> } = $props()
 
 	let element: Element | undefined = $state()
 	let editorState: { editor: Editor | null } = $state({ editor: null })
@@ -67,7 +68,7 @@
 </script>
 
 {#if editorState.editor}
-	<ComposerToolbar editor={editorState.editor} />
+	{@render toolbar({ editor: editorState.editor })}
 {/if}
 <div
 	class="border-base-content/10 border-y px-2 transition focus-within:border-primary hover:cursor-text"
