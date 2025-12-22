@@ -21,7 +21,13 @@
 	import { onDestroy, onMount, type Snippet } from "svelte"
 	import { m } from "$lib/paraglide/messages"
 
-	const { toolbar }: { toolbar: Snippet<[{ editor: Editor }]> } = $props()
+	const {
+		toolbar,
+		contents
+	}: {
+		toolbar: Snippet<[{ editor: Editor }]>,
+		contents?: Snippet<[{ contents: Snippet<[]> }]>
+	} = $props()
 
 	let element: Element | undefined = $state()
 	let editorState: { editor: Editor | null } = $state({ editor: null })
@@ -67,19 +73,28 @@
 	})
 </script>
 
+{#snippet editContents()}
+	<div
+		class="h-[calc(100%-16px)]"
+		bind:this={element}
+	></div>
+{/snippet}
+
 {#if editorState.editor}
 	{@render toolbar({ editor: editorState.editor })}
 {/if}
-<div
-	class="border-base-content/10 border-y px-2 transition focus-within:border-primary hover:cursor-text"
-	bind:this={element}
-></div>
+{#if contents}
+	{@render contents({ contents: editContents })}
+{:else}
+	{@render editContents()}
+{/if}
 
 <style>
 	:global(.tiptap):focus {
 		outline: none;
 	}
 	:global(.tiptap) {
+		height: 100%;
 		box-sizing: border-box;
 	}
 	:global(.tiptap p.is-editor-empty:first-child::before) {
