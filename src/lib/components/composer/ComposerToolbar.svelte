@@ -16,15 +16,17 @@
 >
 	<button
 		class="btn px-1 py-0.5 btn-ghost"
+		class:btn-disabled={!editor.can().undo()}
 		title={m.composer_undo()}
-		onclick={() => editor.commands.undo()}
+		onclick={() => editor.chain().focus().undo().run()}
 	>
 		<Icon.RotateCcw class="w-4" />
 	</button>
 	<button
 		class="btn px-1 py-0.5 btn-ghost"
+		class:btn-disabled={!editor.can().redo()}
 		title={m.composer_redo()}
-		onclick={() => editor.commands.redo()}
+		onclick={() => editor.chain().focus().redo().run()}
 	>
 		<Icon.RotateCw class="w-4" />
 	</button>
@@ -42,35 +44,35 @@
 	<ComposerToggle
 		isActive={editor.isActive("bold")}
 		label={m.composer_toggleBold()}
-		onclick={() => editor.commands.toggleBold()}
+		onclick={() => editor.chain().toggleBold().focus().run()}
 	>
 		<Icon.Bold class="w-4" />
 	</ComposerToggle>
 	<ComposerToggle
 		isActive={editor.isActive("italic")}
 		label={m.composer_toggleItalic()}
-		onclick={() => editor.commands.toggleItalic()}
+		onclick={() => editor.chain().toggleItalic().focus().run()}
 	>
 		<Icon.Italic class="w-4" />
 	</ComposerToggle>
 	<ComposerToggle
 		isActive={editor.isActive("underline")}
 		label={m.composer_toggleUnderline()}
-		onclick={() => editor.commands.toggleUnderline()}
+		onclick={() => editor.chain().toggleUnderline().focus().run()}
 	>
 		<Icon.Underline class="h-4" />
 	</ComposerToggle>
 	<ComposerToggle
 		isActive={editor.isActive("superscript")}
 		label={m.composer_toggleSuperscript()}
-		onclick={() => editor.commands.toggleSuperscript()}
+		onclick={() => editor.chain().toggleSuperscript().focus().run()}
 	>
 		<Icon.Superscript class="h-4" />
 	</ComposerToggle>
 	<ComposerToggle
 		isActive={editor.isActive("subscript")}
 		label={m.composer_toggleSubscript()}
-		onclick={() => editor.commands.toggleSubscript()}
+		onclick={() => editor.chain().toggleSubscript().focus().run()}
 	>
 		<Icon.Subscript class="h-4" />
 	</ComposerToggle>
