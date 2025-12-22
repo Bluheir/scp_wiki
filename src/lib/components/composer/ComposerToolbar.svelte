@@ -5,6 +5,7 @@
 	import { Separator } from "bits-ui"
 	import ComposerToggle from "./ComposerToggle.svelte"
 	import ComposerTextVariant from "./ComposerTextVariant.svelte"
+	import ComposerFont from "./ComposerFont.svelte"
 
 	const { editor }: { editor: Editor } = $props()
 </script>
@@ -30,6 +31,10 @@
 	<Separator.Root class="w-[0.5px] bg-base-content/10" orientation="vertical" />
 
 	<ComposerTextVariant {editor} />
+
+	<Separator.Root class="w-[0.5px] bg-base-content/10" orientation="vertical" />
+
+	<ComposerFont {editor} />
 
 	<Separator.Root class="w-[0.5px] bg-base-content/10" orientation="vertical" />
 
