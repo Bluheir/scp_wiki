@@ -6,6 +6,7 @@
 	import ComposerToggle from "./ComposerToggle.svelte"
 	import ComposerTextVariant from "./ComposerTextVariant.svelte"
 	import ComposerFont from "./ComposerFont.svelte"
+	import ComposerLink from "./ComposerLink.svelte"
 
 	const { editor }: { editor: Editor } = $props()
 </script>
@@ -73,6 +74,7 @@
 	>
 		<Icon.Subscript class="h-4" />
 	</ComposerToggle>
+	<ComposerLink {editor} />
 
 	<Separator.Root class="w-[0.5px] bg-base-content/10" orientation="vertical" />
 
