@@ -113,22 +113,23 @@
 			class="menu z-20 min-w-60 rounded-box border border-base-content/10 bg-base-200 p-1 shadow-lg transition-opacity"
 		>
 			<Combobox.Viewport>
-				{#each filteredFonts as font, index (font.value)}
+				{#each filteredFonts as font (font.value)}
 					<div transition:slide={{ duration: 300 }}>
-						<Combobox.Item value={font.value} label={font.label}>
-							<div
-								class="btn btn-block justify-between font-normal btn-ghost"
-								class:bg-base-300={index === 0}
-							>
+						<Combobox.Item
+							value={font.value}
+							label={font.label}
+							class="btn btn-block justify-between font-normal btn-ghost data-highlighted:bg-base-300"
+						>
+							{#snippet children({ selected })}
 								{#if font.value !== "DEFAULT"}
 									<span style={`font-family: ${font.value};`}>{font.label}</span>
 								{:else}
 									{font.label}
 								{/if}
-								{#if font.value === currentFont}
+								{#if selected}
 									<Icon.Check class="w-4" />
 								{/if}
-							</div>
+							{/snippet}
 						</Combobox.Item>
 					</div>
 				{:else}
