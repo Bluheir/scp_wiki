@@ -6,7 +6,7 @@
 
 	const {
 		editor,
-		fonts = ["DEFAULT", "Arial", "monospace"]
+		fonts = ["DEFAULT", "Arial", "monospace", "ITC Bauhaus Demi"]
 	}: {
 		editor: Editor
 		fonts?: string[]
