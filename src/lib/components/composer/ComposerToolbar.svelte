@@ -73,4 +73,59 @@
 	>
 		<Icon.Subscript class="h-4" />
 	</ComposerToggle>
+
+	<Separator.Root class="w-[0.5px] bg-base-content/10" orientation="vertical" />
+
+	<ComposerToggle
+		isActive={editor.isActive({ textAlign: "left" })}
+		label={m.composer_alignLeft()}
+		onclick={() => {
+			if (editor.isActive({ textAlign: "left" })) {
+				editor.chain().unsetTextAlign().focus().run()
+			} else {
+				editor.chain().setTextAlign("left").focus().run()
+			}
+		}}
+	>
+		<Icon.TextAlignStart class="w-4"/>
+	</ComposerToggle>
+	<ComposerToggle
+		isActive={editor.isActive({ textAlign: "center" })}
+		label={m.composer_alignCenter()}
+		onclick={() => {
+			if (editor.isActive({ textAlign: "center" })) {
+				editor.chain().unsetTextAlign().focus().run()
+			} else {
+				editor.chain().setTextAlign("center").focus().run()
+			}
+		}}
+	>
+		<Icon.TextAlignCenter class="w-4"/>
+	</ComposerToggle>
+	<ComposerToggle
+		isActive={editor.isActive({ textAlign: "right" })}
+		label={m.composer_alignRight()}
+		onclick={() => {
+			if (editor.isActive({ textAlign: "right" })) {
+				editor.chain().unsetTextAlign().focus().run()
+			} else {
+				editor.chain().setTextAlign("right").focus().run()
+			}
+		}}
+	>
+		<Icon.TextAlignEnd class="w-4"/>
+	</ComposerToggle>
+	<ComposerToggle
+		isActive={editor.isActive({ textAlign: "justify" })}
+		label={m.composer_alignJustify()}
+		onclick={() => {
+			if (editor.isActive({ textAlign: "justify" })) {
+				editor.chain().unsetTextAlign().focus().run()
+			} else {
+				editor.chain().setTextAlign("justify").focus().run()
+			}
+		}}
+	>
+		<Icon.TextAlignJustify class="w-4"/>
+	</ComposerToggle>
 </div>
