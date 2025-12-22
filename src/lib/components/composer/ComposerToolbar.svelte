@@ -2,23 +2,65 @@
 	import type { Editor } from "@tiptap/core"
 	import { m } from "$lib/paraglide/messages"
 	import * as Icon from "lucide-svelte"
+	import { Separator } from "bits-ui"
+	import ComposerToggle from "./ComposerToggle.svelte"
 
 	const { editor }: { editor: Editor } = $props()
 </script>
 
-<div class="flex flex-wrap gap-1.5 rounded border border-base-content/10 items-center px-2 py-1">
+<div
+	class="flex flex-wrap items-stretch gap-2 rounded border border-base-content/10 px-2 py-[0.3rem]"
+>
 	<button
-		class="btn btn-ghost px-1 py-0.5"
+		class="btn px-1 py-0.5 btn-ghost"
 		title={m.composer_undo()}
 		onclick={() => editor.commands.undo()}
 	>
-		<Icon.RotateCcw class="w-[1em]" />
+		<Icon.RotateCcw class="w-4" />
 	</button>
 	<button
-		class="btn btn-ghost px-1 py-0.5"
+		class="btn px-1 py-0.5 btn-ghost"
 		title={m.composer_redo()}
 		onclick={() => editor.commands.redo()}
 	>
-		<Icon.RotateCw class="w-[1em]" />
+		<Icon.RotateCw class="w-4" />
 	</button>
+
+	<Separator.Root class="w-[0.5px] bg-base-content/10" orientation="vertical" />
+
+	<ComposerToggle
+		isActive={editor.isActive("bold")}
+		label={m.composer_toggleBold()}
+		onclick={() => editor.commands.toggleBold()}
+	>
+		<Icon.Bold class="w-4" />
+	</ComposerToggle>
+	<ComposerToggle
+		isActive={editor.isActive("italic")}
+		label={m.composer_toggleItalic()}
+		onclick={() => editor.commands.toggleItalic()}
+	>
+		<Icon.Italic class="w-4" />
+	</ComposerToggle>
+	<ComposerToggle
+		isActive={editor.isActive("underline")}
+		label={m.composer_toggleUnderline()}
+		onclick={() => editor.commands.toggleUnderline()}
+	>
+		<Icon.Underline class="h-4" />
+	</ComposerToggle>
+	<ComposerToggle
+		isActive={editor.isActive("superscript")}
+		label={m.composer_toggleSuperscript()}
+		onclick={() => editor.commands.toggleSuperscript()}
+	>
+		<Icon.Superscript class="h-4" />
+	</ComposerToggle>
+	<ComposerToggle
+		isActive={editor.isActive("subscript")}
+		label={m.composer_toggleSubscript()}
+		onclick={() => editor.commands.toggleSubscript()}
+	>
+		<Icon.Subscript class="h-4" />
+	</ComposerToggle>
 </div>
