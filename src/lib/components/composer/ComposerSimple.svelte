@@ -9,7 +9,7 @@
 <div class="h-full rounded-[inherit] flex flex-col">
 	<Composer>
 		{#snippet toolbar({ editor })}
-			<div class="m-2 z-10 rounded-[inherit] border border-base-content/10 rounded-box p-1.5 focus-within:border-primary transition bg-base-200">
+			<div class="m-2 z-10 rounded-[inherit] border border-base-content/10 rounded-box p-1.5 bg-base-200">
 				<ComposerToolbar {editor} />
 			</div>
 		{/snippet}
