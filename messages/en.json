@@ -68,5 +68,30 @@
 	"topic_immediateParent_threadAmount": "Started",
 	"topic_immediateParent_postAmount": "Posts",
 	"topic_immediateParent_lastPoster": "Recent post",
-	"topic_immediateParent_jump": "Jump!"
+	"topic_immediateParent_jump": "Jump!",
+
+	"composer_toggleItalic": "Toggle italics",
+	"composer_toggleBold": "Toggle bold",
+	"composer_toggleUnderline": "Toggle underline",
+	"composer_toggleSubscript": "Toggle subscript",
+	"composer_toggleSuperscript": "Toggle superscript",
+	"composer_enterLink": "Enter link",
+	"composer_paragraph": "Paragraph",
+	"composer_orderedList": "Numbered list",
+	"composer_unorderedList": "Bullet list",
+	"composer_heading": "Heading {level}",
+	"composer_alignLeft": "Align left",
+	"composer_alignCenter": "Align center",
+	"composer_alignRight": "Align right",
+	"composer_alignJustify": "Align justify",
+	"composer_undo": "Undo",
+	"composer_redo": "Redo",
+	"composer_placeholder": "Enter your text here...",
+	"composer_font": [{
+		"match": {
+			"family=DEFAULT": "Default font",
+			"family=*": "{family}"
+		}
+	}],
+	"composer_noFontFound": "No fonts found"
 }
