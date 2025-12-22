@@ -4,6 +4,7 @@
 	import * as Icon from "lucide-svelte"
 	import { Separator } from "bits-ui"
 	import ComposerToggle from "./ComposerToggle.svelte"
+	import ComposerTextVariant from "./ComposerTextVariant.svelte"
 
 	const { editor }: { editor: Editor } = $props()
 </script>
@@ -25,6 +26,10 @@
 	>
 		<Icon.RotateCw class="w-4" />
 	</button>
+
+	<Separator.Root class="w-[0.5px] bg-base-content/10" orientation="vertical" />
+
+	<ComposerTextVariant {editor} />
 
 	<Separator.Root class="w-[0.5px] bg-base-content/10" orientation="vertical" />
 
