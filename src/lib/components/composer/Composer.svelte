@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Editor } from "@tiptap/core"
+	import { Markdown } from "@tiptap/markdown"
 	import Superscript from "@tiptap/extension-superscript"
 	import History from "@tiptap/extension-history"
 	import Subscript from "@tiptap/extension-subscript"
@@ -36,7 +37,8 @@
 		editorState.editor = new Editor({
 			element,
 			extensions: [
-				ItalicExt,
+				Markdown,
+				ItalicExt.configure(),
 				BoldExt,
 				Link,
 				Underline,
@@ -61,6 +63,8 @@
 				History
 			],
 			autofocus: true,
+			contentType: "markdown",
+			enableInputRules: false,
 			onTransaction: ({ editor }) => {
 				editorState = { editor }
 			}
