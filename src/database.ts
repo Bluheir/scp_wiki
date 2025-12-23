@@ -13,6 +13,7 @@ export type MonoActionData = {
 				id: string
 		  }
 }
+export type Rating = -1 | 0 | 1
 
 export type Action = {
 	action_type: "edit_profile"
@@ -158,6 +159,154 @@ export type Database = {
 					}
 				]
 			}
+			post: {
+				Row: {
+					creator_id: string
+					id: string
+					rating: number
+				}
+				Insert: {
+					creator_id: string
+					id?: string
+					rating?: number
+				}
+				Update: {
+					creator_id?: string
+					id?: string
+					rating?: number
+				}
+				Relationships: [
+					{
+						foreignKeyName: "post_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "profile"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+			post_revision: {
+				Row: {
+					content: string
+					id: string
+					post_id: string
+				}
+				Insert: {
+					content: string
+					id?: string
+					post_id: string
+				}
+				Update: {
+					content?: string
+					id?: string
+					post_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "post_revision_post_id_fkey"
+						columns: ["post_id"]
+						isOneToOne: false
+						referencedRelation: "post"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+			post_vote: {
+				Row: {
+					post_id: string
+					profile_id: string
+					vote_value: Rating
+				}
+				Insert: {
+					post_id: string
+					profile_id: string
+					vote_value?: Rating
+				}
+				Update: {
+					post_id?: string
+					profile_id?: string
+					vote_value?: Rating
+				}
+				Relationships: [
+					{
+						foreignKeyName: "post_vote_post_id_fkey"
+						columns: ["post_id"]
+						isOneToOne: false
+						referencedRelation: "post"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "post_vote_profile_id_fkey"
+						columns: ["profile_id"]
+						isOneToOne: false
+						referencedRelation: "profile"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+			thread: {
+				Row: {
+					id: string
+					title: string
+					topic_id: string
+				}
+				Insert: {
+					id: string
+					title?: string
+					topic_id: string
+				}
+				Update: {
+					id?: string
+					title?: string
+					topic_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "thread_id_fkey"
+						columns: ["id"]
+						isOneToOne: true
+						referencedRelation: "post"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "thread_topic_id_fkey"
+						columns: ["topic_id"]
+						isOneToOne: false
+						referencedRelation: "immediate_parent_topic"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+			reply: {
+				Row: {
+					id: string
+					replying_to_post_id: string
+				}
+				Insert: {
+					id: string
+					replying_to_post_id: string
+				}
+				Update: {
+					id?: string
+					replying_to_post_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "reply_id_fkey"
+						columns: ["id"]
+						isOneToOne: true
+						referencedRelation: "post"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "reply_replying_to_post_id_fkey"
+						columns: ["replying_to_post_id"]
+						isOneToOne: false
+						referencedRelation: "post_revision"
+						referencedColumns: ["id"]
+					}
+				]
+			}
 		}
 		Views: {
 			user_single_action: {
@@ -186,14 +335,32 @@ export type Database = {
 					t_parent_topic_id: string | null
 					t_type: Database["public"]["Enums"]["topic_type"]
 				}
-				Returns: [{
-					creator_id: string
-					id: string
-					parent_id: string
-				}]
+				Returns: [
+					{
+						creator_id: string
+						id: string
+						parent_id: string
+					}
+				]
+			}
+			set_vote_for: {
+				Args: {
+					entity_id: string
+					entity_type: Database["public"]["Enums"]["ratable_entity"]
+					new_vote: Rating
+					voter_id: string
+				}
+				Returns: [
+					{
+						author_rating: number
+						new_rating: number
+						old_vote: Rating
+					}
+				]
 			}
 		}
 		Enums: {
+			ratable_entity: "post"
 			topic_type: "parent" | "immediate_parent"
 		}
 		CompositeType: {
