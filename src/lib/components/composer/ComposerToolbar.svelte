@@ -14,22 +14,22 @@
 <div
 	class="flex flex-wrap items-stretch gap-2"
 >
-	<button
-		class="btn px-1 py-0.5 btn-ghost"
-		class:btn-disabled={!editor.can().undo()}
-		title={m.composer_undo()}
+	<ComposerToggle
+		isActive={false}
+		isDisabled={!editor.can().undo()}
+		label={m.composer_undo()}
 		onclick={() => editor.chain().focus().undo().run()}
 	>
 		<Icon.RotateCcw class="w-4" />
-	</button>
-	<button
-		class="btn px-1 py-0.5 btn-ghost"
-		class:btn-disabled={!editor.can().redo()}
-		title={m.composer_redo()}
+	</ComposerToggle>
+	<ComposerToggle
+		isActive={false}
+		isDisabled={!editor.can().redo()}
+		label={m.composer_redo()}
 		onclick={() => editor.chain().focus().redo().run()}
 	>
 		<Icon.RotateCw class="w-4" />
-	</button>
+	</ComposerToggle>
 
 	<Separator.Root class="w-[0.5px] bg-base-content/10" orientation="vertical" />
 

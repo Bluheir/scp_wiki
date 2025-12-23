@@ -12,8 +12,7 @@
 
 <div class="flex items-center">
 	<button
-		class="btn btn-ghost btn-square btn-xs"
-		class:text-primary={editor.isActive("link")}
+		class="btn btn-square btn-xs {editor.isActive("link") ? 'btn-primary btn-soft' : 'btn-ghost'}"
 		style="anchor-name:--composer-link-{editor.instanceId}-anchor"
 		popovertarget="composer-link-{editor.instanceId}-popover"
 		title={m.composer_link()}
