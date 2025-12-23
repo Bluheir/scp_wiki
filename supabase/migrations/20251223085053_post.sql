@@ -83,7 +83,7 @@ with
 existing_vote as (
 	select coalesce(
 	  (select vote_value from public.post_vote where post_id = entity_id and profile_id = voter_id),
-	  (select 0)
+	  0
 	) as vote_value
 ),
 upsert_vote_value as (
@@ -91,10 +91,11 @@ upsert_vote_value as (
 	values (entity_id, voter_id, new_vote)
 	on conflict (post_id, profile_id)
 	do update set vote_value = new_vote
+	returning (select vote_value from existing_vote)
 ),
 updated_votes as (
 	update public.post
-	set rating = (select rating - vote_value + new_vote from existing_vote)
+	set rating = (select post.rating - vote_value + new_vote from upsert_vote_value)
 	where post.id = entity_id
 	returning creator_id, rating
 ),
@@ -105,11 +106,13 @@ updated_profile as (
 	returning forum_rating
 )
 select
-	updated_profile.forum_rating as author_rating,
+	upsert_vote_value.vote_value as old_vote,
 	updated_votes.rating as new_rating,
-	existing_vote.vote_value as old_vote
+	updated_profile.forum_rating as author_rating
 from
-	updated_profile, updated_votes, existing_vote
+	upsert_vote_value,
+	updated_votes,
+	updated_profile
 $$;
 
 revoke all on function public.set_vote_for(uuid, public.ratable_entity, uuid, public.vote)
