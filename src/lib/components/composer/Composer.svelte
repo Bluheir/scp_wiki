@@ -23,19 +23,14 @@
 	import { m } from "$lib/paraglide/messages"
 
 	const {
-		toolbar,
-		contents
+		children
 	}: {
-		toolbar: Snippet<[{ editor: Editor }]>,
-		contents?: Snippet<[{ contents: Snippet<[]> }]>
+		children: Snippet<[{ editor: Editor; contents: Snippet<[]> }]>
 	} = $props()
 
 	let element: Element | undefined = $state()
-	let editorState: { editor: Editor | null } = $state({ editor: null })
-
-	onMount(() => {
-		editorState.editor = new Editor({
-			element,
+	let editorState: { editor: Editor } = $state({
+		editor: new Editor({
 			extensions: [
 				Markdown,
 				ItalicExt.configure(),
@@ -70,6 +65,11 @@
 			}
 		})
 	})
+
+	onMount(() => {
+		editorState.editor.mount(element!)
+	})
+
 	onDestroy(() => {
 		if (editorState.editor) {
 			editorState.editor.destroy()
@@ -78,20 +78,10 @@
 </script>
 
 {#snippet editContents()}
-	<div
-		class="h-[calc(100%-16px)]"
-		bind:this={element}
-	></div>
+	<div class="h-[calc(100%-16px)]" bind:this={element}></div>
 {/snippet}
 
-{#if editorState.editor}
-	{@render toolbar({ editor: editorState.editor })}
-{/if}
-{#if contents}
-	{@render contents({ contents: editContents })}
-{:else}
-	{@render editContents()}
-{/if}
+{@render children({ editor: editorState.editor, contents: editContents })}
 
 <style>
 	:global(.tiptap):focus {
