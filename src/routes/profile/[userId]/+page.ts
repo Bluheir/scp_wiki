@@ -21,10 +21,11 @@ export const load: PageLoad = async ({ parent, params }) => {
 	let readonly = true
 	if (userData.user) {
 		const { data: permissionData } = await supabase
-			.from("user_victim_single_action")
-			.select("profile_id")
-			.eq("profile_id", userData.user.id)
-			.eq("victim_profile_id", params.userId)
+			.schema("permission")
+			.from("user_user_action")
+			.select("user_id")
+			.eq("user_id", userData.user.id)
+			.eq("victim_user_id", params.userId)
 			.eq("action_type", "edit_profile")
 			.limit(1)
 			.single()

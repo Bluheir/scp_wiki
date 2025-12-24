@@ -1,27 +1,381 @@
-export type MonoActionData = {
-	victim:
-		| {
-				type: "self"
-				id?: null
-		  }
-		| {
-				type: "tag"
-				id: string
-		  }
-		| {
-				type: "role"
-				id: string
-		  }
-}
+
 export type Rating = -1 | 0 | 1
 
-export type Action = {
-	action_type: "edit_profile"
-	action_data: MonoActionData
-}
+export type VictimType = "user" | "role" | "tag" | "topic" | "self"
+export type ActionType = "edit_profile" | "view_topic" | "create_topic" | "edit_topic"
+export type ActionData = {}
+export type UtagEntityType = "user" | "role" | "topic"
+
 // only define types for tables, views and functions that are actually used in the codebase to keep
 // it simple
 export type Database = {
+	permission: {
+		Tables: {
+			default_action: {
+				Row: {
+					id: string
+					info: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+				}
+				Insert: {
+					id?: string
+					info: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+				}
+				Update: {
+					id?: string
+					info?: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+				}
+				Relationships: []
+			}
+			urole: {
+				Row: {
+					creator_id: string | null
+					id: string
+					is_default: boolean
+					is_hidden: boolean
+					role_name: string
+				}
+				Insert: {
+					creator_id?: string | null
+					id?: string
+					is_default?: boolean
+					is_hidden?: boolean
+					role_name: string
+				}
+				Update: {
+					creator_id?: string | null
+					id?: string
+					is_default?: boolean
+					is_hidden?: boolean
+					role_name?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "urole_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_urole"
+						referencedColumns: ["user_id"]
+					},
+					{
+						foreignKeyName: "urole_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_utag"
+						referencedColumns: ["user_id"]
+					}
+				]
+			}
+			urole_action: {
+				Row: {
+					id: string
+					info: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+					urole_id: string
+				}
+				Insert: {
+					id?: string
+					info: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+					urole_id: string
+				}
+				Update: {
+					id?: string
+					info?: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+					urole_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "urole_action_urole_id_fkey"
+						columns: ["urole_id"]
+						isOneToOne: false
+						referencedRelation: "urole"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+			urole_assignment: {
+				Row: {
+					profile_id: string
+					urole_id: string
+				}
+				Insert: {
+					profile_id: string
+					urole_id: string
+				}
+				Update: {
+					profile_id?: string
+					urole_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "urole_assignment_profile_id_fkey"
+						columns: ["profile_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_urole"
+						referencedColumns: ["user_id"]
+					},
+					{
+						foreignKeyName: "urole_assignment_profile_id_fkey"
+						columns: ["profile_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_utag"
+						referencedColumns: ["user_id"]
+					},
+					{
+						foreignKeyName: "urole_assignment_urole_id_fkey"
+						columns: ["urole_id"]
+						isOneToOne: false
+						referencedRelation: "urole"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+			user_action: {
+				Row: {
+					id: string
+					info: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+					profile_id: string
+				}
+				Insert: {
+					id?: string
+					info: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+					profile_id: string
+				}
+				Update: {
+					id?: string
+					info?: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+					profile_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "user_action_profile_id_fkey"
+						columns: ["profile_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_urole"
+						referencedColumns: ["user_id"]
+					},
+					{
+						foreignKeyName: "user_action_profile_id_fkey"
+						columns: ["profile_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_utag"
+						referencedColumns: ["user_id"]
+					}
+				]
+			}
+			utag: {
+				Row: {
+					creator_id: string | null
+					id: string
+					is_default: boolean
+					is_hidden: boolean
+					tag_name: string
+				}
+				Insert: {
+					creator_id?: string | null
+					id?: string
+					is_default?: boolean
+					is_hidden?: boolean
+					tag_name: string
+				}
+				Update: {
+					creator_id?: string | null
+					id?: string
+					is_default?: boolean
+					is_hidden?: boolean
+					tag_name?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "utag_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_urole"
+						referencedColumns: ["user_id"]
+					},
+					{
+						foreignKeyName: "utag_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_utag"
+						referencedColumns: ["user_id"]
+					}
+				]
+			}
+			utag_assignment: {
+				Row: {
+					entity_id: string
+					entity_type: UtagEntityType
+					utag_id: string
+				}
+				Insert: {
+					entity_id: string
+					entity_type: UtagEntityType
+					utag_id: string
+				}
+				Update: {
+					entity_id?: string
+					entity_type?: UtagEntityType
+					utag_id?: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "utag_assignment_utag_id_fkey"
+						columns: ["utag_id"]
+						isOneToOne: false
+						referencedRelation: "utag"
+						referencedColumns: ["id"]
+					}
+				]
+			}
+		}
+		Views: {
+			topic_for_utag: {
+				Row: {
+					creator_id: string | null
+					id: string
+					is_default: boolean
+					is_hidden: boolean
+					tag_name: string
+					topic_creator_id: string
+					topic_id: string
+					topic_parent_id: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "topic_creator_id_fkey"
+						columns: ["topic_creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_urole"
+						referencedColumns: ["user_id"]
+					},
+					{
+						foreignKeyName: "topic_creator_id_fkey"
+						columns: ["topic_creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_utag"
+						referencedColumns: ["user_id"]
+					},
+					{
+						foreignKeyName: "utag_assignment_utag_id_fkey"
+						columns: ["id"]
+						isOneToOne: false
+						referencedRelation: "utag"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "utag_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_urole"
+						referencedColumns: ["user_id"]
+					},
+					{
+						foreignKeyName: "utag_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_utag"
+						referencedColumns: ["user_id"]
+					}
+				]
+			}
+			user_action_full: {
+				Row: {
+					action_id: string
+					action_info: Database["permission"]["CompositeTypes"]["permission_info_inner"]
+					grant_type: string
+					user_id: string | null
+				}
+				Relationships: []
+			}
+			user_for_urole: {
+				Row: {
+					id: string
+					is_default: boolean
+					is_hidden: boolean
+					user_created_at: string | null
+					user_id: string | null
+					user_username: string | null
+				}
+				Relationships: []
+			}
+			user_for_utag: {
+				Row: {
+					creator_id: string | null
+					id: string
+					is_default: boolean
+					is_hidden: boolean
+					tag_name: string
+					user_created_at: string
+					user_id: string
+					user_username: string
+				}
+				Relationships: [
+					{
+						foreignKeyName: "utag_assignment_utag_id_fkey"
+						columns: ["id"]
+						isOneToOne: false
+						referencedRelation: "utag"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "utag_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_urole"
+						referencedColumns: ["user_id"]
+					},
+					{
+						foreignKeyName: "utag_creator_id_fkey"
+						columns: ["creator_id"]
+						isOneToOne: false
+						referencedRelation: "user_for_utag"
+						referencedColumns: ["user_id"]
+					}
+				]
+			}
+			user_topic_action: {
+				Row: {
+					action_data: ActionData
+					action_type: string | null
+					user_id: string | null
+					victim_topic_id: string
+				}
+				Relationships: []
+			}
+			user_user_action: {
+				Row: {
+					action_data: ActionData
+					action_type: ActionType
+					user_id: string | null
+					victim_user_id: string
+				}
+				Relationships: []
+			}
+		}
+		Functions: {
+			roles_for_user: {
+				Args: { u_profile_id: string | null }
+				Returns: {
+					creator_id: string
+					id: string
+					is_default: boolean
+					is_hidden: boolean
+					role_name: string
+				}[]
+			}
+		}
+		Enums: {
+			utag_v: UtagEntityType
+      victim_v: VictimType
+		}
+		CompositeTypes: {
+			permission_info_inner: {
+				action_type: string
+				action_data: ActionData
+				victim_id: string | null
+				victim_type: VictimType
+			}
+		}
+	}
 	public: {
 		Tables: {
 			profile: {
@@ -309,22 +663,7 @@ export type Database = {
 			}
 		}
 		Views: {
-			user_single_action: {
-				Row: {
-					profile_id: string | null
-					id: string
-				} & MonoActionData["victim"] &
-					Action
-				Relationships: []
-			}
-			user_victim_single_action: {
-				Row: {
-					profile_id: string | null
-					victim_profile_id: string
-					id: string
-				} & Action
-				Relationships: []
-			}
+			[_ in never]: never
 		}
 		Functions: {
 			create_topic: {
