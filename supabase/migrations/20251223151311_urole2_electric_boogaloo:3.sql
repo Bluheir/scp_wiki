@@ -307,6 +307,7 @@ drop function if exists public.can_edit_topic(parent_topic_id uuid);
 drop function if exists public.can_create_topic(parent_topic_id uuid);
 drop trigger if exists on_auth_user_created on auth.users cascade;
 drop function if exists public.handle_new_user() cascade;
+drop function if exists public.has_permission(uuid, text) cascade;
 drop function if exists public.roles_for_uid(uid uuid) cascade;
 drop view if exists public.user_victim_single_action cascade;
 drop view if exists public.user_single_action cascade;
