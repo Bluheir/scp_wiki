@@ -364,7 +364,8 @@ export type Database = {
 			}
 		}
 		Enums: {
-			[_ in never]: never
+			utag_v: UtagEntityType
+      victim_v: VictimType
 		}
 		CompositeTypes: {
 			permission_info_inner: {

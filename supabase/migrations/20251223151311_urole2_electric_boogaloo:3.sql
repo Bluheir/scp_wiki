@@ -41,18 +41,21 @@ grant execute on routines to anon, authenticated;
 alter default privileges for role postgres in schema permission
 grant usage on sequences to anon, authenticated;
 
+create type permission.victim_v as enum ('self', 'topic', 'user', 'role', 'tag');
+create type permission.utag_v as enum ('role', 'user', 'topic');
+
 create type permission.permission_info_inner as (
 	action_type varchar(32),
 	action_data JSONB,
 	victim_id uuid,
-	victim_type text
+	victim_type permission.victim_v
 );
 create domain permission.permission_info as permission.permission_info_inner
 check (
 	(value).action_type is not null and
 	(value).action_data is not null and
-	jsonb_typeof((value).action_data) = 'object' and
-	(value).victim_type in ('self', 'topic', 'user', 'role', 'tag')
+	(value).victim_type is not null and
+	jsonb_typeof((value).action_data) = 'object'
 );
 
 create table permission.urole(
@@ -94,8 +97,7 @@ create table permission.utag_assignment(
 	foreign key (utag_id) references permission.utag (id) on delete cascade,
 
 	entity_id uuid,
-	entity_type text not null,
-	check (entity_type in ('role', 'user', 'topic')),
+	entity_type permission.utag_v not null,
 
 	primary key (utag_id, entity_id, entity_type)
 );
