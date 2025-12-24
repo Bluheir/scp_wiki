@@ -371,6 +371,8 @@ begin
 
 	insert into permission.utag_assignment(utag_id, entity_id, entity_type)
 	select utag.id, new.id, 'user' from permission.utag where utag.is_default;
+
+	return new;
 end;
 $$;
 
