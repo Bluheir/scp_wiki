@@ -2,13 +2,44 @@ begin;
 
 -- first, we create the permission schema
 create schema permission;
+
+-- schema access
 grant usage on schema permission to anon, authenticated, service_role;
-grant all on all tables in schema permission to anon, authenticated, service_role;
-grant all on all routines in schema permission to anon, authenticated, service_role;
-grant all on all sequences in schema permission to anon, authenticated, service_role;
-alter default privileges for role postgres in schema permission grant all on tables to anon, authenticated, service_role;
-alter default privileges for role postgres in schema permission grant all on routines to anon, authenticated, service_role;
-alter default privileges for role postgres in schema permission grant all on sequences to anon, authenticated, service_role;
+
+-- =========================
+-- service_role: full control
+-- =========================
+grant all privileges on all tables in schema permission to service_role;
+grant all privileges on all routines in schema permission to service_role;
+grant all privileges on all sequences in schema permission to service_role;
+
+-- =========================
+-- anon + authenticated: read-only
+-- =========================
+grant select on all tables in schema permission to anon, authenticated;
+grant execute on all routines in schema permission to anon, authenticated;
+grant usage on all sequences in schema permission to anon, authenticated;
+
+-- =========================
+-- default privileges
+-- =========================
+alter default privileges for role postgres in schema permission
+grant all privileges on tables to service_role;
+
+alter default privileges for role postgres in schema permission
+grant all privileges on routines to service_role;
+
+alter default privileges for role postgres in schema permission
+grant all privileges on sequences to service_role;
+
+alter default privileges for role postgres in schema permission
+grant select on tables to anon, authenticated;
+
+alter default privileges for role postgres in schema permission
+grant execute on routines to anon, authenticated;
+
+alter default privileges for role postgres in schema permission
+grant usage on sequences to anon, authenticated;
 
 create type permission.permission_info_inner as (
 	action_type varchar(32),
@@ -34,11 +65,6 @@ create table permission.urole(
 	is_hidden boolean not null default false,
 	is_default boolean not null default false
 );
-create policy "anon or auth can view any urole"
-on permission.urole
-for select to authenticated, anon
-using (true);
-alter table permission.urole enable row level security;
 alter publication supabase_realtime add table permission.urole;
 
 -- an associative entity representing an assignment of a role to a user
@@ -49,11 +75,6 @@ create table permission.urole_assignment(
 	foreign key (profile_id) references public.profile (id) on delete cascade,
 	primary key (urole_id, profile_id)
 );
-create policy "anon or auth can view any urole_assignment"
-on permission.urole_assignment
-for select to authenticated, anon
-using (true);
-alter table permission.urole_assignment enable row level security;
 alter publication supabase_realtime add table permission.urole_assignment;
 
 create table permission.utag(
@@ -66,11 +87,6 @@ create table permission.utag(
 	is_hidden boolean not null default false,
 	is_default boolean not null default false
 );
-create policy "anon or auth can view any utag"
-on permission.utag
-for select to authenticated, anon
-using (true);
-alter table permission.utag enable row level security;
 alter publication supabase_realtime add table permission.utag;
 
 create table permission.utag_assignment(
@@ -83,11 +99,6 @@ create table permission.utag_assignment(
 
 	primary key (utag_id, entity_id, entity_type)
 );
-create policy "anon or auth can view any utag_assignment"
-on permission.utag_assignment
-for select to authenticated, anon
-using (true);
-alter table permission.utag_assignment enable row level security;
 alter publication supabase_realtime add table permission.utag_assignment;
 
 -- a default permission represents a permission assigned directly to a user on signup
@@ -95,11 +106,6 @@ create table permission.default_permission(
 	id uuid primary key default public.uuidv7(),
 	info permission.permission_info not null
 );
-alter table permission.default_permission enable row level security;
-create policy "anon or auth can view any default_permission"
-on permission.default_permission
-for select to authenticated, anon
-using (true);
 alter publication supabase_realtime add table permission.default_permission;
 
 -- a urole permission represents an action that a role can do; a capability of a role :3
@@ -110,11 +116,6 @@ create table permission.urole_action(
 
 	info permission.permission_info not null
 );
-alter table permission.urole_action enable row level security;
-create policy "anon or auth can view any urole_action"
-on permission.urole_action
-for select to authenticated, anon
-using (true);
 create index urole_action_victim_idx on permission.urole_action (((info).victim_id), ((info).victim_type));
 alter publication supabase_realtime add table permission.urole_action;
 
@@ -126,11 +127,6 @@ create table permission.user_action(
 
 	info permission.permission_info not null
 );
-alter table permission.user_action enable row level security;
-create policy "anon or auth can view any user_action"
-on permission.user_action
-for select to authenticated, anon
-using (true);
 create index user_action_victim_idx on permission.user_action (((info).victim_id), ((info).victim_type));
 alter publication supabase_realtime add table permission.user_action;
 
@@ -138,6 +134,7 @@ create function permission.roles_for_user(u_profile_id uuid)
 returns table (id uuid, role_name text, is_hidden boolean, is_default boolean)
 language sql
 security definer
+set search_path = ''
 set row_security = off
 as $$
 select
