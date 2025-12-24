@@ -337,7 +337,7 @@ for select to anon, authenticated using (
 			permission.user_topic_action
 		where
 			user_topic_action.action_type = 'view_topic'
-			and user_topic_action.user_id is not distinct from auth.uid()
+			and user_topic_action.user_id is not distinct from (select auth.uid())
 	)
 );
 
@@ -350,7 +350,7 @@ for update to anon, authenticated using (
 			permission.user_user_action
 		where
 			user_user_action.action_type = 'edit_profile'
-			and user_user_action.user_id is not distinct from auth.uid()
+			and user_user_action.user_id is not distinct from (select auth.uid())
 	)
 );
 
