@@ -66,7 +66,8 @@
 						pronouns: data.pronouns,
 						biography: data.biography,
 						forumRating: data.forum_rating,
-						wikiRating: data.wiki_rating
+						wikiRating: data.wiki_rating,
+						roles: data.roles
 					}
 				}
 			)
@@ -87,7 +88,8 @@
 						pronouns: data.pronouns,
 						biography: data.biography,
 						forumRating: data.forum_rating,
-						wikiRating: data.wiki_rating
+						wikiRating: data.wiki_rating,
+						roles: data.roles
 					}
 				}
 			)
@@ -100,7 +102,19 @@
 					table: "urole_assignment",
 					filter: `profile_id=eq.${profile.id}`
 				},
-				(payload) => {}
+				(payload) => {
+					console.log(payload)
+					profile = {
+						...profile,
+						username: data.profile.username,
+						avatarUrl: data.profile.avatarUrl ?? undefined,
+						pronouns: data.profile.pronouns,
+						biography: data.profile.biography,
+						forumRating: data.profile.forumRating,
+						wikiRating: data.profile.wikiRating,
+						roles: data.profile.roles
+					}
+				}
 			)
 
 			.on(
@@ -120,7 +134,8 @@
 						pronouns: data.pronouns,
 						biography: data.biography,
 						forumRating: data.forum_rating,
-						wikiRating: data.wiki_rating
+						wikiRating: data.wiki_rating,
+						roles: data.roles
 					}
 				}
 			)
@@ -132,9 +147,8 @@
 		await channel?.unsubscribe()
 	})
 </script>
-
 <Navbar />
 
 <div class="mx-20 my-10 rounded-box border border-base-content/10 p-8 shadow-xl">
-	<Profile {profile} bind:editMode {readonly} {form} />
+	<Profile {profile} bind:editMode {readonly} {form}/>
 </div>
