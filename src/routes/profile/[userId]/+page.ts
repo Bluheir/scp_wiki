@@ -17,9 +17,10 @@ export const load: PageLoad = async ({ parent, params }) => {
 		error(404)
 	}
 
-	const { data: role_data } = await supabase 
-		.from("urole_profile")
-		.select("profile_id, urole_id, urole_custom(is_hidden, role_color, role_name)")
+	const { data: role_data } = await supabase
+		.schema("permission")
+		.from("urole_assignment")
+		.select("profile_id, urole_id, urole(is_hidden, role_color, role_name)")
 		.eq("profile_id", params.userId)
 
 	if (!role_data) {
@@ -52,10 +53,10 @@ export const load: PageLoad = async ({ parent, params }) => {
 		wikiRating: data.wiki_rating,
 		createdAt: new Date(data.created_at),
 		roles: role_data.map(value => ({
-			isHidden: value.urole_custom.is_hidden,
+			isHidden: value.urole.is_hidden,
 			roleId: value.urole_id,
-			roleName: value.urole_custom.role_name,
-			roleColor: value.urole_custom.role_color
+			roleName: value.urole.role_name,
+			roleColor: value.urole.role_color
 		}))
 	}
 

@@ -70,7 +70,63 @@
 					}
 				}
 			)
+			.on(
+				"postgres_changes",
+				{
+					event: "INSERT",
+					schema: "permission",
+					table: "urole_assignment",
+					filter: `profile_id=eq.${profile.id}`
+				},
+				(payload) => {
+					const { new: data } = payload
+					profile = {
+						...profile,
+						username: data.username,
+						avatarUrl: data.avatar_url ?? undefined,
+						pronouns: data.pronouns,
+						biography: data.biography,
+						forumRating: data.forum_rating,
+						wikiRating: data.wiki_rating
+					}
+				}
+			)
+
+			.on(
+				"postgres_changes",
+				{
+					event: "DELETE",
+					schema: "permission",
+					table: "urole_assignment",
+					filter: `profile_id=eq.${profile.id}`
+				},
+				(payload) => {}
+			)
+
+			.on(
+				"postgres_changes",
+				{
+					event: "UPDATE",
+					schema: "permission",
+					table: "urole",
+					filter: `profile_id=eq.${profile.id}`
+				},
+				(payload) => {
+					const { new: data } = payload
+					profile = {
+						...profile,
+						username: data.username,
+						avatarUrl: data.avatar_url ?? undefined,
+						pronouns: data.pronouns,
+						biography: data.biography,
+						forumRating: data.forum_rating,
+						wikiRating: data.wiki_rating
+					}
+				}
+			)
+
 			.subscribe()
+		
 	})
 	onDestroy(async () => {
 		await channel?.unsubscribe()
